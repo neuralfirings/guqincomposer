@@ -1,0 +1,87 @@
+h1 {
+  font-size:  3rem;
+  font-weight:  200;
+}
+h2 {
+  font-size:  1.8rem;
+  font-weight:  700;
+  margin-top:  20px;
+  margin-bottom:  13px;
+
+}
+.doc h2 {
+  border-bottom: solid 2px;
+}
+h3 {
+  font-size:  1.3rem;
+  font-weight: 600;
+  margin-top:  20px;
+  margin-bottom:  13px;
+}
+.doc h3 {
+  text-decoration: underline;
+}
+h4 {
+  font-size:  0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+h5 {
+  font-size:  0.75rem;
+  font-weight: 700;
+}
+h6 {
+  font-size:  0.6rem;
+  font-weight: 900;
+}
+
+label {
+  display: block;
+  margin-top:  20px;
+  font-weight: bold;
+}
+
+pre {
+  border-radius: 5px;
+  border:  solid 1px #eee;
+  background:  #fafafa;
+  font-size: 13px;
+  padding:  13px;
+}
+
+/*Markdown unordered list within an ordered list*/
+li p {
+  margin-top:  10px;
+  margin-bottom: 0px;
+}
+
+.container {
+  margin-bottom: 100px;
+}
+
+/*Nav*/
+.show-on-score {
+  display: none;
+}
+.link {
+  font-size: 13px;
+  line-height: 1.5;
+  height: 26px;
+  width:  250px;
+  margin:  7px 0px;
+}
+.copied {
+  display: none;
+}
+.navbar-text {
+  color:  #fff;
+}
+
+/*Guqin Snippet*/
+.gq-snippet-img {
+  object-fit: cover; 
+  object-position:  0% 0%;
+  height: 150px; 
+  width: 100%;
+  /*border:  solid 1px #eee;*/
+}

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>      
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Guqin Tablature Composer (easy Guqin Notation)</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+		<script src="/utils.js"></script>
+    <link rel="stylesheet" href="/style.css" />
+
+    <script>
+    	// n/f need to only have one linebreak
+    	// n/f needs to be lower case
+    	// weirdness with fanyin chords on different huis
+    	// fanyin hui position
+    </script>
+    <style>
+    </style>
+  </head>
+  <body>
+		<nav class="nav"></nav>  
+    <br />
+		<div class="container" id="content">
+			<div class="row">
+				<div class="col markdown doc">
+					# Documentation
+
+					## 1. Getting Started 
+
+					#### Example ([link](https://guqin.nyl.io/nltabs/8oxs3oT))
+					<div class='gq-snippet' data-id="8oxs3oT" data-img-height="200"></div>
+
+					If you want to read in detail about the snippet above, I encourage you to [check out the Getting Started page](/gettingstarted.html). 
+
+					You can also [take a look at the Glossary](http://nyl.io:7013/nltabs/qbSWqqt/4) for examples of the techniques mentioned here compiled together in one place.
+
+					## 2. Managing Scores
+
+					### 2.1. Creating and Saving
+					Create scores for the Guqin using NLTabs schema with this site. You can save your tabs, and share them with others
+
+					Create new scores by clicking "New" at the top. When you save a score (click "Save" in the navigation), we will automatically save a version. If you save again, the version will increment. If you use the url to your score with out the version tag, then we will automatically load the latest version. You can click "Save As" in the navigation to save to a new url starting at version 1.
+
+					Any un-saved entries for the shorthand notation in the last piece you edit will be saved locally. You will see an asterik next to the Save button in the header. When you reload that piece (this only works for the latest piece you edited), you will be prompted whether you want to load the unsaved version or the last saved version. 
+
+					### 2.2. Locking Edits
+
+					You can lock your score with a password so that only you can edit the score. Once you set a password, only those with the password can save and increment the versions. Others can still view the score (if they have the link), and they can copy your score to a new link using the "Save as New" feature.
+
+					You can always unlock your score as long as you have the password.
+
+					## 3. Score Information
+
+					### 3.2. Score Information
+
+					Following should only be at the top of the score once. 
+
+					#### Example
+
+					```
+					title: Variations on a Theme
+					composer: Ada Lovelace
+					tuning: g,, a,, c, d, e, g, a,
+					showtimesig: none
+					bars: manual
+					```
+
+					#### Definitions
+
+					* **title**: (*optional*) the title of the piece, this appears front and center on the score
+					* **composer**: (*optional*) appears on the right side under the title
+					* **tuning**: (**required**) use the Lilypond format with spaces in between the notes (notes are lowercase). This will appear on the left side under the title, and it will drive the positioning of notes in the score.
+					* **showtimesig**: (*optional*) if "no", then the score will omit any time signatures. 
+					* **bars**: (*optional*) if "manual", then the score will not add any bars based on time signatures (defeault time signature is common or 4/4). 
+
+					### 3.3. Musical Elements
+
+					These can appear multiple times in the score as needed.
+
+					#### Example			
+
+					```
+					time: 2/4
+					clef: treble
+					tempo: 4 = 60
+					mark: section 1
+					// lorem ipsum
+					```
+
+					#### Definitions
+
+					These are all optional.
+
+					* **time**: (*default: 4/4*) This is the time signature. Valid notations are 2/4, 3/4, etc using Lilypond's time signature notation.
+					* **clef**: (*default: bass*) Valid values are bass, treble, alto, tenor. 
+					* **tempo**: (*default: 4=60*) This appears above the staff and also effects the tempo of the MIDI file. Notations uses Lilypond's tempo notation, so 4=60 is quarter note at 60 beats per minute (bpm). Default is 4=60
+					* **mark**: This appears above the staff in the score. 
+					* **comments**: This does not appear anywhere in the score. 
+
+					### 3.4. LilyPond Scripting
+
+					You can also add custom LilyPond script. Please only do this if you know what you are doing. You can do this in two ways.
+
+					First way: in the shorthand portion, you can insert custom LilyPond script by starting a line with the `ly:` tag. 
+
+					Second way: you can convert to LilyPond Code, and then edit the raw code in the LilyPond tab. 
+
+					## 4. Writing Music in Shorthand
+
+					Now we get to the fun part. Here's how to write music in Guqin Shorthand. I found it easiest to have music come in two lines. 
+
+					The first is the notes line, prefaced by `n:`. This mostly contains information on the pitch and beat values. Basicallly, it's the stuff western music tends to focus on (and what I'm personally used to reading as a piano player).
+
+					The second coupling is the finger placement, prefaced by `f:`. This is mostly what is contained in the traditional guqin notation, such as which string to play, which finger to use to pluck, whether to pluck in wards or outwards, etc. 
+
+					<div class="alert alert-warning"><strong>Important!</strong> Each note is separated by a space. The <code>n:</code> lines and the <code>f:</code> line couplings must have the same number of notes, or else you'll get an error when trying to render. </div>
+
+					### 4.1. Notes Notation
+					Lines preface with `n:` are notes. Notes are written in LilyPond style. 
+
+					| shorthand              | description                                       |
+					| -------------------    | --------------------------------------------------|
+					| `a` to `g`             | notes when string is pressed or open              |
+					| `A` to `G` (capitalized)      | Fanyin Notes                               |
+					| `r`	                   | rest                                              |
+					| `1-64`                 | 1 = whole notes, 4 quarter, etc.<br /> NOTE: notes in the chord must be ordered from lowest to highest string <br />(lowest string is furthest away from the player) |
+					| `.` (period)           | dot indicate half notes, so `2.` equals three beats   |
+					| `,` (comma)            | lower octave, `,,` is double lower octave, etc.   |
+					| `'` (single quote)     | higher octave, `''` is double lower octave, etc.  |
+					| ex: `c,e,`             | two notes together with no space forms a chord.   | 
+
+					#### Example ([link](https://guqin.nyl.io/nltabs/IJurYx2))
+
+					<div class='gq-snippet' data-id="IJurYx2"></div>
+
+					For Fan Yin notes (harmonics), you can achieve the same note using different positions, or by placing your finger on different huis. You can read all about the physics of it [in my blog post on harmonics](https://blog.nyl.io/guqin-part-1-harmonics-and-hui/), if you are interested. Not every note has the same number of hui variations, but if you render a Fan Yin that isn't the right hui, you can specify a specific hui using parentheses (e.g., `(9)` represents the 9th hui). The default hui will be somewhere close to the 7th hui and closer to the player. 
+
+					#### Example ([link](https://guqin.nyl.io/nltabs/y6WJHEo))
+
+					<div class='gq-snippet' data-id="y6WJHEo"></div>
+
+					### 4.2. Finger placements for left hand
+					These are lines prefaced with `f:`.
+
+					| shorthand         | **descriptions**                                               |
+					| ----------------- | -------------------------------------------------------------- |
+					| `1` to `7`        | string number, `1` is outwardmost string, `7` is inwardmost string |
+					| `0`               | rest                                                           |
+					| `sdfv`            | left hand press, pinky, ring, etc. (`a` works for pinky, but not really used) |
+					| `w`, `g`          | left hand knuckle presses (`w` for ring, `g` for thumb)        |
+					| `x`               | left hand press with the outer ring knuckle, "kneeling"        |
+					| `c`               | left hand pluck inwards                                        |
+					| `e`               | left hand middle finger push out                               |
+					| `SDFV`            | left hand mute/press (`A` also works for pink, not used)       |
+
+					#### Example ([link](https://guqin.nyl.io/nltabs/RTtEvuu))
+
+					<div class='gq-snippet' data-id="RTtEvuu"></div>
+
+					If you want to add custom notations in the left hand position below the staff, you can write `(l=blahblah)`. This will replace any other notation for that note. Use `_` (underscore) to represent a space since otherwise, the space will be interpreted as a separate note. 
+
+					#### Example ([link](https://guqin.nyl.io/nltabs/f6uQCKj))
+					<div class='gq-snippet' data-id="f6uQCKj"></div>
+
+
+					### 4.3. Finger placements for right hand
+
+					| shorthand         | **descriptions**                                               |
+					| ----------------- | -------------------------------------------------------------- |
+					| `njkl;`           | right hand pluck inwards, thumb, index etc.                    |
+					| `huiop`           | right hand pluck outwards, thumb, index, etc.                  |
+					| `by` or `yb`      | cuo (second and third finger)                                  |
+					| `b8` or `8b`      | da cuo (thumb and third finger)                                |
+					| `b9` or `9b`      | fan cuo (thumb and third finger)                               |
+					| `!`               | override such that right hand fingering are always displayed   |
+ 
+
+					#### Example ([link](https://guqin.nyl.io/nltabs/yrZLlXz))
+
+					<div class='gq-snippet' data-id="yrZLlXz"></div>
+
+					If you want to add custom notations in the right hand position above the staff, you can write `(r=blahblah)`. This will replace any other notation for that note. Use `_` (underscore) to represent a space since otherwise, the space will be interpreted as a separate note. 
+
+					#### Example ([link](https://guqin.nyl.io/nltabs/swDyrl5))
+					<div class='gq-snippet' data-id="swDyrl5"></div>
+
+					### 4.4. Vibratos and Slides
+
+					| shorthand         | **descriptions**                                               |
+					| ----------------- | -------------------------------------------------------------- |
+					| `-`               | indicates a slide (should be it's own note)                    |
+					| `~`               | indicates a vibrato (should be attached after a note)          |
+					| `/`               | slide up to note (should be attached to a note)                |
+					| `\`               | slide down to note (attached to note)                          |
+
+
+					#### Example ([link](https://guqin.nyl.io/nltabs/eni1l9o))
+
+					<div class='gq-snippet' data-id="eni1l9o"></div>
+
+					### 4.5. Bars, Glissandos, Ties
+
+					These elements are needed in both the `n:` and `f:` lines. Failure to have these lines match will result in errors. In the example below, you see where there's a bar in the `n:` line, for example, there's also a bar in the `f:` line.
+
+					| shorthand | description                         |
+					| ----------| ----------------------------------- |
+					| `\|`      | bar                                 |
+					| `\|\|`    | double bar                          |
+					| `$`       | Glissando                           |
+					| `=`       | tied with previous note             |
+
+					#### Example ([link](https://guqin.nyl.io/nltabs/w6S0pzM))
+
+					<div class='gq-snippet' data-id="w6S0pzM"></div>
+
+				</div>
+			</div>
+		</div>
+  </body>
+</html>
+
+

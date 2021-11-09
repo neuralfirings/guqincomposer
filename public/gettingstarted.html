@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>      
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Guqin Tablature Composer (easy Guqin Notation)</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+		<script src="/utils.js"></script>
+    <link rel="stylesheet" href="/style.css" />
+
+    <script>
+    </script>
+    <style>
+    </style>
+  </head>
+  <body>
+		<nav class="nav"></nav>  
+    <br />
+		<div class="container" id="content">
+			<div class="row">
+				<div class="col markdown doc">
+					# Getting Started 
+
+					<div class="alert alert-info">
+						RH = right hand; LH = left hand; 1/2/3/4/5 represents thumb, index, middle, ring, pinky respectively.
+					</div>
+
+					The shorthand notation on the left side generates a score in NL Tab (Numeric Linear Tab) on the right. The tab shows a music staff with the pitch/rhythm on top, and a tablature with different lines representing the 7 lines of the guqin. The numbers above the tab represents right hand (RH) finger positions, where `2^` means the 2nd finger plucks outward and `3v` means the 3rd finger plucks inward. The text under the tab indicates which finger on the left hand you use to play. The number in the tab indicates where on the string to touch or press (the hui position). 
+
+					#### The Song of Getting Started ([link](https://guqin.nyl.io/nltabs/8oxs3oT))
+					<div class='gq-snippet' data-id="8oxs3oT" data-img-height="200"></div>
+
+					Here's what's happening in each measure of the shorthand notation.
+
+					1. **Notes and Strings**: We have three notes played by plucking the 1st, 2nd, and 3rd string in open position. 
+						* **notes** (`n:` line) are written in LilyPond format, represented by `c`, `d`, `e`, etc. with duration represented by `4` for quarter `8` for eights, `4.` for quarter half, etc. So the first note, `g,4.` is a lower octave `g` note with the directly of 1.5 beats (quarter note + half).
+						* **string** (f: line) have strings represented by `1`-`7`. 
+
+					2. **Pressed Notes**: TBD
+
+					3. **Chords, Glissando, Vibrato**: this measure has a chord played by the RH's 2nd + 3rd finger while the LH's 1st finger presses on the 5th string in the 8.4 position, followed by a glissando from the 1st string to the 6th string played with the RH's 2nd finger. 
+						* **chords** are represented by mushing two notes together (ex: `cc'`) in the `n:` line. In the `f:` line, we have `35` representing the guqin lines played.
+						* **finger positions** should be intuitive, like here the `v` represents the left thumb is used to press the string and `v` is where the thumb rests on the keyboard. Similarly, `by` represents a cuo (chord played with right second & third finger), and if you put your index finger on `b` and third finger on `y`, you kind of do a cuo on the keyboard. Get it? 
+						* **hui positions** are automatically calculated by the pitch + string you choose. Nifty, eh? 
+						* **glissandos** are represented by `$` between the glissanding notes. 
+						* **vibratos** are represented by the `~` character.
+
+					4. **Slides and Left Handed Plucks**: in the 3rd measure, we play the `g` note using the LH's 1st finger, then the left hand slides down to the 7.9th hui and then to the 9th hui. Then the LH's 1st finger plucks with the 4th finger's knuckle (`4K` in the score) holds down the string at the 10th hui.
+						* **slides** are represented in the `f:` line by the `-` (dash) "note". This makes annotating slides super easy. 
+						* **left hand pluck** in this measure is represented by `w`, since that mimics the motion of extending LH's 4th finger to use the knuckle joint, while the `c` represents the thumb plucking inwards since that's where the thumb ends up if plucking inward on the computer keyboard. Starting to make sense, yeah?
+
+					5. **More Slide and Fan Yin/Harmonics**: in the 4th and last measure, we start with a chord that's played on the 3rd and 5th string, with the LH 4th finger sliding upwards on the 5th string to form the chord. Then, we have a few FanYin/Harmonics played by lightly touching the 7th hui on the 3rd, then 1st, then 3rd string. 
+						* **slide up** are represented by the `/` key (looks like sliding up, right?) and slide down by the `\` key (not shown here). The LH's 4th finger pressing the string is represented by `s` because (you guessed it), the `s` is where the LH 4th finger naturally rests. 
+						* **FanYin/Harmonics** are represented in the `n:` line using capital letters instead of lower case letters for the notes. 
+
+					Covered quite a lot of ground in 4 measures! Hopefully this gives you a glimpse into how the write for the guqin using this system and how to read NLTabs. 
+
+					The goal of the shorthand is to mimic what one would do while playing the instrument on the keyboard. The goal of the tablature system is to mimic the guqin with the 7 lines. Lots of mimicing, so hopefully easier to understand.
+
+					Want more details? Head over to the documentation section or try composing your own music!
+
+					<center>
+						<br />
+						<a class="btn btn-primary btn-lg" href="/nltabs/">Create New Guqin Tablature</a>&nbsp;&nbsp;&nbsp;
+						<a class="btn btn-link" href="/help.html">More Documentation</a>
+						<br /><br /><br /><br />
+					</center>
+					
+
+
+				</div>
+			</div>
+		</div>
+  </body>
+</html>
+
+

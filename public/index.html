@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>      
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Guqin Tablature Composer (easy Guqin Notation)</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+		<script src="/utils.js"></script>
+    <link rel="stylesheet" href="/style.css" />
+
+    <script>
+    </script>
+    <style>
+      img {
+      	width:  100%;
+      }
+    </style>
+  </head>
+  <body>
+		<nav class="nav"></nav>  
+    <br />
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="markdown">
+						# Guqin Tablature Composer
+
+						Create Guqin music with the NLTabs (Numeric Linear Tablature) system. This creates Guqin music with a simple entry method. Guqin Notation traditionally has been a bit tricky to read, since it's based on cramming a bunch of playing instructions into a set of characters, rather than encoding the actual notes and rhythms. More information on my Guqin notation ideas can be found [on my blog post here](https://blog.nyl.io/guqin-part-3-tablature-old-and-new/). 
+
+						<center>
+							<br />
+							<!-- <a class="btn btn-primary btn-lg" href="/nltabs/">Create New Guqin Tablature</a>&nbsp;&nbsp;&nbsp; -->
+							<a class="btn btn-primary btn-lg" href="/library.html">Browse the Guqin Tabs Library</a>
+							<a class="btn btn-link" href="/gettingstarted.html">Getting Started with Composition</a>
+							<br /><br />
+
+						</center>
+
+						<a href="/nltabs/2MILMah"><img src="/screenshot.jpg" class="img-fluid" /></a>
+
+						## What am I looking at?
+
+						**Tablature**: The generated tab (right side of the screenshot) has music notes, and playing positions in the NLTab structure. 7 lines to represent the 7 strings, with numbers on each line to represent where to press or touch on the string (hui positions). 
+
+						**Shorthand Input**: You can input using a shorthand I've developed, or using LilyPond notation. I also created a [Shorthand Glossary](http://nyl.io:7013/nltabs/qbSWqqt/) here for common Guqin techniques written in the shorthand. Take a look at the [help section](/help.html) for details.
+
+						**LilyPond Input**: You can also input using LilyPond. LilyPond is more powerful, but a lot more coding involved. It's a tool that renders any music notation (piano, orchestral scores, old timey guitar stuff), and I've modified it by adding some custom functions to render Guqin-specific tablature. You can see a the [LilyPond Glossary](http://nyl.io:7013/nltabs/J1QPkkY/) here for various Guqin techniques noted in LilyPond. 
+					</div>
+				</div>
+			</div>
+		</div>
+  </body>
+</html>
+
+
