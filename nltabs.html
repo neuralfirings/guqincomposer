@@ -950,7 +950,9 @@
                     else if (output2.success == 'password set') {
                       alert("Password is set")
                       $('.unlock').show()
-                      $('.unlock').click(unlock())
+                      $('.unlock').click(function() {
+                        unlock()
+                      })
                     }
                   }
                 })
@@ -970,7 +972,9 @@
                     else if (output2.success == 'password set') {
                       alert("Password is set")
                       $('.unlock').show()
-                      $('.unlock').click(unlock())
+                      $('.unlock').click(function() {
+                        unlock()
+                      })
                     }
                   }
                 })
@@ -986,7 +990,9 @@
             success: function(output) {
               if (output.status == "yes") {
                 $('.unlock').show()
-                $('.unlock').click(unlock())
+                $('.unlock').click(function() {
+                  unlock()
+                })
               }
             }
           })  
