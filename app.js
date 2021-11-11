@@ -60,7 +60,8 @@ app.get('/latest', function (req,res) {
     var version = 0
     var imgurl = ''
     for (var i=0;i<versions.length;i++) {
-      version = Math.max(version, Number(versions[i]))
+      if (!isNaN(versions[i]))
+        version = Math.max(version, Number(versions[i]))
     }
     if (fs.existsSync(`./music/${id}/${version}/music-page1.png`))
       imgurl = `./nltabfiles/${id}/${version}/music-page1.png`
@@ -107,7 +108,8 @@ app.post('/save', function(req, res) {
       var versions = fs.readdirSync('./music/' + id)
       version = 0
       for (var i=0;i<versions.length;i++) {
-        version = Math.max(version, Number(versions[i]))
+        if (!isNaN(versions[i]))
+          version = Math.max(version, Number(versions[i]))
       }
       version++
       folder = './music/' + id + '/' + version
@@ -117,6 +119,11 @@ app.post('/save', function(req, res) {
   fs.writeFileSync(folder + '/music.gq', shortHandVal)
   fs.writeFileSync(folder + '/music.ly', lilyPondVal)
   if (tempId != undefined) {
+    var currFiles = fs.readdirSync(folder + '/')
+    for (var i=0;i<currFiles.length;i++) {
+      if (currFiles[i].indexOf('.png') > -1)
+        fs.unlinkSync(folder + '/' + currFiles[i])
+    }
     var tempFiles = fs.readdirSync('./public/temp/' + tempId)
     for (var i=0;i<tempFiles.length;i++) {
       fs.copyFileSync('./public/temp/' + tempId + '/' + tempFiles[i], folder + '/' + tempFiles[i])
@@ -150,7 +157,8 @@ app.get('/shorthand/:id', function (req, res) {
   var versions = fs.readdirSync('./music/' + id)
   var version = 0
   for (var i=0;i<versions.length;i++) {
-    version = Math.max(version, Number(versions[i]))
+    if (!isNaN(versions[i]))
+      version = Math.max(version, Number(versions[i]))
   }
 
   if (fs.existsSync('./music/' + id + "/" + version + "/music.gq")) {
@@ -180,11 +188,14 @@ app.get('/nltabs', function(req,res) {
 })
 
 app.get('/nltabs/:id', function(req,res) {
+  console.log('/nltabs/:id', id)
   var id = req.params.id
   var versions = fs.readdirSync('./music/' + id)
+  console.log('versions', versions)
   var version = 0
   for (var i=0;i<versions.length;i++) {
-    version = Math.max(version, Number(versions[i]))
+    if (!isNaN(versions[i]))
+      version = Math.max(version, Number(versions[i]))
   }
 
   var session = {

@@ -183,6 +183,7 @@
           $('.score-container').show()
         }
         if (session.hasPNG) {
+          $('.score-pngs').empty()
           for (var i=0;i<session.PNGs.length;i++) {
             $('.score-pngs').append(`<img class="png" src="/nltabfiles/${session.id}/${session.version}/${session.PNGs[i]}" />`)
           }
@@ -212,6 +213,7 @@
             var tuning=''
             var composer='' 
             var title=''
+            var endnote=''
             var bars=''
             var showtimesig=''
 
@@ -237,13 +239,21 @@
                     bars = barsString.trim()
                   }
                   else if (shortHandLines[i].beginsWith("composer:")) {
-                    var composer = '\\markup \\right-column {"' + shortHandLines[i].split('composer:')[1].trim().split('\\n').join('" "') + '" }'
+                    composer = shortHandLines[i].substr(shortHandLines[i].split(':')[0].length+1).trim()
+                    composer = '\\markup \\right-column {"' + composer.split('\\n').join('" "') + '" }'
                   }
                   else if (shortHandLines[i].beginsWith("tuninglabel:")) {
-                    var tuninglabel = '\\markup \\left-column {"' + shortHandLines[i].split('tuninglabel:')[1].trim().split('\\n').join('" "') + '" }'
+                    tuninglabel = shortHandLines[i].substr(shortHandLines[i].split(':')[0].length+1).trim()
+                    tuninglabel = '\\markup \\left-column {"' + tuninglabel.split('\\n').join('" "') + '" }'
                   }
                   else if (shortHandLines[i].beginsWith("title:")) {
-                    var title = '\\markup \\center-column {"' + shortHandLines[i].split('title:')[1].trim().split('\\n').join('" "') + '" }'
+                    title = shortHandLines[i].substr(shortHandLines[i].split(':')[0].length+1).trim()
+                    title = '\\markup \\center-column {"' + title.split('\\n').join('" "') + '" }'
+                  }
+                  else if (shortHandLines[i].beginsWith("endnote:")) {
+                    endnote = shortHandLines[i].substr(shortHandLines[i].split(':')[0].length+1).trim()
+                    endnote = '\\markup \\center-column {"' + endnote.split('\\n').join('" "') + '" }'
+                    // endnote = '\\markup \\center-column {"' + shortHandLines[i].split('endnote:')[1].trim().split('\\n').join('" "') + '" }'
                   }
                   // else if (shortHandLines[i].beginsWith("title:")) {
                   //   var titleStr = shortHandLines[i].split('title:')[1]
@@ -361,7 +371,20 @@
                 ly+= '\n\n'
               // }
 
-              ly += `#(set-default-paper-size "letter") \\header {\n  title = ${title}\n  composer =${composer}\n  poet =${tuninglabel}\n  tagline = "engraved by LilyPond using NL Tabs format (guqin.nyl.io)"\n}\n\n`
+              ly += `#(set-default-paper-size "letter") \\header {\n`
+              if (title != '') {
+                ly += `  title = ${title}\n`
+              }
+              if (composer != '') {
+                ly +=`  composer =${composer}\n`
+              }
+              if (endnote == '') {
+                ly +=  `  tagline = "engraved by LilyPond using NL Tabs format (guqin.nyl.io)"\n`
+              }
+              else {
+                ly += `  tagline = ${endnote}`
+              }
+              ly += `  poet =${tuninglabel}\n}\n\n`
 
               // { song
                 var lySong = ""
