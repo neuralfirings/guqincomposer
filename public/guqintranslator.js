@@ -292,6 +292,23 @@ function shortHandToGuqinJSON(shortHand) {
     }
   // }
 
+  // { error check the song
+    for (var i=0; i<song.length; i++) {
+      if (song[i].beginsWith('|:') && song[i] != '|:|') {
+        alert(`Oops! Something looks fishy on line ${songLineIdx[i]}. There's a bar mistmatch between note line and finger line.`)
+        return false
+      }
+      else if (song[i].beginsWith('||:') && song[i] != '||:||') {
+        alert(`Oops! Something looks fishy on line ${songLineIdx[i]}. There's a bar mistmatch between note line and finger line.`)
+        return false
+      }
+      else if (song[i].beginsWith('=:') && song[i] != '=:=') {
+        alert(`Oops! Something looks fishy on line ${songLineIdx[i]}. There's a bar mistmatch between note line and finger line.`)
+        return false
+      }
+    }
+  // }
+
   var fyhuirange = [7,4]
 
   if (tuning == undefined || tuning == '')

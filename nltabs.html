@@ -65,9 +65,15 @@
             console.log('shorthand > lilypond')
             var shortHand = shCodeMirror.getValue() // $('.shorthand').val()
             var guqin = shortHandToGuqinJSON(shortHand)
-            var ly = guqinToLilyPond(guqin)
-            console.log('rendered')
-            lyCodeMirror.setValue(ly)
+            if (guqin) {
+              var ly = guqinToLilyPond(guqin)
+              console.log('rendered')
+              lyCodeMirror.setValue(ly)
+            }
+            else {
+              $('.rendering').hide()
+              return
+            }
           }
           if (to == "score") {
             console.log('lilypond > score')
