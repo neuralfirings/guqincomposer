@@ -72,15 +72,12 @@
           if (to == "score") {
             console.log('lilypond > score')
             var data = { ly: from == "shorthand" ? ly : lyCodeMirror.getValue()  }
-            console.log(data)
-            // console.log({ly: lyCodeMirror.getValue() })
             $.ajax({
               url: '/renderly',
               method: 'POST',
-              // data: { ly: $('.lilypond').val()  },
               data: data,
               success: function(output) {
-                console.log(output)
+                // console.log(output)
                 if (output.err != undefined) {
                   alert("LilyPond rendering error. Something went wrong while engraving the score using LilyPond. Logs:\n\n"+JSON.stringify(output.err))
                   $('.rendering').hide()
@@ -445,11 +442,19 @@
         border-top: solid 1px #bbb;
         border-right: solid 1px #bbb;
         border-left: solid 1px #bbb;
-        padding: 10px;
+        background:  #fff;
+        /*padding: 10px;*/  
       }
       .tab {
         border-radius: 10px 10px 0px 0px;
-        padding: 10px;
+        background:  #fff;
+        /*padding: 10px;*/
+      }
+      .input-label {
+        margin-top:  15px;
+      }
+      .sh-view, .ly-view {
+        font-weight: bold;
       }
     </style>
   </head>
@@ -462,15 +467,29 @@
         <div class="col">
           <div class="row">
             <div class="col">
-              <label class="input-label">
-                <a class="sh-view tab no-link tab-active" href="javascript:void(0)">Shorthand</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a class="ly-view tab" href="javascript:void(0)">LilyPond</a>
-              </label>
+              <div class="input-label row">
+                <div class="col">
+                  <button class="btn sh-view tab no-link tab-active" href="javascript:void(0)">Shorthand</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button class="btn ly-view tab" href="javascript:void(0)">LilyPond</button>
+                </div>
+                <div class="col" style="text-align: right;">
+                  <div class="btn-group" role="group">
+                    <button class="score-nav dropdown-toggle btn btn-link" href="#" id="saveDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Save<span class="unsaved">*</span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="saveDropdown">
+                      <a class="dropdown-item save save-new-version" href="javascript:void(0)">Save<span class="unsaved">*</span></a>
+                      <a class="dropdown-item save save-keep-version" data-keep-version="yes" href="javascript:void(0)">Save (this version)</a>
+                      <a class="dropdown-item save-new" href="javascript:void(0)">Save As New</a> 
+                    </div>
+                  </div>
+
+                  <button class="score-nav lock btn btn-link" href="javascript:void(0)">Lock</button>
+                  <button class="score-nav unlock btn btn-sm btn-link" href="javascript:void(0)">Unlock</button>
+                </div>
+              </div>
               <div class="input-container-sh sh"><textarea class="shorthand form-control"></textarea></div>
               <div class="input-container-ly ly"><textarea class="lilypond form-control"></textarea></div>
-<!--                 <div class="sh"><textarea class="shorthand form-control"></textarea></div>
-                <div class="ly"><textarea class="lilypond form-control"></textarea></div>
-              </div> -->
               <div class="input-footer">
                 <br />
                 <button class="render sh btn btn-primary" data-to="score" data-from="shorthand">Render Score</button>

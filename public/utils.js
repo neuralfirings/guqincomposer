@@ -6,16 +6,12 @@ $(document).ready(function() {
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-item nav-link" href="/nltabs/">New Score</a>
+          <a class="nav-item nav-link" href="/nltabs/">Compose</a>
           <a class="nav-item nav-link" href="/library.html">Library</a>
           <a class="nav-item nav-link" href="/gettingstarted.html">Getting Started</a>
-          <a class="nav-item nav-link" href="/help.html">Docs</a>
-          <span class="show-on-score nav-item navbar-text">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-          <a class="show-on-score save save-new-version nav-item nav-link" href="javascript:void(0)">Save<span class="unsaved">*</span></a>
-          <a class="show-on-score save save-keep-version nav-item nav-link" data-keep-version="yes" href="javascript:void(0)">Save (this version)</a>
-          <a class="show-on-score save-new nav-item nav-link" href="javascript:void(0)">Save As New</a>
-          <a class="show-on-score lock nav-item nav-link" href="javascript:void(0)">Set Password to Save</a>
-          <a class="show-on-score unlock nav-item nav-link" href="javascript:void(0)">Unset PW</a>
+          <a class="nav-item nav-link" href="/docs.html">Docs</a>
+          <a class="nav-item nav-link" href="/contact.html">Contact</a>
+          <a class="nav-item nav-link" href="https://blog.nyl.io">Blog</a>
         </div>
       </div>`
   $('.nav').addClass('navbar navbar-expand-lg navbar-dark bg-dark header').html(nav)

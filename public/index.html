@@ -34,26 +34,41 @@
 					<div class="markdown">
 						# Guqin Tablature Composer
 
-						Create Guqin music with the NLTabs (Numeric Linear Tablature) system. This creates Guqin music with a simple entry method. Guqin Notation traditionally has been a bit tricky to read, since it's based on cramming a bunch of playing instructions into a set of characters, rather than encoding the actual notes and rhythms. More information on my Guqin notation ideas can be found [on my blog post here](https://blog.nyl.io/guqin-part-3-tablature-old-and-new/). 
+						<!-- <a href="/nltabs/2MILMah"><img src="/screenshot.jpg" class="img-fluid" /></a> -->
 
-						<center>
-							<br />
-							<!-- <a class="btn btn-primary btn-lg" href="/nltabs/">Create New Guqin Tablature</a>&nbsp;&nbsp;&nbsp; -->
-							<a class="btn btn-primary btn-lg" href="/library.html">Browse the Guqin Tabs Library</a>
-							<a class="btn btn-link" href="/gettingstarted.html">Getting Started with Composition</a>
-							<br /><br />
+						## Brief Intro to NL Tabs
+						Create Guqin music with the NLTabs (Numeric Linear Tablature) system. This creates Guqin music with a simple entry method. Guqin Notation traditionally has been a bit tricky to read. It's efficient in that it compresses a bunch of playing instructions into characters. However, it has a rather steep learning curve, and more importantly I could not find a way to write scores in the traditional notation on a computer. I don't really own paper anymore, so..... I created my own system for writing Guqin music! 
 
-						</center>
+						NLTabs basically converts the finger positions into a more visual schema, using lines to represent lines (crazy!) of the Guqin, and numbers to represent which position along the line to press or touch. The text above the 7 line tabs represent what you do with your right hand and which finger to use, and the text below represent what you do with your left. 
 
-						<a href="/nltabs/2MILMah"><img src="/screenshot.jpg" class="img-fluid" /></a>
+						Here's a comparison between traditional format and NL Tabs. 
 
-						## What am I looking at?
+						| Traditional               | NLTabs                     |
+						| --------------------------| ---------------------------|
+						| ![old style](/geese1.png) | ![new style](/geese2.png)  |
 
-						**Tablature**: The generated tab (right side of the screenshot) has music notes, and playing positions in the NLTab structure. 7 lines to represent the 7 strings, with numbers on each line to represent where to press or touch on the string (hui positions). 
+						More information on my Guqin notation can be found [on my blog post here](https://blog.nyl.io/guqin-part-3-tablature-old-and-new/). Want to see some music in this format? 
 
-						**Shorthand Input**: You can input using a shorthand I've developed, or using LilyPond notation. I also created a [Shorthand Glossary](http://nyl.io:7013/nltabs/qbSWqqt/) here for common Guqin techniques written in the shorthand. Take a look at the [help section](/help.html) for details.
+						**Interested in seeing some music?** [Browse the Guqin Tabs Library](/library.html)!
 
-						**LilyPond Input**: You can also input using LilyPond. LilyPond is more powerful, but a lot more coding involved. It's a tool that renders any music notation (piano, orchestral scores, old timey guitar stuff), and I've modified it by adding some custom functions to render Guqin-specific tablature. You can see a the [LilyPond Glossary](http://nyl.io:7013/nltabs/J1QPkkY/) here for various Guqin techniques noted in LilyPond. 
+						## Composing and Rendering Scores
+
+						To make it easier for me to write music, I also developed a shorthand which converts into the tablature format you see above. A "减字谱" (jianzipu) if you will, or 减字Tabs. 
+
+						The shorthand is broken into `n:` lines (notes) and `f:` lines (finger positions). The note lines follows your basic LilyPond flavor notation, where notes are represeted by `a`-`g` (FanYin represented by capitalized `A`-`G`). Rhythms are represented by numbers (`4` is a quarter note, `2` is a half note). So `c4` is a bass c quarter note. 
+
+						The finger lines has three main parts. (1) The number `1`-`7` represents which string to use. (2) Left hand positions are represented by `s` (4th finger/ring), `d` (3rd finger/middle), `f` (2nd finger/index), `v` (1st finger/thumb). Because this is where they rest on the US keyboard. (3) Right hand positions, similarly based on where fingers rest on the keyboard follows as such: `n` (thumb plucking inward), `j` (index plucking inward), `k` (middle plucking inward), `h` (thumb plucking outward), etc. There are also options for characters like `~` to represent vibratos; `/` and `\` to represent sliding in and out of a note.
+
+						Here's a quick example:
+
+
+						#### The Song of Getting Started ([link](https://guqin.nyl.io/nltabs/8oxs3oT))
+						<div class='gq-snippet' data-id="8oxs3oT" data-img-height="200"></div>
+
+						Want a full analysis of what is going on here? [Check out the Getting Started Page](/gettingstarted.html).
+
+						Want to write something? [Start composing](/nltabs)!
+
 					</div>
 				</div>
 			</div>

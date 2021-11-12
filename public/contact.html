@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>      
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Guqin Tablature Composer (easy Guqin Notation)</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+		<script src="/utils.js"></script>
+    <link rel="stylesheet" href="/style.css" />
+
+    <script>
+    </script>
+    <style>
+    </style>
+  </head>
+  <body>
+		<nav class="nav"></nav>  
+    <br />
+		<div class="container" id="content">
+			<div class="row">
+				<div class="col">
+					<h1>Contact Me</h1>
+					<!-- modify this form HTML and place wherever you want your form -->
+
+					<form id="my-form" action="https://formspree.io/f/xknpkopo" method="POST">
+					  <label>Your Name:</label>
+					  <input type="text" class="form-control" name="name" />
+					  <label>Your Email:</label>
+					  <input type="email" class="form-control" name="email" />
+					  <label>Mesage Subject:</label>
+					  <input type="text" class="form-control" name="subject" />
+					  <label>Message:</label>
+					  <textarea class="form-control" name="message" rows=5></textarea>
+					  <br />
+					  <button class="btn btn-primary" id="my-form-button">Send Message</button>
+					  <p id="my-form-status"></p>
+					</form>
+
+					<!-- Place this script at the end of the body tag -->
+
+					<script>
+					  window.addEventListener("DOMContentLoaded", function() {
+
+					    // get the form elements defined in your form HTML above
+					    
+					    var form = document.getElementById("my-form");
+					    var button = document.getElementById("my-form-button");
+					    var status = document.getElementById("my-form-status");
+
+					    // Success and Error functions for after the form is submitted
+					    
+					    function success() {
+					      form.reset();
+					      button.style = "display: none ";
+					      status.innerHTML = "Thanks!";
+					    }
+
+					    function error() {
+					      status.innerHTML = "Oops! There was a problem.";
+					    }
+
+					    // handle the form submission event
+
+					    form.addEventListener("submit", function(ev) {
+					      ev.preventDefault();
+					      var data = new FormData(form);
+					      ajax(form.method, form.action, data, success, error);
+					    });
+					  });
+					  
+					  // helper function for sending an AJAX request
+
+					  function ajax(method, url, data, success, error) {
+					    var xhr = new XMLHttpRequest();
+					    xhr.open(method, url);
+					    xhr.setRequestHeader("Accept", "application/json");
+					    xhr.onreadystatechange = function() {
+					      if (xhr.readyState !== XMLHttpRequest.DONE) return;
+					      if (xhr.status === 200) {
+					        success(xhr.response, xhr.responseType);
+					      } else {
+					        error(xhr.status, xhr.response, xhr.responseType);
+					      }
+					    };
+					    xhr.send(data);
+					  }
+					</script>
+				</div>
+			</div>
+		</div>
+  </body>
+</html>
+
+
