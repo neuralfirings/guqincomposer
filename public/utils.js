@@ -72,7 +72,7 @@ $(document).ready(function() {
 						</div>
 						<div class="col" style="width:50%">
 							<h5>Score Render</h5>
-							<img src="https://guqin.nyl.io/nltabfiles/${id}/${output.version}/music.png" class="gq-snippet-img" />
+							<img src="/nltabfiles/${id}/${output.version}/music.png" class="gq-snippet-img" />
 						</div>
 					</div>
   			`)
