@@ -32,7 +32,8 @@
 								var latestVersion = output.version
 								var scoreCard = $(tempCard)
 								scoreCard.find('img').attr('src', output.imgurl)
-								scoreCard.find('.card-title').text(output.title)
+								scoreCard.find('.card-title').html(output.title.split('\\n').join('<br />'))
+								console.log(output.title.split('\n').join('<br />'))
 								scoreCard.find('.score-link').attr('href', '/nltabs/' + id)
 								scoreCard.find('.pdf-link').attr('href', output.pdf)
 								scoreCard.click(function() {
