@@ -64,13 +64,21 @@
           if (from == 'shorthand') {
             console.log('shorthand > lilypond')
             var shortHand = shCodeMirror.getValue() // $('.shorthand').val()
-            var guqin = shortHandToGuqinJSON(shortHand)
-            if (guqin) {
-              var ly = guqinToLilyPond(guqin)
-              console.log('rendered')
-              lyCodeMirror.setValue(ly)
+            try {
+              var guqin = shortHandToGuqinJSON(shortHand)
+              if (guqin) {
+                var ly = guqinToLilyPond(guqin)
+                console.log('rendered')
+                lyCodeMirror.setValue(ly)
+              }
+              else {
+                $('.rendering').hide()
+                return
+              }
             }
-            else {
+            catch (error) {
+              console.log('error')
+              alert('Oops, something went wrong!\n\nLogs: \n' + error)
               $('.rendering').hide()
               return
             }
@@ -85,10 +93,12 @@
               success: function(output) {
                 // console.log(output)
                 if (output.err != undefined) {
+                  console.log('error')
                   alert("LilyPond rendering error. Something went wrong while engraving the score using LilyPond. Logs:\n\n"+JSON.stringify(output.err))
                   $('.rendering').hide()
                 }
                 else if (output.stderr != '') {
+                  console.log('error')
                   alert("LilyPond rendering error. Something went wrong while engraving the score using LilyPond. Logs:\n\n"+output.stderr)
                   $('.rendering').hide()
                 }
@@ -110,6 +120,7 @@
                 $('.rendering').hide()
               },
               error: function() {
+                console.log('error')
                 alert('Oops, something went wrong!')
                 $('.rendering').hide()
               }
@@ -249,7 +260,7 @@
                   data: { id: session.id, newPW: newPW },
                   success: function(output2) {
                     if (output2.error) {
-                      alert("Nah uh uh! You didn't say the magic word!")
+                      alert("Ah Ah Ah! You didn't say the magic word!")
                     }
                     else if (output2.success == 'password set') {
                       alert("Password is set")
