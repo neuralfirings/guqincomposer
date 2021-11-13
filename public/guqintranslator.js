@@ -302,6 +302,33 @@ function shortHandToGuqinJSON(shortHand) {
         alert(`Oops! Something looks fishy on line ${songLineIdx[i]}. There's a bar mistmatch between note line and finger line.`)
         return false
       }
+
+      var notePart = song[i].split(':')[0]
+      var validNote = false
+      if (notePart.indexOf('|') > -1)
+        validNote = true
+      else if (notePart.indexOf('=') > -1)
+        validNote = true 
+      else {
+        for (var j=0; j<lyPitches.length; j++) {
+          if (notePart.indexOf(lyPitches[j]) > -1) {
+            validNote = true
+            break
+          }
+        }
+        if (!validNote) {
+          for (var j=0; j<lyFanYins.length; j++) {
+            if (notePart.indexOf(lyFanYins[j]) > -1) {
+              validNote = true
+              break
+            }
+          }
+        }
+      }
+      if (!validNote) {
+        alert(`Oops! Something looks fishy on line ${songLineIdx[i]}. Looks like an invalid entry in the note line.`)
+        return false
+      }
     }
   // }
 
