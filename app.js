@@ -328,6 +328,18 @@ app.post('/password/check', function(req,res) {
   }
 })
 
+app.post('/errorlog', function(req, res) {
+  console.log('/errorlog')
+  var error = req.body.error == undefined ? {} : req.body.error
+  var errorStr = JSON.stringify(error, null, 2)
+  var id = error.id == undefined ? 'noId' : error.id
+  var version = error.version == undefined ? 'noVersion' : error.version
+  var errorFileName = id + '.' + version + '.' + Number(new Date()).toString(36)
+  var errorFileNameWithExt = errorFileName + '.log'
+  fs.writeFileSync('./errorlogs/' + errorFileNameWithExt, errorStr)
+  res.send({'log': errorFileName})
+})
+
 app.get('/test', function (req, res) {
   res.send('hello world: ' + JSON.stringify(req.query) + '!');
 })

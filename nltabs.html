@@ -77,8 +77,7 @@
               }
             }
             catch (error) {
-              console.log('error')
-              alert('Oops, something went wrong!\n\nLogs: \n' + error)
+              errorLog('Oops, something went wrong!\n\nLogs: \n' + error, true)
               $('.rendering').hide()
               return
             }
@@ -93,13 +92,11 @@
               success: function(output) {
                 // console.log(output)
                 if (output.err != undefined) {
-                  console.log('error')
-                  alert("LilyPond rendering error. Something went wrong while engraving the score using LilyPond. Logs:\n\n"+JSON.stringify(output.err))
+                  errorLog("LilyPond rendering error. Something went wrong while engraving the score using LilyPond. Logs:\n\n"+JSON.stringify(output.err), true)
                   $('.rendering').hide()
                 }
                 else if (output.stderr != '') {
-                  console.log('error')
-                  alert("LilyPond rendering error. Something went wrong while engraving the score using LilyPond. Logs:\n\n"+output.stderr)
+                  errorLog("LilyPond rendering error. Something went wrong while engraving the score using LilyPond. Logs:\n\n"+output.stderr, true)
                   $('.rendering').hide()
                 }
                 else {
@@ -120,8 +117,7 @@
                 $('.rendering').hide()
               },
               error: function() {
-                console.log('error')
-                alert('Oops, something went wrong!')
+                errorLog('Oops, something went wrong!', true)
                 $('.rendering').hide()
               }
             })

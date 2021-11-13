@@ -289,19 +289,16 @@ function shortHandToGuqinJSON(shortHand) {
 
   // { error check the song
     for (var i=0; i<song.length; i++) {
-      if (song[i].beginsWith('|:') && song[i] != '|:|') {
-        console.log('error')
-        alert(`Error on Line ${songLineIdx[i]}.\n\nThere's a mismatch between the number of notes in the note (n:) and finger positions (f:) lines.`)
+      if (song[i].indexOf('|') > -1 && song[i] != '|:|') {
+        errorLog(`Line ${songLineIdx[i]}: There's a mismatch between the number of notes in the note (n:) and finger positions (f:) lines.`)
         return false
       }
-      else if (song[i].beginsWith('||:') && song[i] != '||:||') {
-        console.log('error')
-        alert(`Error on Line ${songLineIdx[i]}.\n\nThere's a mismatch between the number of notes in the note (n:) and finger positions (f:) lines.`)
+      else if (song[i].indexOf('||') > -1 && song[i] != '||:||') {
+        errorLog(`Line ${songLineIdx[i]}: There's a mismatch between the number of notes in the note (n:) and finger positions (f:) lines.`)
         return false
       }
-      else if (song[i].beginsWith('$:') && song[i] != '$:$') {
-        console.log('error')
-        alert(`Error on Line ${songLineIdx[i]}.\n\nThere's a mismatch between the number of notes in the note (n:) and finger positions (f:) lines around the glissando ($).`)
+      else if (song[i].indexOf('$') > -1 && song[i] != '$:$') {
+        errorLog(`Line ${songLineIdx[i]}: There's a mismatch between the number of notes in the note (n:) and finger positions (f:) lines around the glissando ($).`)
         return false
       }
 
@@ -330,8 +327,7 @@ function shortHandToGuqinJSON(shortHand) {
         }
       }
       if (!validNote) {
-        console.log('error')
-        alert(`Error on Line${songLineIdx[i]}.\n\nLooks like an invalid entry in the note line (n:): ${notePart}`)
+        errorLog(`Line ${songLineIdx[i]}: Looks like an invalid entry in the note line (n:): ${notePart}`)
         return false
       }
     }
@@ -416,8 +412,7 @@ function shortHandToGuqinJSON(shortHand) {
           firstNote = false
         }
         if (typeof gq == 'undefined') {
-          console.log('error', i, song[i])
-          alert(`error parsing note on line ${songLineIdx[i]+1} with note/finger combo: ${song[i]}.\n\nThere's likely a mismatch between note and finger positions.`)
+          errorLog(`Line ${songLineIdx[i]+1}: error parsing note/finger combo: ${song[i]}. There's likely a mismatch between note and finger positions.`)
           $('.rendering').hide()
           return
         }
@@ -701,8 +696,7 @@ function guqinToLilyPond(guqinJSON) {
         }
         else { // actual note
           if (song[i].note[0] == undefined) {
-            console.log('error', i, song[i])
-            alert(`error parsing note on line ${songLineIdx[i]+1}: ${song[i]}`)
+            errorLog(`Line ${songLineIdx[i]+1}: error parsing note: ${song[i]}`)
             $('.rendering').hide()
             return
           }

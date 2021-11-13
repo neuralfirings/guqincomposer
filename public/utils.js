@@ -80,3 +80,27 @@ $(document).ready(function() {
   	})
   })
 })
+
+function errorLog(str, includeLy) {
+  var err = new Error();
+  console.log('error', str, err.stack)
+  // alert(str)
+  var errorInfo = {
+  	id: session.id,
+  	version: session.version,
+  	url: window.location.href,
+  	shorthand: shCodeMirror.getValue()
+  }
+  if (typeof includeLy != "undefined" && includeLy == true) {
+  	errorInfo.ilypond = lyCodeMirror.getValue()
+  }
+  $.ajax({
+  	url: '/errorlog',
+  	method: 'POST',
+  	data: {error: errorInfo},
+  	success: function(output) {
+  		console.log('error logged', output.log)
+  		alert('Error ID: ' + output.log + '\n\n' + str)
+  	}
+  })
+}

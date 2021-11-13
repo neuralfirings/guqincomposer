@@ -52,5 +52,5 @@ https://lilypond.org/ -- make sure the command line works since this website cal
 ## Install Website
 1. Clone repo
 2. `npm install`
-3. create folders: `/music` and `/public/temp`
+3. create folders: `/music` and `/public/temp` and `/errorlogs`
 4. `node app.js`

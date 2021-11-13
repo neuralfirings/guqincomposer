@@ -2,6 +2,7 @@
 
 # Logs
 logs
+errorlogs/
 *.log
 npm-debug.log*
 yarn-debug.log*
