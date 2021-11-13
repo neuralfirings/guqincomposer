@@ -620,7 +620,7 @@ function guqinToLilyPond(guqinJSON) {
       ly += '  title = \\markup \\center-column {"' + guqin.title.split('\\n').join('" "') + '" }\n'
     }
     if (guqin.composer != undefined) {
-      ly += '  composer = \\markup \\center-column {"' + guqin.composer.split('\\n').join('" "') + '" }\n'
+      ly += '  composer = \\markup \\right-column {"' + guqin.composer.split('\\n').join('" "') + '" }\n'
     }
     if (guqin.endnote != undefined) {
       ly += '  tagline = \\markup \\center-column {"' + guqin.endnote.split('\\n').join('" "') + '" }\n'
@@ -629,7 +629,7 @@ function guqinToLilyPond(guqinJSON) {
       ly += '  tagline = "engraved by LilyPond using NL Tabs format (guqin.nyl.io)"\n'
     }
     if (guqin.tuninglabel != undefined) {
-      ly += '  poet = \\markup \\center-column {"' + guqin.tuninglabel.split('\\n').join('" "') + '" }\n'
+      ly += '  poet = \\markup \\left-column {"' + guqin.tuninglabel.split('\\n').join('" "') + '" }\n'
     }
     else {
       var tuninglabel = "Tuning: " 
