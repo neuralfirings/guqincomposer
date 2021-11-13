@@ -209,25 +209,16 @@ function shortHandToGuqinJSON(shortHand) {
         }
         else if (shortHandLines[i].beginsWith("composer:")) {
           composer = shortHandLines[i].substr(shortHandLines[i].split(':')[0].length+1).trim()
-          // composer = '\\markup \\right-column {"' + composer.split('\\n').join('" "') + '" }'
         }
         else if (shortHandLines[i].beginsWith("tuninglabel:")) {
           tuninglabel = shortHandLines[i].substr(shortHandLines[i].split(':')[0].length+1).trim()
-          // tuninglabel = '\\markup \\left-column {"' + tuninglabel.split('\\n').join('" "') + '" }'
         }
         else if (shortHandLines[i].beginsWith("title:")) {
           title = shortHandLines[i].substr(shortHandLines[i].split(':')[0].length+1).trim()
-          // title = '\\markup \\center-column {"' + title.split('\\n').join('" "') + '" }'
         }
         else if (shortHandLines[i].beginsWith("endnote:")) {
           endnote = shortHandLines[i].substr(shortHandLines[i].split(':')[0].length+1).trim()
-          // endnote = '\\markup \\center-column {"' + endnote.split('\\n').join('" "') + '" }'
-          // endnote = '\\markup \\center-column {"' + shortHandLines[i].split('endnote:')[1].trim().split('\\n').join('" "') + '" }'
         }
-        // else if (shortHandLines[i].beginsWith("title:")) {
-        //   var titleStr = shortHandLines[i].split('title:')[1]
-        //   title = titleStr.trim()
-        // }
         else if (shortHandLines[i].beginsWith('time:')) {
           song.push("time:" + shortHandLines[i].split('time:')[1].trim())
           songLineIdx.push(i)
@@ -626,10 +617,10 @@ function guqinToLilyPond(guqinJSON) {
   // { Headers definitino
     ly += `#(set-default-paper-size "letter") \\header {\n`
     if (guqin.title != undefined) {
-      ly += '  title = \\markup \\center-column {"' + guqin.title.split('\\n').join('" "') + '" }\n'
+      ly += '  title = \\markup \\center-column {"' + guqin.title.split('\\n').join('" "') + '" " " }\n'
     }
     if (guqin.composer != undefined) {
-      ly += '  composer = \\markup \\right-column {"' + guqin.composer.split('\\n').join('" "') + '" }\n'
+      ly += '  composer = \\markup \\right-column {"' + guqin.composer.split('\\n').join('" "') + '" " " }\n'
     }
     if (guqin.endnote != undefined) {
       ly += '  tagline = \\markup \\center-column {"' + guqin.endnote.split('\\n').join('" "') + '" }\n'
@@ -638,7 +629,7 @@ function guqinToLilyPond(guqinJSON) {
       ly += '  tagline = "engraved by LilyPond using NL Tabs format (guqin.nyl.io)"\n'
     }
     if (guqin.tuninglabel != undefined) {
-      ly += '  poet = \\markup \\left-column {"' + guqin.tuninglabel.split('\\n').join('" "') + '" }\n'
+      ly += '  poet = \\markup \\left-column {"' + guqin.tuninglabel.split('\\n').join('" "') + '" " "}\n'
     }
     else {
       var tuninglabel = "Tuning: " 
