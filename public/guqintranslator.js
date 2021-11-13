@@ -134,8 +134,9 @@ function removeNums(str) {
   }
   return newStr
 }
+
+const invalidValues = ["linebreak", "time", "tempo", "clef", "mark", "fyhuirange", "ly", "|", "$", "="]
 function getNextNote(song, i) {
-  var invalidValues = ["linebreak", "time", "tempo", "clef", "mark", "fyhuirange", "ly"]
   if (i == song.length-1)
     return "end"
   else {
@@ -147,13 +148,12 @@ function getNextNote(song, i) {
       }
       if (isNote)
         return song[j]
-      else if (j==song.length+1)
+      else if (j==song.length-1)
         return "end"
     }
   }
 }
 function getPrevNote(song, i) {
-  var invalidValues = ["linebreak", "time", "tempo", "clef", "mark", "fyhuirange", "ly"]
   if (i == 0)
     return "start"
   else {
@@ -302,12 +302,18 @@ function shortHandToGuqinJSON(shortHand) {
         alert(`Oops! Something looks fishy on line ${songLineIdx[i]}. There's a bar mistmatch between note line and finger line.`)
         return false
       }
+      else if (song[i].beginsWith('$:') && song[i] != '$:$') {
+        alert(`Oops! Something looks fishy on line ${songLineIdx[i]}. There's a glissando ($) mistmatch between note line and finger line.`)
+        return false
+      }
 
       var notePart = song[i].split(':')[0]
       var validNote = false
       if (notePart.indexOf('|') > -1)
         validNote = true
       else if (notePart.indexOf('=') > -1)
+        validNote = true 
+      else if (notePart.indexOf('$') > -1)
         validNote = true 
       else {
         for (var j=0; j<lyPitches.length; j++) {
@@ -326,7 +332,7 @@ function shortHandToGuqinJSON(shortHand) {
         }
       }
       if (!validNote) {
-        alert(`Oops! Something looks fishy on line ${songLineIdx[i]}. Looks like an invalid entry in the note line.`)
+        alert(`Oops! Something looks fishy on line ${songLineIdx[i]} (${song[i]}). Looks like an invalid entry in the note line.`)
         return false
       }
     }
@@ -645,9 +651,11 @@ function guqinToLilyPond(guqinJSON) {
     var prevRHF = -1
     var prevStr
     var firstNote = true
+    var measure = 2
 
     ly += 'song = {\n'
     ly += '  \\clef "bass"\n'
+    ly += '  \\set Score.barNumberVisibility = #all-bar-numbers-visible\n  '
     var song = guqin.song
     var fyhuirange = [7,4]
     for (var i=0; i<song.length; i++) {
@@ -661,7 +669,7 @@ function guqinToLilyPond(guqinJSON) {
         ly += "\\tempo " + song[i].value + "\n  "
       }
       else if (song[i].type == 'clef') {
-        ly += "\\clef " + song[i].value + "\n  "
+        ly += "\\clef \"" + song[i].value + "\"\n  "
       }
       else if (song[i].type == 'mark') {
         ly += '\\mark \\markup \\left-column {"' + song[i].value.split('\\n').join('" "') + '" }\n'
@@ -674,10 +682,16 @@ function guqinToLilyPond(guqinJSON) {
       }
       else {  
         if (song[i].type == 'bar') {
-          if (song[i].value == 'double')
+          if (song[i].value == 'double') {
             ly += ' \\bar "||" '
-          else 
+          }
+          else {
             ly += ' \\bar "|" '
+          }
+          if (guqin.bars == 'manual') {
+            ly += ' \\set Score.currentBarNumber = #' + measure + ' '
+            measure++
+          }
         }
         else if (song[i].type == 'glissando') {
           ly += ' \\glissando '
