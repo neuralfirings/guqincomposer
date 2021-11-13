@@ -13,7 +13,7 @@ Here's a comparison between traditional format and NL Tabs.
 
 Check out my blog post for [more information](https://blog.nyl.io/guqin-part-3-tablature-old-and-new/) on the NLTabs notation.
 
-**Interested in seeing some music in this format?** [Browse the Guqin Tabs Library <i class="fas fa-arrow-circle-right"></i>](/library.html)
+**Interested in seeing some music in this format?** [Browse the Guqin Tabs Library <i class="fas fa-arrow-circle-right"></i>](https://guqin.nyl.io/library.html)
 
 ## Composing and Rendering Scores
 
@@ -38,7 +38,8 @@ f: by35v~~ 1j $ |  6 6v - - wc | /35bys v3u 1di vu3
 ```
 
 **Tabs Generated**
-![](https://guqin.nyl.io/gettingstartedtabs.png)
+
+<img src="https://guqin.nyl.io/gettingstartedtabs.png" width="600">
 
 **Want a full analysis of what is going on here?** [Check out the Getting Started Page <i class="fas fa-arrow-circle-right"></i>](https://guqin.nyl.io/gettingstarted.html)
 
@@ -46,11 +47,8 @@ f: by35v~~ 1j $ |  6 6v - - wc | /35bys v3u 1di vu3
 
 # Run this Website Locally
 
-## Install Lilypond
-https://lilypond.org/ -- make sure the command line works since this website calls the command line
-
-## Install Website
 1. Clone repo
 2. `npm install`
 3. create folders: `/music` and `/public/temp` and `/errorlogs`
-4. `node app.js`
+4. Install LilyPond command line (lilypond.org)
+5. `node app.js`
