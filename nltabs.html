@@ -231,6 +231,7 @@
                     else if (output2.success == 'password set') {
                       alert("Password is set")
                       $('.unlock').show()
+                      $('.lock').hide()
                       $('.unlock').click(function() {
                         unlock()
                       })
@@ -253,6 +254,7 @@
                     else if (output2.success == 'password set') {
                       alert("Password is set")
                       $('.unlock').show()
+                      $('.lock').hide()
                       $('.unlock').click(function() {
                         unlock()
                       })
@@ -271,6 +273,7 @@
             success: function(output) {
               if (output.status == "yes") {
                 $('.unlock').show()
+                $('.lock').hide()
                 $('.unlock').click(function() {
                   unlock()
                 })
@@ -293,6 +296,7 @@
               else if (output2.success == 'password unset') {
                 alert("Password is unset. Anybody can save and increment the versions now.")
                 $('.unlock').hide()
+                $('.lock').show()
               }
             }
           })
@@ -491,7 +495,7 @@
                   </div>
 
                   <button class="score-nav lock btn btn-link" href="javascript:void(0)">Lock</button>
-                  <button class="score-nav unlock btn btn-sm btn-link" href="javascript:void(0)">Unlock</button>
+                  <button class="score-nav unlock btn btn-link" href="javascript:void(0)">Unlock</button>
                 </div>
               </div>
               <div class="input-container-sh sh"><textarea class="shorthand form-control"></textarea></div>
