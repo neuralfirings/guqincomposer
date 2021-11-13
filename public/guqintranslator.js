@@ -434,7 +434,7 @@ function shortHandToGuqinJSON(shortHand) {
             isMiddle = false
           }
           if (isMiddle)
-            guqin[i].grace.push('middle')
+            guqin[i].slur.push('middle')
         }
 
         if (note.indexOf('*') > -1) { 
@@ -682,15 +682,15 @@ function guqinToLilyPond(guqinJSON) {
       }
       else {  
         if (song[i].type == 'bar') {
+          // if (guqin.bars == 'manual') {
+          //   ly += ' \\set Score.currentBarNumber = #' + measure + ' '
+          //   measure++
+          // }
           if (song[i].value == 'double') {
             ly += ' \\bar "||" '
           }
           else {
             ly += ' \\bar "|" '
-          }
-          if (guqin.bars == 'manual') {
-            ly += ' \\set Score.currentBarNumber = #' + measure + ' '
-            measure++
           }
         }
         else if (song[i].type == 'glissando') {
@@ -838,7 +838,17 @@ function guqinToLilyPond(guqinJSON) {
     }
     ly += '\n\n  \\bar "|."\n\n}\n\n'
     // edge case correction
-    ly = ly.split('\\bar "|" (').join('( \\bar "|" ')
+    ly = ly
+      .split('\\bar "|"  (').join('( \\bar "|" ')
+      .split('\\bar "||"  (').join('( \\bar "||" ')
+    //add manual bar numbers
+    if (guqin.bars == 'manual') {
+      lyBars = ly.split('\\bar')
+      for (var i=0; i<lyBars.length-1; i++) {
+        lyBars[i] = lyBars[i] + '\\set Score.currentBarNumber = #' + (i+2) + ' ' 
+      }
+      ly = lyBars.join('\\bar')
+    }
   // }
 
   // { Tuning, score layouts
