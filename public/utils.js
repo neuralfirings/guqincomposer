@@ -1,7 +1,7 @@
 $(document).ready(function() {
   var nav = `
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="navbar-brand" href="/"><i class="fas fa-sliders-h"></i> Guqin Tablature Composer</a>
+      <a class="navbar-brand" href="/"><i class="fas fa-sliders-h"></i> Guqin Music Using NLTabs</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>

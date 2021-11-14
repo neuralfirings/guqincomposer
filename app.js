@@ -26,6 +26,18 @@ function makeid(length) {
    return result;
 }
 
+
+function getTitle(sh) {
+  sh2 = sh.split('title:')
+  if (sh2.length > 1) {
+    sh3 = sh2[1].split('\n')
+    return sh3[0].split('\\n').join(' ').trim()
+  }
+  else {
+    return 'Guqin music using NLTabs'
+  }
+} 
+
 app.post('/renderly', function(req, res) {
   console.log('/renderly', req.body.ly)
   var ly = req.body.ly
@@ -185,8 +197,9 @@ app.get('/nltabs', function(req,res) {
   var index = fs.readFileSync('./nltabs.html', 'utf-8')
   index = index
     .split('{{variables}}').join("session = " + JSON.stringify(session))
-    .split('{{ogtitle}}').join('Compose Guqin Tablature')
-    .split('{{ogimgurl}}').join('https://guqin.nyl.io/screenshot.png')
+    .split('{{ogtitle}}').join('Compose Guqin music using NLTabs')
+    .split('{{ogdescription}}').join('.. an alternative to traditional guqin notation')
+    .split('{{ogimgurl}}').join('https://guqin.nyl.io/thumbnail.jpg')
 
   res.send(index)
 })
@@ -225,7 +238,11 @@ app.get('/nltabs/:id', function(req,res) {
   }
 
   var index = fs.readFileSync('./nltabs.html', 'utf-8')
-  index = index.split('{{variables}}').join("session = " + JSON.stringify(session))
+  index = index
+    .split('{{variables}}').join("session = " + JSON.stringify(session))
+    .split('{{ogtitle}}').join(getTitle(session.shortHandVal))
+    .split('{{ogdescription}}').join('Guqin music using NLTabs, an alternative to traditional guqin notation')
+    .split('{{ogimgurl}}').join('/nltabfiles/' + session.id + '/' + session.version + '/' + (session.PNGs[0] == undefined ? '/thumbnail.jpg' : session.PNGs[0]))
   res.send(index)
 })
 
@@ -255,7 +272,11 @@ app.get('/nltabs/:id/:version', function(req,res) {
   }
 
   var index = fs.readFileSync('./nltabs.html', 'utf-8')
-  index = index.split('{{variables}}').join("session = " + JSON.stringify(session))
+  index = index
+    .split('{{variables}}').join("session = " + JSON.stringify(session))
+    .split('{{ogtitle}}').join(getTitle(session.shortHandVal))
+    .split('{{ogdescription}}').join('Guqin music using NLTabs, an alternative to traditional guqin notation')
+    .split('{{ogimgurl}}').join('/nltabfiles/' + session.id + '/' + session.version + '/' + (session.PNGs[0] == undefined ? '/thumbnail.jpg' : session.PNGs[0]))
   res.send(index)
 })
 
