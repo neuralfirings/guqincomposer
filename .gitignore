@@ -1,9 +1,9 @@
 # project specific folders
-music/
+music/*
 !music/.gitkeep
-public/temp/
+public/temp/*
 !public/temp/.gitkeep
-errorlogs/
+errorlogs/*
 !errorlogs/.gitkeep
 
 # System

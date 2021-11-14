@@ -49,6 +49,5 @@ f: by35v~~ 1j $ |  6 6v - - wc | /35bys v3u 1di vu3
 
 1. Clone repo
 2. `npm install`
-3. create folders: `/music` and `/public/temp` and `/errorlogs`
-4. Install LilyPond command line (lilypond.org)
-5. `node app.js`
+3. Install LilyPond command line (lilypond.org)
+4. `node app.js`

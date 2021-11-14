@@ -1,5 +1,6 @@
 $(document).ready(function() {
   var nav = `
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <a class="navbar-brand" href="/"><i class="fas fa-sliders-h"></i> Guqin Tablature Composer</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -12,6 +13,7 @@ $(document).ready(function() {
           <a class="nav-item nav-link" href="/docs.html">Docs</a>
           <a class="nav-item nav-link" href="/contact.html">Contact</a>
           <a class="nav-item nav-link" href="https://blog.nyl.io">Blog</a>
+          <a class="nav-item nav-link" href="https://github.com/neuralfirings/guqincomposer"><i class="fab fa-github"></i></a>
         </div>
       </div>`
   $('.nav').addClass('navbar navbar-expand-lg navbar-dark bg-dark header').html(nav)
