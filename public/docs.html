@@ -72,17 +72,19 @@
 					tuning: g,, a,, c, d, e, g, a,
 					intonation: equal
 					showtimesig: none
-					bars: manual
+					bars: auto
 					```
 
 					#### Definitions
 
-					* **title**: (*optional*) the title of the piece, this appears front and center on the score
-					* **composer**: (*optional*) appears on the right side under the title
-					* **tuning**: (**required**) use the Lilypond format with spaces in between the notes (notes are lowercase). This will appear on the left side under the title, and it will drive the positioning of notes in the score.
-					* **intonation**: (*optional*, default: `equal`) two values here are `just` and `equal`. These intonation settings dictate what the hui position numbers will be.. *slightly*. For a deep dive into what this is and why the small changes in hui positions, [check out my blog post](https://blog.nyl.io/guqin-part-2-open-and-pressed-notes/) on this topic.
-					* **showtimesig**: (*optional*, default: `yes`) if `no`, then the score will omit any time signatures. 
-					* **bars**: (*optional*, default: `auto`) if `manual`, then the score will not add any bars based on time signatures (defeault time signature is common or 4/4). 
+					All of these are optional and have default values, but you should probably really consider being explicity about tuning at least. 
+
+					* **title**: (*default: blank*) the title of the piece, this appears front and center on the score
+					* **composer**: (*default: blank*) appears on the right side under the title
+					* **tuning**: (*default: g, a, c d e g a*) use the Lilypond format with spaces in between the notes (notes are lowercase). This will appear on the left side under the title, and it will drive the positioning of notes in the score.
+					* **intonation**: (*default: `equal`*) two values here are `just` and `equal`. These intonation settings dictate what the hui position numbers will be.. *slightly*. For a deep dive into what this is and why the small changes in hui positions, [check out my blog post](https://blog.nyl.io/guqin-part-2-open-and-pressed-notes/) on this topic.
+					* **showtimesig**: (*default: `yes`*) if `no`, then the score will omit any time signatures. 
+					* **bars**: (*default: `manual`*) if `auto`, then the score will auto insert bars based on the time signatures. If `manual`, then you will need to manually type in bars using `|` or `||`.
 
 					### 3.3. Musical Elements
 
@@ -91,6 +93,7 @@
 					#### Example			
 
 					```
+					key: c major
 					time: 2/4
 					clef: treble
 					tempo: 4 = 60
@@ -102,11 +105,12 @@
 
 					These are all optional.
 
-					* **time**: (*default: 4/4*) This is the time signature. Valid notations are 2/4, 3/4, etc using Lilypond's time signature notation.
+					* **key**: (*default: c major*) This is the key, you can write signatures like `c minor`, `bes major` (b-flat major), etc.
+					* **time**: (*default: 4/4*, shown as C or common time) This is the time signature. Valid notations are 2/4, 3/4, etc using Lilypond's time signature notation.
 					* **clef**: (*default: bass*) Valid values are bass, treble, alto, tenor. 
-					* **tempo**: (*default: 4=60*) This appears above the staff and also effects the tempo of the MIDI file. Notations uses Lilypond's tempo notation, so 4=60 is quarter note at 60 beats per minute (bpm). Default is 4=60
-					* **mark**: This appears above the staff in the score. 
-					* **comments**: This does not appear anywhere in the score. 
+					* **tempo**: (*default: 4=60*, not visible on the score) This appears above the staff and also effects the tempo of the MIDI file. Notations uses Lilypond's tempo notation, so 4=60 is quarter note at 60 beats per minute (bpm). Default is 4=60
+					* **mark**: Add when needed for text to appears above the staff in the score. 
+					* **comments (begin like with `//`)**: Add when needed, this does not appear anywhere in the score. 
 
 					### 3.4. LilyPond Scripting
 
@@ -168,7 +172,7 @@
 
 					<div class='gq-snippet' data-id="RTtEvuu"></div>
 
-					If you want to add custom notations in the left hand position below the staff, you can write `(l=blahblah)`. This will replace any other notation for that note. Use `_` (underscore) to represent a space since otherwise, the space will be interpreted as a separate note. 
+					If you want to add custom notations in the left hand position below the staff, you can write `(lh:blahblah)`. This will replace any other notation for that note. Use `_` (underscore) to represent a space since otherwise, the space will be interpreted as a separate note. 
 
 					#### Example ([link](/nltabs/f6uQCKj))
 					<div class='gq-snippet' data-id="f6uQCKj"></div>
@@ -190,7 +194,7 @@
 
 					<div class='gq-snippet' data-id="yrZLlXz"></div>
 
-					If you want to add custom notations in the right hand position above the staff, you can write `(r=blahblah)`. This will replace any other notation for that note. Use `_` (underscore) to represent a space since otherwise, the space will be interpreted as a separate note. 
+					If you want to add custom notations in the right hand position above the staff, you can write `(rh:blahblah)`. This will replace any other notation for that note. Use `_` (underscore) to represent a space since otherwise, the space will be interpreted as a separate note. 
 
 					#### Example ([link](/nltabs/swDyrl5))
 					<div class='gq-snippet' data-id="swDyrl5"></div>
@@ -217,12 +221,34 @@
 					| ----------| ----------------------------------- |
 					| `\|`      | bar                                 |
 					| `\|\|`    | double bar                          |
+					| `\|.`     | end bar                             |
+					| see below for more bars  | more bars (see below)               |
 					| `$`       | Glissando                           |
 					| `=`       | tied with previous note (must come before the bar for inter-measure ties) |
 
 					#### Example ([link](/nltabs/w6S0pzM))
 
 					<div class='gq-snippet' data-id="w6S0pzM"></div>
+
+					There's a range of different bars you can use. 
+
+					#### Example ([link](/nltabs/8xef5TC))
+
+					<div class='gq-snippet' data-id="8xef5TC"></div>
+
+					### 4.7 Multi-Voice Scores
+
+					One of the interesting things about using NLTabs vs. traditional notation is that you can represent multi-voice scores more clearly. You can visually see which string plucks belong to which voices because, often, the rhythm voice has it's own movement patterns and you can see that visually on the tab. 
+
+					To separate out voices, you simply add a `voice:` line and name your voices appropriately. In the example below, I take the first few lines of the second movement of the Pathetique Sonata (by Beethoven), and write a voice Beethoven's treble/right handed line (named `rh` below) and one for the bass/left handed line (`lh`). 
+
+					In the Guqin tabs, you can see the strumming pattern representing the left hand on the lower level strings (the ones further away from player on the qin, and higher up on the tabs).
+
+					Attributes such as time signatures, tempo, key signatures, marks, fyhuiranges apply across voices. Other elements, notably clefs, will need to be specified for each voice.  
+
+					#### Example ([link](/nltabs/MPdHJdj))	
+
+					<div class='gq-snippet' data-id="MPdHJdj" data-img-height="350"></div>
 
 				</div>
 			</div>

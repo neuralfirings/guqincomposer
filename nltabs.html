@@ -18,6 +18,8 @@
 
     <script src="https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/@magenta/music@1.23.1/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.4.0"></script>
 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5HRDLPY0K8"></script>
+
     <script src="/utils.js"></script>
     <link rel="stylesheet" href="/style.css" />
     
@@ -77,6 +79,7 @@
               }
             }
             catch (error) {
+              console.log(error)
               errorLog('Oops, something went wrong!\n\nLogs: \n' + error, true)
               $('.rendering').hide()
               return

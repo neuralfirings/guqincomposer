@@ -1,4 +1,7 @@
 // { constants
+  const lyBars = ["|", ".", "||", ".|", "..", "|.|", "|.",
+    ".|:", ":..:", ":|.|:", ":|.:", ":.|.:", "[|:", ":|][|:", ":|]", ":|."
+  ]
   const lyMapAndExtract = ['~', "=", "/", "\\", ">", "<"]
   const lyMap = { 
     "0": { "type": "str", "value": 0 }, "1": { "type": "str", "value": 1 }, "2": { "type": "str", "value": 2 }, "3": { "type": "str", "value": 3 }, "4": { "type": "str", "value": 4 }, "5": { "type": "str", "value": 5 }, "6": { "type": "str", "value": 6 }, "7": { "type": "str", "value": 7 }, 
@@ -31,7 +34,7 @@
   const lyStr4 = `\\layout { \\context { \\TabStaff stringTunings = \\stringTuning \\tuning fretLabels = ` //\\tuningEqual }`
   const lyStr5 = `\\context { \\Score \\override RehearsalMark.self-alignment-X = #LEFT \\override RehearsalMark.font-size = #-1 } \\context { \\Staff \\hide TextScript \\override TrillSpanner.bound-details.left.text = ##f \\override Glissando.style = #'zigzag }`
   const lyStr6 = `\\context { \\TabStaff \\omit Clef \\omit ClefModifier \\revert TextScript.stencil \\override TextScript.font-size = #-3 \\override Glissando.style = #'zigzag \\override TabNoteHead.font-family = #'typewriter tablatureFormat = #fret-letter-tablature-format } \\textLengthOn \\omit Voice.StringNumber } \\midi {}`
-  const lyStr7 = `<< \\new Staff  { \\song } \\new TabStaff { \\clef "moderntab" \\song } >>`
+  // const lyStr7 = `<< \\new Staff  { \\song } \\new TabStaff { \\clef "moderntab" \\song } >>`
 // } end
 
 // String extensions
@@ -68,6 +71,18 @@ String.prototype.beginsWith = function(str) {
   else
     return false
 }
+function addToAll(str, obj, voice) {
+  for (var k in obj) {
+    if (typeof voice == 'undefined' || 'voice_'+voice == k)
+      obj[k] += str
+  }
+}
+// Object.prototype.addToAll = function(str) {
+//   for (var k in this) {
+//     if (k != "addToAll")
+//       this[k] += str
+//   }
+// }
 
 // Helper Functions
 function getPressedPosition(note,str) {
@@ -135,7 +150,7 @@ function removeNums(str) {
   return newStr
 }
 
-const invalidValues = ["linebreak", "time", "tempo", "clef", "mark", "fyhuirange", "ly", "|", "$", "="]
+const invalidValues = ["linebreak", "time", "key", "voice", "tempo", "clef", "mark", "fyhuirange", "ly", "|", "$", "="]
 function getNextNote(song, i) {
   if (i == song.length-1)
     return "end"
@@ -174,12 +189,13 @@ function getPrevNote(song, i) {
 // Main Translation Functions
 function shortHandToGuqinJSON(shortHand) {
   var shortHandLines = shortHand.split('\n')
-  var tuning=''
+  var tuning=['g,','a,','c','d','e','g','a']
   var intonation='\\tuningEqual'
-  var composer='' 
-  var title=''
-  var endnote=''
-  var bars=''
+  var composer=undefined
+  var tuninglabel=undefined
+  var title=undefined
+  var endnote=undefined
+  var bars="manual"
   var showtimesig=''
   var guqin = []
 
@@ -219,8 +235,20 @@ function shortHandToGuqinJSON(shortHand) {
         else if (shortHandLines[i].beginsWith("endnote:")) {
           endnote = shortHandLines[i].substr(shortHandLines[i].split(':')[0].length+1).trim()
         }
+        else if (shortHandLines[i].beginsWith('voice:')) {
+          song.push("voice:" + shortHandLines[i].split('voice:')[1].trim())
+          songLineIdx.push(i)
+          nCtr++
+          fCtr++
+        }
         else if (shortHandLines[i].beginsWith('time:')) {
           song.push("time:" + shortHandLines[i].split('time:')[1].trim())
+          songLineIdx.push(i)
+          nCtr++
+          fCtr++
+        }
+        else if (shortHandLines[i].beginsWith('key:')) {
+          song.push("key:" + shortHandLines[i].split('key:')[1].trim())
           songLineIdx.push(i)
           nCtr++
           fCtr++
@@ -261,7 +289,7 @@ function shortHandToGuqinJSON(shortHand) {
           noteStr = noteStr.replace(/ +(?= )/g,'');
           var notes = noteStr.trim().split(' ') //split(/[\s-]+/) 
           for (var j=0; j<notes.length; j++) {
-            song[nCtr] = (song[nCtr] == undefined ?  notes[j] : notes[j] + ':' + song[nCtr])
+            song[nCtr] = (song[nCtr] == undefined ?  notes[j] : notes[j] + ';' + song[nCtr])
             songLineIdx[nCtr] = i
             nCtr++
           }
@@ -272,7 +300,7 @@ function shortHandToGuqinJSON(shortHand) {
           fingerStr = fingerStr.replace(/ +(?= )/g,'');
           var fingers = fingerStr.trim().split(' ')
           for (var j=0; j<fingers.length; j++) {
-            song[fCtr] = (song[fCtr] == undefined ? fingers[j] : song[fCtr] + ':' + fingers[j])
+            song[fCtr] = (song[fCtr] == undefined ? fingers[j] : song[fCtr] + ';' + fingers[j])
             songLineIdx[fCtr] = i
             fCtr++
           }
@@ -293,18 +321,25 @@ function shortHandToGuqinJSON(shortHand) {
       //   errorLog(`Line ${songLineIdx[i]}: There's a mismatch between the number of notes in the note (n:) and finger positions (f:) lines.`)
       //   return false
       // }
-      if (song[i].indexOf('|') > -1 && song[i] != '|:|' && song[i] != '||:||') {
-        errorLog(`Line ${songLineIdx[i]}: There's a mismatch between the number of notes in the note (n:) and finger positions (f:) lines.`)
-        return false
+      if (song[i].indexOf('|') > -1) {
+        if (lyBars.indexOf(song[i].split(';')[0]) == -1) {
+          errorLog(`Line ${songLineIdx[i]}: ${song[i].split(';')[0]} is not a valid bar notation.`)
+          return false
+        }
+        else if (song[i].split(';')[0] != song[i].split(';')[1]) {
+          errorLog(`Line ${songLineIdx[i]}: There's a mismatch between the number of notes in the note (n:) and finger positions (f:) lines.`)
+          return false
+        }
       }
-      else if (song[i].indexOf('$') > -1 && song[i] != '$:$') {
+      else if (song[i].indexOf('$') > -1 && song[i] != '$;$') {
         errorLog(`Line ${songLineIdx[i]}: There's a mismatch between the number of notes in the note (n:) and finger positions (f:) lines around the glissando ($).`)
         return false
       }
 
-      var notePart = song[i].split(':')[0]
+      var notePart = song[i].split(';')[0]
       var validNote = false
-      if (notePart.indexOf('|') > -1)
+      // if (notePart.indexOf('|') > -1)
+      if (lyBars.indexOf(notePart) > -1)
         validNote = true
       else if (notePart.indexOf('=') > -1)
         validNote = true 
@@ -347,6 +382,7 @@ function shortHandToGuqinJSON(shortHand) {
   var inGliss = false
   var endGliss = false
   var prevRHF = -1
+  var voice = "default"
 
   for (var i=0; i<song.length; i++) {
     if (song[i] == 'linebreak') {
@@ -355,6 +391,10 @@ function shortHandToGuqinJSON(shortHand) {
     else if (song[i].beginsWith('time:')) {
       var time = song[i].split('time:')[1]
       guqin[i] = {"type": "time", "value": time}
+    }
+    else if (song[i].beginsWith('key:')) {
+      var key = song[i].split('key:')[1]
+      guqin[i] = {"type": "key", "value": key}
     }
     else if (song[i].beginsWith('tempo:')) {
       var tempo = song[i].split('tempo:')[1]
@@ -372,6 +412,10 @@ function shortHandToGuqinJSON(shortHand) {
       var fyhuirange = song[i].split('fyhuirange:')[1].split('-')
       guqin[i] = {"type": "fyhuirange", "value": fyhuirange}
     }
+    else if (song[i].beginsWith('voice:')) {
+      voice = song[i].split('voice:')[1]
+      guqin[i] = {"type": "voicechange", "value": voice}
+    }
     else if (song[i].beginsWith('ly:')) {
       var lycode = song[i].split('ly:')[1]
       guqin[i] = {"type": "lilypond", "value": lycode}
@@ -387,18 +431,21 @@ function shortHandToGuqinJSON(shortHand) {
         fyHuis: [],
         slur: [],
         grace: [],
-
+        voice: voice
       }
       var note = song[i]
-      var notePart = song[i].split(':')
+      var notePart = song[i].split(';')
       var n = notePart[0]
       var gq = notePart[1]
-      if (n == '|') { 
-        guqin[i] = {"type": "bar", "value": "single"}
+      // if (n == '|') { 
+      //   guqin[i] = {"type": "bar", "value": "single"}
+      // } 
+      // else if (n == '||') {
+      //   guqin[i] = {"type": "bar", "value": "double"}
+      // }
+      if (lyBars.indexOf(n) > -1) { 
+        guqin[i] = {"type": "bar", "value": n}
       } 
-      else if (n == '||') {
-        guqin[i] = {"type": "bar", "value": "double"}
-      }
       else if (n == '$') {
         guqin[i] = {"type": "glissando", "value": ""}
       }
@@ -505,15 +552,15 @@ function shortHandToGuqinJSON(shortHand) {
           // { Custom RH/LH Lines
             var customLH = false
             var customRH = false
-            if (gq.indexOf('(l=') > -1) { // custom LH
+            if (gq.indexOf('(lh:') > -1) { // custom LH
               customLH = true
-              customLHStr = gq.split('(l=')[1].split(')')[0].trim()
+              customLHStr = gq.split('(lh:')[1].split(')')[0].trim()
               gq = gq.split(customLHStr).join('')
               guqin[i].lh.push(customLHStr.split('_').join(' '))
             }
-            if (gq.indexOf('(r=') > -1) { // custom RH
+            if (gq.indexOf('(rh:') > -1) { // custom RH
               customRH = true
-              customRHStr = gq.split('(r=')[1].split(')')[0].trim()
+              customRHStr = gq.split('(rh:')[1].split(')')[0].trim()
               gq = gq.split(customRHStr).join('')
               guqin[i].rh.push(customRHStr.split('_').join(' '))
             }
@@ -566,6 +613,7 @@ function shortHandToGuqinJSON(shortHand) {
 
   return {
     tuning: tuning,
+    tuninglabel: tuninglabel,
     intonation: intonation,
     title: title,
     composer: composer,
@@ -636,7 +684,7 @@ function guqinToLilyPond(guqinJSON) {
     ly+= '}\n\n'
   // }
 
-  // { Song
+  // { Song(s)
     var startSlur = false
     var inSlur = false
     var endSlur = false
@@ -647,108 +695,158 @@ function guqinToLilyPond(guqinJSON) {
     var prevStr
     var firstNote = true
     var measure = 2
+    var lySongs = {}
+    var voice = ''
 
-    ly += 'song = {\n'
-    ly += '  \\clef "bass"\n'
-    ly += '  \\set Score.barNumberVisibility = #all-bar-numbers-visible\n  '
-    var song = guqin.song
+    // get voices
+    for (var i=0; i<guqin.song.length; i++) {
+      if (guqin.song[i].type == 'note') {
+        lySongs['voice_' + guqin.song[i].voice] = 'voice_' + guqin.song[i].voice
+        if (voice == '') 
+          voice = guqin.song[i].voice
+      }
+    }
+    console.log('lySongs', lySongs)
+
+    addToAll(' = {\n' +
+      '  \\clef "bass"\n' +
+      '  \\set Score.barNumberVisibility = #all-bar-numbers-visible\n  ', lySongs)
+    // ly += 'song = {\n' +
+    //   '  \\clef "bass"\n' +
+    //   '  \\set Score.barNumberVisibility = #all-bar-numbers-visible\n  '
+
     var fyhuirange = [7,4]
-    for (var i=0; i<song.length; i++) {
-      if (song[i] == 'linebreak') {
-        ly += '\n  '
+    for (var i=0; i<guqin.song.length; i++) {
+      if (guqin.song[i] == 'linebreak') {
+        addToAll('\n ', lySongs)
+        // ly += '\n  '
       }
-      else if (song[i].type == 'time') {
-        ly += "\\time " + song[i].value + "\n  "
+      else if (guqin.song[i].type == 'time') {
+        addToAll("\\time " + guqin.song[i].value + "\n  ", lySongs)
+        // ly += "\\time " + guqin.song[i].value + "\n  "
       }
-      else if (song[i].type == 'tempo') {
-        ly += "\\tempo " + song[i].value + "\n  "
+      else if (guqin.song[i].type == 'key') {
+        addToAll("\\key " + guqin.song[i].value.replace('major', '\\major').replace('minor', '\\minor') + "\n  ", lySongs)
       }
-      else if (song[i].type == 'clef') {
-        ly += "\\clef \"" + song[i].value + "\"\n  "
+      else if (guqin.song[i].type == 'tempo') {
+        addToAll("\\tempo " + guqin.song[i].value + "\n  ", lySongs)
+        // ly += "\\tempo " + guqin.song[i].value + "\n  "
       }
-      else if (song[i].type == 'mark') {
-        ly += '\\mark \\markup \\left-column {"' + song[i].value.split('\\n').join('" "') + '" }\n  '
+      else if (guqin.song[i].type == 'clef') {
+        addToAll("\\clef \"" + guqin.song[i].value + "\"\n  ", lySongs, voice)
+        // ly += "\\clef \"" + guqin.song[i].value + "\"\n  "
       }
-      else if (song[i].type == 'lilypond') {
-        ly += song[i].value + "\n  "
+      else if (guqin.song[i].type == 'mark') {
+        addToAll('\\mark \\markup \\left-column {"' + guqin.song[i].value.split('\\n').join('" "') + '" }\n  ', lySongs)
+        // ly += '\\mark \\markup \\left-column {"' + guqin.song[i].value.split('\\n').join('" "') + '" }\n  '
       }
-      else if (song[i].type == 'fyhuirange') {
-        fyhuirange = song[i].value
+      else if (guqin.song[i].type == 'lilypond') {
+        addToAll(guqin.song[i].value + "\n  ", lySongs, voice)
+        // ly += guqin.song[i].value + "\n  "
+      }
+      else if (guqin.song[i].type == 'voicechange') {
+        voice = guqin.song[i].value
+      }
+      else if (guqin.song[i].type == 'fyhuirange') {
+        fyhuirange = guqin.song[i].value
       }
       else {  
-        if (song[i].type == 'bar') {
+        if (guqin.song[i].type == 'bar') {
           // if (guqin.bars == 'manual') {
           //   ly += ' \\set Score.currentBarNumber = #' + measure + ' '
           //   measure++
           // }
-          if (song[i].value == 'double') {
-            ly += ' \\bar "||" '
-          }
-          else {
-            ly += ' \\bar "|" '
-          }
+          addToAll(' \\bar "' + guqin.song[i].value + '" ', lySongs, voice)
+          // if (guqin.song[i].value == 'double') {
+          //   addToAll(' \\bar "||" ', lySongs, voice)
+          //   // ly += ' \\bar "||" '
+          // }
+          // else {
+          //   addToAll(' \\bar "|" ', lySongs, voice)
+          //   // ly += ' \\bar "|" '
+          // }
         }
-        else if (song[i].type == 'glissando') {
-          ly += ' \\glissando '
+        else if (guqin.song[i].type == 'glissando') {
+          addToAll(' \\glissando ', lySongs, voice)
+          // ly += ' \\glissando '
         }
-        else if (song[i].type == "tie") {
-          ly += ' ~ '
+        else if (guqin.song[i].type == "tie") {
+          addToAll(' ~ ', lySongs, voice)
+          // ly += ' ~ '
         }
         else { // actual note
-          if (song[i].note[0] == undefined) {
-            errorLog(`Line ${songLineIdx[i]+1}: error parsing note: ${song[i]}`)
+          voice = guqin.song[i].voice
+          if (guqin.song[i].note[0] == undefined) {
+            errorLog(`Line ${songLineIdx[i]+1}: error parsing note: ${guqin.song[i]}`)
             $('.rendering').hide()
             return
           }
 
           // encapsulation starts (grace or slurs)
-          if (song[i].slur != undefined && song[i].slur.indexOf('start') > -1) {
-            ly += " ( "
+          if (guqin.song[i].slur != undefined && guqin.song[i].slur.indexOf('start') > -1) {
+            addToAll(" ( ", lySongs, voice)
+            // ly += " ( "
           }
-          if (song[i].grace != undefined && song[i].grace.indexOf('start') > -1) {
-            ly += " \\grace { "
+          if (guqin.song[i].grace != undefined && guqin.song[i].grace.indexOf('start') > -1) {
+            addToAll(" \\grace { ", lySongs, voice)
+            // ly += " \\grace { "
           }
-          if (song[i].lh != undefined && song[i].lh.length > 0 && String(song[i].lh[0]).indexOf('X') > -1) { 
+          if (guqin.song[i].lh != undefined && guqin.song[i].lh.length > 0 && String(guqin.song[i].lh[0]).indexOf('X') > -1) { 
             // TODO: the lh[0] only looks at first note, so chords not supported
-            ly += ' \\lm '
+            addToAll(' \\lm ', lySongs, voice)
+            // ly += ' \\lm '
           }
 
           // the meat
-          if (lyPitches.indexOf(song[i].note[0][0]) > -1) {
-            if (song[i].note.length > 1) { // Chord
-              ly += '<'
-              for (var j=0;j<song[i].note.length;j++) {
-                ly += song[i].note[j] + '\\' + song[i].str[j]
+          if (lyPitches.indexOf(guqin.song[i].note[0][0]) > -1) {
+            if (guqin.song[i].note.length > 1) { // Chord
+              addToAll('<', lySongs, voice)
+              // ly += '<'
+              for (var j=0;j<guqin.song[i].note.length;j++) {
+                addToAll(guqin.song[i].note[j] + '\\' + guqin.song[i].str[j], lySongs, voice)
+                // ly += guqin.song[i].note[j] + '\\' + guqin.song[i].str[j]
               }
-              ly += '>'
-              ly += song[i].beat.length > 0 ? song[i].beat[0] : ""
+              addToAll('>', lySongs, voice)
+              // ly += '>'
+              addToAll(guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "", lySongs, voice)
+              // ly += guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : ""
             }
-            else if (song[i].note.length == 1) { // Single Note
-              ly += song[i].note[0] 
-              ly += song[i].beat.length > 0 ? song[i].beat[0] : "" 
-              ly += '\\' + song[i].str[0]
+            else if (guqin.song[i].note.length == 1) { // Single Note
+              addToAll(guqin.song[i].note[0] , lySongs, voice)
+              // ly += guqin.song[i].note[0] 
+              addToAll(guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "" , lySongs, voice)
+              // ly += guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "" 
+              addToAll('\\' + guqin.song[i].str[0], lySongs, voice)
+              // ly += '\\' + guqin.song[i].str[0]
             }
-            if (song[i].rh.length > 0) {
-              var currRFH = song[i].rh.join('')
-              if ((song[i].lhstr == undefined || song[i].lhstr != 'show') && getNumOnly(currRFH) == prevRHF) {
-                ly +=  '^"' + removeNums(currRFH)  + '"'
+            if (guqin.song[i].rh.length > 0) {
+              var currRFH = guqin.song[i].rh.join('')
+              if ((guqin.song[i].lhstr == undefined || guqin.song[i].lhstr != 'show') && getNumOnly(currRFH) == prevRHF) {
+                addToAll('^"' + removeNums(currRFH)  + '"', lySongs, voice)
+                // ly +=  '^"' + removeNums(currRFH)  + '"'
               }
               else {
-                ly +=  '^"' + currRFH + '"'
+                addToAll('^"' + currRFH + '"', lySongs, voice)
+                // ly +=  '^"' + currRFH + '"'
                 prevRHF = getNumOnly(currRFH)
               }
             }
-            ly +=  song[i].lh.length > 0 ? '_"' + song[i].lh.join('') + '"' : ""
+            addToAll(guqin.song[i].lh.length > 0 ? '_"' + guqin.song[i].lh.join('') + '"' : "", lySongs, voice)
+            // ly +=  guqin.song[i].lh.length > 0 ? '_"' + guqin.song[i].lh.join('') + '"' : ""
           }
-          else if (lyFanYins.indexOf(song[i].note[0][0]) > -1)  {
-            if (song[i].note.length > 1) { // Fan Yin Chord
-              ly += '<<'
-              for (var j=0;j<song[i].note.length;j++) { 
-                ly += ' \\fy '
-                if (song[i].fyHuis[j] != undefined) 
-                  ly += '#' + song[i].fyHuis[j] + ' '
+          else if (lyFanYins.indexOf(guqin.song[i].note[0][0]) > -1)  {
+            if (guqin.song[i].note.length > 1) { // Fan Yin Chord
+              addToAll('<<', lySongs, voice)
+              // ly += '<<'
+              for (var j=0;j<guqin.song[i].note.length;j++) { 
+                addToAll(' \\fy ', lySongs, voice)
+                // ly += ' \\fy '
+                if (guqin.song[i].fyHuis[j] != undefined) {
+                  addToAll('#' + guqin.song[i].fyHuis[j] + ' ', lySongs, voice)
+                  // ly += '#' + guqin.song[i].fyHuis[j] + ' '
+                }
                 else {
-                  var fyhPossibilities = getHarmonicPositions(song[i].note[j], song[i].str[j], guqin.tuning)
+                  var fyhPossibilities = getHarmonicPositions(guqin.song[i].note[j], guqin.song[i].str[j], guqin.tuning)
                   var fyrMin = Math.min.apply(Math, fyhuirange) 
                   var fyrMax = Math.max.apply(Math, fyhuirange) 
                   var fyHuiPos = ''
@@ -756,105 +854,168 @@ function guqinToLilyPond(guqinJSON) {
                     if (fyhPossibilities[k]>=fyrMin && fyhPossibilities[k]<=fyrMax)
                       fyHuiPos = '#' + fyhPossibilities[k]
                   }
-                  ly += fyHuiPos + ' '
+                  addToAll(fyHuiPos + ' ', lySongs, voice)
+                  // ly += fyHuiPos + ' '
                 }
-                ly += song[i].note[j].toLowerCase()
-                if (j==0)
-                  ly += song[i].beat.length > 0 ? song[i].beat[0] : "" 
-                ly += '\\' + song[i].str[j]
+                addToAll(guqin.song[i].note[j].toLowerCase(), lySongs, voice)
+                // ly += guqin.song[i].note[j].toLowerCase()
                 if (j==0) {
-                  if (song[i].rh.length > 0) {
-                    var currRFH = song[i].rh.join('')
-                    if ((song[i].lhstr == undefined || song[i].lhstr != 'show') && getNumOnly(currRFH) == prevRHF) {
-                      ly +=  '^"' + removeNums(currRFH)  + '"'
+                  addToAll(guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "" , lySongs, voice)
+                  // ly += guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "" 
+                }
+                addToAll('\\' + guqin.song[i].str[j], lySongs, voice)
+                // ly += '\\' + guqin.song[i].str[j]
+                if (j==0) {
+                  if (guqin.song[i].rh.length > 0) {
+                    var currRFH = guqin.song[i].rh.join('')
+                    if ((guqin.song[i].lhstr == undefined || guqin.song[i].lhstr != 'show') && getNumOnly(currRFH) == prevRHF) {
+                      addToAll('^"' + removeNums(currRFH)  + '"', lySongs, voice)
+                      // ly +=  '^"' + removeNums(currRFH)  + '"'
                     }
                     else {
-                      ly +=  '^"' + currRFH + '"'
+                      addToAll('^"' + currRFH + '"', lySongs, voice)
+                      // ly +=  '^"' + currRFH + '"'
                       prevRHF = getNumOnly(currRFH)
                     }
                   }
-                  ly +=  song[i].lh.length > 0 ? '_"' + song[i].lh.join('') + '"' : ""
+                  addToAll(guqin.song[i].lh.length > 0 ? '_"' + guqin.song[i].lh.join('') + '"' : "", lySongs, voice)
+                  // ly +=  guqin.song[i].lh.length > 0 ? '_"' + guqin.song[i].lh.join('') + '"' : ""
                 }
               }
-              ly += '>>'
+              addToAll('>>', lySongs, voice)
+              // ly += '>>'
             }
-            else if (song[i].note.length == 1) { // Fan Yin Solo Note
-              ly += ' \\fy '
-              if (song[i].fyHuis.length > 0)
-                ly += '#' + song[i].fyHuis[0] + ' '
+            else if (guqin.song[i].note.length == 1) { // Fan Yin Solo Note
+              addToAll(' \\fy ', lySongs, voice)
+              // ly += ' \\fy '
+              if (guqin.song[i].fyHuis.length > 0) {
+                addToAll('#' + guqin.song[i].fyHuis[0] + ' ', lySongs, voice)
+                // ly += '#' + guqin.song[i].fyHuis[0] + ' '
+              }
               else {
-                var fyhPossibilities = getHarmonicPositions(song[i].note[0], song[i].str[0], guqin.tuning)
-                // console.log(song[i], fyhPossibilities)
+                var fyhPossibilities = getHarmonicPositions(guqin.song[i].note[0], guqin.song[i].str[0], guqin.tuning)
+                // console.log(guqin.song[i], fyhPossibilities)
                 var fyrMin = Math.min.apply(Math, fyhuirange) 
                 var fyrMax = Math.max.apply(Math, fyhuirange) 
                 var fyHuiPos = ''
-                if (fyhPossibilities != undefined)
+                if (fyhPossibilities != undefined) {
                   for (var k=0;k<fyhPossibilities.length;k++) {
                     if (fyhPossibilities[k]>=fyrMin && fyhPossibilities[k]<=fyrMax)
                       fyHuiPos = '#' + fyhPossibilities[k]
                   }
-                ly += fyHuiPos + ' '
+                }
+                addToAll(fyHuiPos + ' ', lySongs, voice)
+                // ly += fyHuiPos + ' '
               }
               // if (fyhuirange != 0 && fyhuirange != "auto") {
               //   ly += '#' + fyhuirange + ' '
               // }
-              ly += song[i].note[0].toLowerCase()
-              ly += song[i].beat.length > 0 ? song[i].beat[0] : "" 
-              ly += '\\' + song[i].str[0]
-              if (song[i].rh.length > 0) {
-                var currRFH = song[i].rh.join('')
-                if ((song[i].lhstr == undefined || song[i].lhstr != 'show')  && getNumOnly(currRFH) == prevRHF) {
-                  ly +=  '^"' + removeNums(currRFH)  + '"'
+              addToAll(guqin.song[i].note[0].toLowerCase(), lySongs, voice)
+              // ly += guqin.song[i].note[0].toLowerCase()
+              addToAll(guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "" , lySongs, voice)
+              // ly += guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "" 
+              addToAll('\\' + guqin.song[i].str[0], lySongs, voice)
+              // ly += '\\' + guqin.song[i].str[0]
+              if (guqin.song[i].rh.length > 0) {
+                var currRFH = guqin.song[i].rh.join('')
+                if ((guqin.song[i].lhstr == undefined || guqin.song[i].lhstr != 'show')  && getNumOnly(currRFH) == prevRHF) {
+                  addToAll('^"' + removeNums(currRFH)  + '"', lySongs, voice)
+                  // ly +=  '^"' + removeNums(currRFH)  + '"'
                 }
                 else {
-                  ly +=  '^"' + currRFH + '"'
+                  addToAll('^"' + currRFH + '"', lySongs, voice)
+                  // ly +=  '^"' + currRFH + '"'
                   prevRHF = getNumOnly(currRFH)
                 }
               }
-              ly +=  song[i].lh.length > 0 ? '_"' + song[i].lh.join('') + '"' : ""
+              addToAll(guqin.song[i].lh.length > 0 ? '_"' + guqin.song[i].lh.join('') + '"' : "", lySongs, voice)
+              // ly +=  guqin.song[i].lh.length > 0 ? '_"' + guqin.song[i].lh.join('') + '"' : ""
             }
           }
 
           // encapsulation ends (grace or slurs)
-          if (song[i].grace != undefined && song[i].grace.indexOf('end') > -1) {
-            ly += ' } '
+          if (guqin.song[i].grace != undefined && guqin.song[i].grace.indexOf('end') > -1) {
+            addToAll(' } ', lySongs, voice)
+            // ly += ' } '
           }
-          if (song[i].slur != undefined && song[i].slur != undefined && song[i].slur.indexOf('end') > -1) {
-            ly += " ) "
+          if (guqin.song[i].slur != undefined && guqin.song[i].slur != undefined && guqin.song[i].slur.indexOf('end') > -1) {
+            addToAll(" ) ", lySongs, voice)
+            // ly += " ) "
           }
 
           // space between notes
-          ly += ' '
+          addToAll(' ', lySongs, voice)
+          // ly += ' '
         }
-
-
       }
     }
-    ly += '\n\n  \\bar "|."\n\n}\n\n'
-    // edge case correction
-    ly = ly
-      .split('\\bar "|"  (').join('( \\bar "|" ')
-      .split('\\bar "||"  (').join('( \\bar "||" ')
-    //add manual bar numbers
-    if (guqin.bars == 'manual') {
-      lyBars = ly.split('\\bar')
-      for (var i=0; i<lyBars.length-1; i++) {
-        lyBars[i] = lyBars[i] + '\\set Score.currentBarNumber = #' + (i+2) + ' ' 
+    // addToAll('\n\n  \\bar "|."\n\n}', lySongs)
+    addToAll('\n\n}', lySongs)
+    // ly += '\n\n  \\bar "|."\n\n}\n\n'
+    // edge case corrections
+    // addToAll(false, lySongs, voice)
+    for (var v in lySongs) {
+      // correct slides over bars
+      lySongs[v] = lySongs[v]
+        .split('\\bar "|"  (').join('( \\bar "|" ')
+        .split('\\bar "||"  (').join('( \\bar "||" ')
+      //add manual bar numbers
+      if (guqin.bars != 'auto') {
+        lyBarSplit = lySongs[v].split('\\bar')
+        for (var i=0; i<lyBarSplit.length-1; i++) {
+          lyBarSplit[i] = lyBarSplit[i] + '\\set Score.currentBarNumber = #' + (i+2) + ' ' 
+        }
+        lySongs[v] = lyBarSplit.join('\\bar')
       }
-      ly = lyBars.join('\\bar')
+      // reformat
+      var lySongLine = lySongs[v].split('\n')
+      var newLySongLine = []
+      for (var l=0;l<lySongLine.length;l++) {
+        if (l == 0 || l == lySongLine.length-1) {
+          newLySongLine.push(lySongLine[l])
+        }
+        else if (lySongLine[l].trim() != '') {
+          newLySongLine.push('  ' + lySongLine[l].trim())
+        }
+      }
+      lySongs[v] = newLySongLine.join('\n')
+      // add to main ly variable
+      ly += lySongs[v] + '\n\n'
     }
+    // ly = ly
+    //   .split('\\bar "|"  (').join('( \\bar "|" ')
+    //   .split('\\bar "||"  (').join('( \\bar "||" ')
+    // if (guqin.bars == 'manual') {
+    //   lyBars = ly.split('\\bar')
+    //   for (var i=0; i<lyBars.length-1; i++) {
+    //     lyBars[i] = lyBars[i] + '\\set Score.currentBarNumber = #' + (i+2) + ' ' 
+    //   }
+    //   ly = lyBars.join('\\bar')
+    // }
   // }
 
   // { Tuning, score layouts
-    ly +=lyStr3 + '\n\n'
-    ly += `\\score {\n  ` + lyStr4 + guqin.intonation + ' }\n'
+    ly += lyStr3 + '\n\n' +
+      `\\score {\n  ` + lyStr4 + guqin.intonation + ' }\n'
     if (guqin.showtimesig == 'no') {
       ly += `  \\context { \\Staff \\omit TimeSignature }\n`
     }
-    if (guqin.bars == 'manual') {
+    if (guqin.bars != 'auto') {
       ly += `  \\context { \\Score automaticBars = ##f }\n`
     }
-    ly +='  ' + lyStr5 + '\n  ' + lyStr6 + '\n  ' + lyStr7 + '\n}\n'
+    ly +='  ' + lyStr5 + '\n  ' + lyStr6 + '\n  ' 
+
+    ly += '<< '
+    for (var v in lySongs) {
+      ly += ' \\new Staff { \\' + v + ' } '
+    }
+    ly += '\\new TabStaff  { \\clef "moderntab" << '
+    for (var v in lySongs) {
+      ly += ' \\' + v + ' '
+    }
+    ly += '>> } >>'
+
+    ly += '\n}\n'
   // }
 
   return ly
