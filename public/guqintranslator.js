@@ -289,11 +289,11 @@ function shortHandToGuqinJSON(shortHand) {
 
   // { error check the song
     for (var i=0; i<song.length; i++) {
-      if (song[i].indexOf('|') > -1 && song[i] != '|:|') {
-        errorLog(`Line ${songLineIdx[i]}: There's a mismatch between the number of notes in the note (n:) and finger positions (f:) lines.`)
-        return false
-      }
-      else if (song[i].indexOf('||') > -1 && song[i] != '||:||') {
+      // if (song[i].indexOf('||') > -1 && song[i] != '||:||') {
+      //   errorLog(`Line ${songLineIdx[i]}: There's a mismatch between the number of notes in the note (n:) and finger positions (f:) lines.`)
+      //   return false
+      // }
+      if (song[i].indexOf('|') > -1 && song[i] != '|:|' && song[i] != '||:||') {
         errorLog(`Line ${songLineIdx[i]}: There's a mismatch between the number of notes in the note (n:) and finger positions (f:) lines.`)
         return false
       }
