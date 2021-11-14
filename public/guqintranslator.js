@@ -721,19 +721,19 @@ function guqinToLilyPond(guqinJSON) {
         addToAll('\n ', lySongs)
       }
       else if (guqin.song[i].type == 'time') {
-        addToAll("\\time " + guqin.song[i].value + "\n  ", lySongs)
+        addToAll("\\time " + guqin.song[i].value + "\n  ", lySongs, voice)
       }
       else if (guqin.song[i].type == 'key') {
-        addToAll("\\key " + guqin.song[i].value.replace('major', '\\major').replace('minor', '\\minor') + "\n  ", lySongs)
+        addToAll("\\key " + guqin.song[i].value.replace('major', '\\major').replace('minor', '\\minor') + "\n  ", lySongs, voice)
       }
       else if (guqin.song[i].type == 'tempo') {
-        addToAll("\\tempo " + guqin.song[i].value + "\n  ", lySongs)
+        addToAll("\\tempo " + guqin.song[i].value + "\n  ", lySongs, voice)
       }
       else if (guqin.song[i].type == 'clef') {
         addToAll("\\clef \"" + guqin.song[i].value + "\"\n  ", lySongs, voice)
       }
       else if (guqin.song[i].type == 'mark') {
-        addToAll('\\mark \\markup \\left-column {"' + guqin.song[i].value.split('\\n').join('" "') + '" }\n  ', lySongs)
+        addToAll('\\mark \\markup \\left-column {"' + guqin.song[i].value.split('\\n').join('" "') + '" }\n  ', lySongs, voice)
       }
       else if (guqin.song[i].type == 'lilypond') {
         addToAll(guqin.song[i].value + "\n  ", lySongs, voice)
