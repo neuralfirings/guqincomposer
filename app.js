@@ -183,7 +183,11 @@ app.get('/nltabs', function(req,res) {
   }
 
   var index = fs.readFileSync('./nltabs.html', 'utf-8')
-  index = index.split('{{variables}}').join("session = " + JSON.stringify(session))
+  index = index
+    .split('{{variables}}').join("session = " + JSON.stringify(session))
+    .split('{{ogtitle}}').join('Compose Guqin Tablature')
+    .split('{{ogimgurl}}').join('https://guqin.nyl.io/screenshot.png')
+
   res.send(index)
 })
 

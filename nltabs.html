@@ -24,6 +24,9 @@
     <link rel="stylesheet" href="/style.css" />
     
     <script src="/guqintranslator.js"></script>
+    <meta property="og:title" content="{{ogtitle}}" />
+    <meta property="og:description" content="A song using Guqin NLTabs." />
+    <meta property="og:image" content="{{ogimgurl}}" />
 
     <script>
       {{variables}}
@@ -41,8 +44,11 @@
         }
         if (session.hasPNG) {
           $('.score-pngs').empty()
+          var firstPageUrl = ''
           for (var i=0;i<session.PNGs.length;i++) {
             $('.score-pngs').append(`<img class="png" src="/nltabfiles/${session.id}/${session.version}/${session.PNGs[i]}" />`)
+            if (i==0)
+              firstPageUrl = "/nltabfiles/${session.id}/${session.version}/${session.PNGs[i]}"
           }
           $('.score-container').show()
         }
