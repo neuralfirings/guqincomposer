@@ -672,7 +672,7 @@ function guqinToLilyPond(guqinJSON) {
       ly += '  tagline = \\markup \\center-column {"' + guqin.endnote.split('\\n').join('" "') + '" }\n'
     }
     else {
-      ly += '  tagline = "engraved by LilyPond using NL Tabs format (guqin.nyl.io)"\n'
+      ly += '  tagline = "guqin.nyl.io"\n'
     }
     if (guqin.tuninglabel != undefined) {
       ly += '  poet = \\markup \\left-column {"' + guqin.tuninglabel.split('\\n').join('" "') + '" " "}\n'
@@ -891,10 +891,15 @@ function guqinToLilyPond(guqinJSON) {
     }
     addToAll('\n\n}', lySongs)
     for (var v in lySongs) {
+      // reduce extra spaces
+      lySongs[v] = lySongs[v].replace(/  +/g, ' ');
       // correct slides over bars
       lySongs[v] = lySongs[v]
-        .split('\\bar "|"  (').join('( \\bar "|" ')
-        .split('\\bar "||"  (').join('( \\bar "||" ')
+        .split('\\bar "|" (').join('( \\bar "|" ')
+        .split('\\bar "||" (').join('( \\bar "||" ')
+      // correct glissando between grace and parent notes
+      lySongs[v] = lySongs[v]
+        .split('} \\glissando').join('\\glissando }')
       //add manual bar numbers
       if (guqin.bars != 'auto') {
         lyBarSplit = lySongs[v].split('\\bar')
