@@ -26,8 +26,9 @@
 					$.ajax({
 						url: '/latest?id=' + id,
 						success: function(output) {
-							if (output.error)
-								alert(output.error)
+							if (output.error) {
+								alert('Error loading score with id: ' + id + '\n\nDetails: \n' + output.error)
+							}
 							else {
 								var latestVersion = output.version
 								var scoreCard = $(tempCard)
@@ -76,7 +77,8 @@
 					<div class="markdown">
 						# Guqin Tablature Library
 
-						Here's a collection of music written for the Guqin using NLTabs. Have a piece you want to feature? [Drop me a line](https://blog.nyl.io/contact/). 
+						Here's a collection of music written for the Guqin using NLTabs. Have a piece you want to included? [Drop me a line](/contact.html).
+
 					</div>
 					<div class="library-shelf card-deck">
 						<div class="score-card card" data-id="2MILMah"></div>
@@ -89,10 +91,20 @@
 						<div class="score-card card" data-id="sy6dgjF"></div>
 					</div>
 					<div class="library-shelf card-deck">
+						<div class="score-card card" data-id="p9Z2uB9"></div>
+						<div class="score-card card" data-id="MPdHJdj"></div>
+						<div class="score-card card" data-id="oIZPpHM"></div>
+					</div>
+					<div class="library-shelf card-deck">
 						<div class="score-card card" data-id="qbSWqqt"></div>
 						<div class="score-card card" data-id="8oxs3oT"></div>
 						<div class="score-card card invisible" data-id="8oxs3oT"></div>
 					</div>
+<!-- 					<div class="library-shelf card-deck">
+						<div class="score-card card invisible" data-id="8oxs3oT"></div>
+						<div class="score-card card invisible" data-id="8oxs3oT"></div>
+						<div class="score-card card invisible" data-id="8oxs3oT"></div>
+					</div> -->
 				</div>
 			</div>
 		</div>
