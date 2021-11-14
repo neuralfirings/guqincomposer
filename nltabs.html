@@ -65,7 +65,7 @@
             console.log('shorthand > lilypond')
             var shortHand = shCodeMirror.getValue() // $('.shorthand').val()
             try {
-              var guqin = shortHandToGuqinJSON(shortHand)
+              var guqin = shortHandToGuqinJSON(shortHand.split('\t').join('  '))
               if (guqin) {
                 var ly = guqinToLilyPond(guqin)
                 console.log('rendered')
