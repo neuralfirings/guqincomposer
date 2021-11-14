@@ -19,7 +19,7 @@
 
 		<script>
 			$(document).ready(function() {
-				var tempCard = `<span><div style="max-height: 200px; overflow: hidden"><img class="card-img-top" src=""></div><div class="card-body"><h5 class="card-title"></h5><a href="#" class="score-link btn btn-primary btn-block">Open Score Editor</a><a href="#" class="pdf-link btn btn-link btn-block">Download PDF</a></div></span>`
+				var tempCard = `<span><div style="max-height: 200px; overflow: hidden"><a class="score-link"><img class="card-img-top" src=""></a></div><div class="card-body"><h5 class="card-title"></h5><a href="#" class="score-link btn btn-primary btn-block">Open Score Editor</a><a href="#" class="pdf-link btn btn-link btn-block">Download PDF</a></div></span>`
 				$('.score-card').each(function () {
 					var id = $(this).attr('data-id')
 					var thisDiv = $(this)
@@ -36,9 +36,9 @@
 								console.log(output.title.split('\n').join('<br />'))
 								scoreCard.find('.score-link').attr('href', '/nltabs/' + id)
 								scoreCard.find('.pdf-link').attr('href', output.pdf)
-								scoreCard.click(function() {
-									window.location.href = '/nltabs/' + id
-								})
+								// scoreCard.click(function() {
+								// 	window.location.href = '/nltabs/' + id
+								// })
 								thisDiv.append(scoreCard)
 							}
 						}
@@ -62,9 +62,9 @@
 			.library-shelf {
 				margin-bottom: 20px;
 			}
-			.score-card {
+/*			.score-card {
 				cursor: pointer;
-			}
+			}*/
 		</style>
 	</head>
 	<body>

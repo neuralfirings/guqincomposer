@@ -711,38 +711,29 @@ function guqinToLilyPond(guqinJSON) {
     addToAll(' = {\n' +
       '  \\clef "bass"\n' +
       '  \\set Score.barNumberVisibility = #all-bar-numbers-visible\n  ', lySongs)
-    // ly += 'song = {\n' +
-    //   '  \\clef "bass"\n' +
-    //   '  \\set Score.barNumberVisibility = #all-bar-numbers-visible\n  '
 
     var fyhuirange = [7,4]
     for (var i=0; i<guqin.song.length; i++) {
       if (guqin.song[i] == 'linebreak') {
         addToAll('\n ', lySongs)
-        // ly += '\n  '
       }
       else if (guqin.song[i].type == 'time') {
         addToAll("\\time " + guqin.song[i].value + "\n  ", lySongs)
-        // ly += "\\time " + guqin.song[i].value + "\n  "
       }
       else if (guqin.song[i].type == 'key') {
         addToAll("\\key " + guqin.song[i].value.replace('major', '\\major').replace('minor', '\\minor') + "\n  ", lySongs)
       }
       else if (guqin.song[i].type == 'tempo') {
         addToAll("\\tempo " + guqin.song[i].value + "\n  ", lySongs)
-        // ly += "\\tempo " + guqin.song[i].value + "\n  "
       }
       else if (guqin.song[i].type == 'clef') {
         addToAll("\\clef \"" + guqin.song[i].value + "\"\n  ", lySongs, voice)
-        // ly += "\\clef \"" + guqin.song[i].value + "\"\n  "
       }
       else if (guqin.song[i].type == 'mark') {
         addToAll('\\mark \\markup \\left-column {"' + guqin.song[i].value.split('\\n').join('" "') + '" }\n  ', lySongs)
-        // ly += '\\mark \\markup \\left-column {"' + guqin.song[i].value.split('\\n').join('" "') + '" }\n  '
       }
       else if (guqin.song[i].type == 'lilypond') {
         addToAll(guqin.song[i].value + "\n  ", lySongs, voice)
-        // ly += guqin.song[i].value + "\n  "
       }
       else if (guqin.song[i].type == 'voicechange') {
         voice = guqin.song[i].value
@@ -752,27 +743,13 @@ function guqinToLilyPond(guqinJSON) {
       }
       else {  
         if (guqin.song[i].type == 'bar') {
-          // if (guqin.bars == 'manual') {
-          //   ly += ' \\set Score.currentBarNumber = #' + measure + ' '
-          //   measure++
-          // }
           addToAll(' \\bar "' + guqin.song[i].value + '" ', lySongs, voice)
-          // if (guqin.song[i].value == 'double') {
-          //   addToAll(' \\bar "||" ', lySongs, voice)
-          //   // ly += ' \\bar "||" '
-          // }
-          // else {
-          //   addToAll(' \\bar "|" ', lySongs, voice)
-          //   // ly += ' \\bar "|" '
-          // }
         }
         else if (guqin.song[i].type == 'glissando') {
           addToAll(' \\glissando ', lySongs, voice)
-          // ly += ' \\glissando '
         }
         else if (guqin.song[i].type == "tie") {
           addToAll(' ~ ', lySongs, voice)
-          // ly += ' ~ '
         }
         else { // actual note
           voice = guqin.song[i].voice
@@ -785,65 +762,49 @@ function guqinToLilyPond(guqinJSON) {
           // encapsulation starts (grace or slurs)
           if (guqin.song[i].slur != undefined && guqin.song[i].slur.indexOf('start') > -1) {
             addToAll(" ( ", lySongs, voice)
-            // ly += " ( "
           }
           if (guqin.song[i].grace != undefined && guqin.song[i].grace.indexOf('start') > -1) {
             addToAll(" \\grace { ", lySongs, voice)
-            // ly += " \\grace { "
           }
           if (guqin.song[i].lh != undefined && guqin.song[i].lh.length > 0 && String(guqin.song[i].lh[0]).indexOf('X') > -1) { 
             // TODO: the lh[0] only looks at first note, so chords not supported
             addToAll(' \\lm ', lySongs, voice)
-            // ly += ' \\lm '
           }
 
           // the meat
           if (lyPitches.indexOf(guqin.song[i].note[0][0]) > -1) {
             if (guqin.song[i].note.length > 1) { // Chord
               addToAll('<', lySongs, voice)
-              // ly += '<'
               for (var j=0;j<guqin.song[i].note.length;j++) {
                 addToAll(guqin.song[i].note[j] + '\\' + guqin.song[i].str[j], lySongs, voice)
-                // ly += guqin.song[i].note[j] + '\\' + guqin.song[i].str[j]
               }
               addToAll('>', lySongs, voice)
-              // ly += '>'
               addToAll(guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "", lySongs, voice)
-              // ly += guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : ""
             }
             else if (guqin.song[i].note.length == 1) { // Single Note
               addToAll(guqin.song[i].note[0] , lySongs, voice)
-              // ly += guqin.song[i].note[0] 
               addToAll(guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "" , lySongs, voice)
-              // ly += guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "" 
               addToAll('\\' + guqin.song[i].str[0], lySongs, voice)
-              // ly += '\\' + guqin.song[i].str[0]
             }
             if (guqin.song[i].rh.length > 0) {
               var currRFH = guqin.song[i].rh.join('')
               if ((guqin.song[i].lhstr == undefined || guqin.song[i].lhstr != 'show') && getNumOnly(currRFH) == prevRHF) {
                 addToAll('^"' + removeNums(currRFH)  + '"', lySongs, voice)
-                // ly +=  '^"' + removeNums(currRFH)  + '"'
               }
               else {
                 addToAll('^"' + currRFH + '"', lySongs, voice)
-                // ly +=  '^"' + currRFH + '"'
                 prevRHF = getNumOnly(currRFH)
               }
             }
             addToAll(guqin.song[i].lh.length > 0 ? '_"' + guqin.song[i].lh.join('') + '"' : "", lySongs, voice)
-            // ly +=  guqin.song[i].lh.length > 0 ? '_"' + guqin.song[i].lh.join('') + '"' : ""
           }
           else if (lyFanYins.indexOf(guqin.song[i].note[0][0]) > -1)  {
             if (guqin.song[i].note.length > 1) { // Fan Yin Chord
               addToAll('<<', lySongs, voice)
-              // ly += '<<'
               for (var j=0;j<guqin.song[i].note.length;j++) { 
                 addToAll(' \\fy ', lySongs, voice)
-                // ly += ' \\fy '
                 if (guqin.song[i].fyHuis[j] != undefined) {
                   addToAll('#' + guqin.song[i].fyHuis[j] + ' ', lySongs, voice)
-                  // ly += '#' + guqin.song[i].fyHuis[j] + ' '
                 }
                 else {
                   var fyhPossibilities = getHarmonicPositions(guqin.song[i].note[j], guqin.song[i].str[j], guqin.tuning)
@@ -855,46 +816,35 @@ function guqinToLilyPond(guqinJSON) {
                       fyHuiPos = '#' + fyhPossibilities[k]
                   }
                   addToAll(fyHuiPos + ' ', lySongs, voice)
-                  // ly += fyHuiPos + ' '
                 }
                 addToAll(guqin.song[i].note[j].toLowerCase(), lySongs, voice)
-                // ly += guqin.song[i].note[j].toLowerCase()
                 if (j==0) {
                   addToAll(guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "" , lySongs, voice)
-                  // ly += guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "" 
                 }
                 addToAll('\\' + guqin.song[i].str[j], lySongs, voice)
-                // ly += '\\' + guqin.song[i].str[j]
                 if (j==0) {
                   if (guqin.song[i].rh.length > 0) {
                     var currRFH = guqin.song[i].rh.join('')
                     if ((guqin.song[i].lhstr == undefined || guqin.song[i].lhstr != 'show') && getNumOnly(currRFH) == prevRHF) {
                       addToAll('^"' + removeNums(currRFH)  + '"', lySongs, voice)
-                      // ly +=  '^"' + removeNums(currRFH)  + '"'
                     }
                     else {
                       addToAll('^"' + currRFH + '"', lySongs, voice)
-                      // ly +=  '^"' + currRFH + '"'
                       prevRHF = getNumOnly(currRFH)
                     }
                   }
                   addToAll(guqin.song[i].lh.length > 0 ? '_"' + guqin.song[i].lh.join('') + '"' : "", lySongs, voice)
-                  // ly +=  guqin.song[i].lh.length > 0 ? '_"' + guqin.song[i].lh.join('') + '"' : ""
                 }
               }
               addToAll('>>', lySongs, voice)
-              // ly += '>>'
             }
             else if (guqin.song[i].note.length == 1) { // Fan Yin Solo Note
               addToAll(' \\fy ', lySongs, voice)
-              // ly += ' \\fy '
               if (guqin.song[i].fyHuis.length > 0) {
                 addToAll('#' + guqin.song[i].fyHuis[0] + ' ', lySongs, voice)
-                // ly += '#' + guqin.song[i].fyHuis[0] + ' '
               }
               else {
                 var fyhPossibilities = getHarmonicPositions(guqin.song[i].note[0], guqin.song[i].str[0], guqin.tuning)
-                // console.log(guqin.song[i], fyhPossibilities)
                 var fyrMin = Math.min.apply(Math, fyhuirange) 
                 var fyrMax = Math.max.apply(Math, fyhuirange) 
                 var fyHuiPos = ''
@@ -905,55 +855,38 @@ function guqinToLilyPond(guqinJSON) {
                   }
                 }
                 addToAll(fyHuiPos + ' ', lySongs, voice)
-                // ly += fyHuiPos + ' '
               }
-              // if (fyhuirange != 0 && fyhuirange != "auto") {
-              //   ly += '#' + fyhuirange + ' '
-              // }
               addToAll(guqin.song[i].note[0].toLowerCase(), lySongs, voice)
-              // ly += guqin.song[i].note[0].toLowerCase()
               addToAll(guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "" , lySongs, voice)
-              // ly += guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "" 
               addToAll('\\' + guqin.song[i].str[0], lySongs, voice)
-              // ly += '\\' + guqin.song[i].str[0]
               if (guqin.song[i].rh.length > 0) {
                 var currRFH = guqin.song[i].rh.join('')
                 if ((guqin.song[i].lhstr == undefined || guqin.song[i].lhstr != 'show')  && getNumOnly(currRFH) == prevRHF) {
                   addToAll('^"' + removeNums(currRFH)  + '"', lySongs, voice)
-                  // ly +=  '^"' + removeNums(currRFH)  + '"'
                 }
                 else {
                   addToAll('^"' + currRFH + '"', lySongs, voice)
-                  // ly +=  '^"' + currRFH + '"'
                   prevRHF = getNumOnly(currRFH)
                 }
               }
               addToAll(guqin.song[i].lh.length > 0 ? '_"' + guqin.song[i].lh.join('') + '"' : "", lySongs, voice)
-              // ly +=  guqin.song[i].lh.length > 0 ? '_"' + guqin.song[i].lh.join('') + '"' : ""
             }
           }
 
           // encapsulation ends (grace or slurs)
           if (guqin.song[i].grace != undefined && guqin.song[i].grace.indexOf('end') > -1) {
             addToAll(' } ', lySongs, voice)
-            // ly += ' } '
           }
           if (guqin.song[i].slur != undefined && guqin.song[i].slur != undefined && guqin.song[i].slur.indexOf('end') > -1) {
             addToAll(" ) ", lySongs, voice)
-            // ly += " ) "
           }
 
           // space between notes
           addToAll(' ', lySongs, voice)
-          // ly += ' '
         }
       }
     }
-    // addToAll('\n\n  \\bar "|."\n\n}', lySongs)
     addToAll('\n\n}', lySongs)
-    // ly += '\n\n  \\bar "|."\n\n}\n\n'
-    // edge case corrections
-    // addToAll(false, lySongs, voice)
     for (var v in lySongs) {
       // correct slides over bars
       lySongs[v] = lySongs[v]
@@ -982,16 +915,6 @@ function guqinToLilyPond(guqinJSON) {
       // add to main ly variable
       ly += lySongs[v] + '\n\n'
     }
-    // ly = ly
-    //   .split('\\bar "|"  (').join('( \\bar "|" ')
-    //   .split('\\bar "||"  (').join('( \\bar "||" ')
-    // if (guqin.bars == 'manual') {
-    //   lyBars = ly.split('\\bar')
-    //   for (var i=0; i<lyBars.length-1; i++) {
-    //     lyBars[i] = lyBars[i] + '\\set Score.currentBarNumber = #' + (i+2) + ' ' 
-    //   }
-    //   ly = lyBars.join('\\bar')
-    // }
   // }
 
   // { Tuning, score layouts
