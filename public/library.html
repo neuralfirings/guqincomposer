@@ -19,7 +19,7 @@
 
     <meta property="og:title" content="Guqin music using NLTabs: Library" />
 		<meta property="og:description" content=".. an alternative to traditional guqin notation" />
-		<meta property="og:image" content="/thumbnail.jpg" />
+		<meta property="og:image" content="https://guqin.nyl.io/guqintabsexample.jpg" />
 
 		<script>
 			$(document).ready(function() {
@@ -37,7 +37,7 @@
 								var latestVersion = output.version
 								var scoreCard = $(tempCard)
 								scoreCard.find('img').attr('src', output.imgurl)
-								scoreCard.find('.card-title').html(output.title.split('\\n').join('<br />'))
+								scoreCard.find('.card-title').html(output.title.split('\\n').join(' '))
 								console.log(output.title.split('\n').join('<br />'))
 								scoreCard.find('.score-link').attr('href', '/nltabs/' + id)
 								scoreCard.find('.pdf-link').attr('href', output.pdf)

@@ -19,7 +19,7 @@
 
     <meta property="og:title" content="Guqin music using NLTabs Documentation" />
 		<meta property="og:description" content=".. an alternative to traditional guqin notation" />
-		<meta property="og:image" content="/thumbnail.jpg" />
+		<meta property="og:image" content="https://guqin.nyl.io/guqintabsexample.jpg" />
 
     <script>
     	// n/f need to only have one linebreak
@@ -93,7 +93,7 @@
 					title: Variations on a Theme
 					composer: Ada Lovelace
 					tuning: g,, a,, c, d, e, g, a,
-					intonation: equal
+					temperament: equal
 					showtimesig: none
 					bars: auto
 					```
@@ -106,7 +106,7 @@
 					* **composer**: (*default: blank*) appears on the right side under the title. Use `\n` to indicate a new line.
 					* **tuning**: (*default: g, a, c d e g a*) use the Lilypond format with spaces in between the notes (notes are lowercase). This will appear on the left side under the title, and it will drive the positioning of notes in the score.
 					* **tuninglabel**: (*default: whatever the tuning is*) Use this if you want a custom string of text in the left side under the title (where tuning info is traditionally). Use `\n` to indicate a new line.
-					* **intonation**: (*default: `equal`*) two values here are `just` and `equal`. These intonation settings dictate what the hui position numbers will be.. *slightly*. For a deep dive into what this is and why the small changes in hui positions, [check out my blog post](https://blog.nyl.io/guqin-part-2-open-and-pressed-notes/) on this topic.
+					* **temperament**: (*default: `equal`*) two values here are `just` and `equal`. These temperament settings dictate what the hui position numbers will be.. *slightly* ([example of just](/nltabs/yaRbv2P), [example of equal](/nltabs/xGkkS1I)). For a deep dive into what this is and why the small changes in hui positions, [check out my blog post](https://blog.nyl.io/guqin-part-2-open-and-pressed-notes/) on this topic.
 					* **showtimesig**: (*default: `yes`*) if `no`, then the score will omit any time signatures. 
 					* **bars**: (*default: `manual`*) if `auto`, then the score will auto insert bars based on the time signatures. If `manual`, then you will need to manually type in bars using the `|` character ([more bar notations here](#45-bars-glissandos-ties)).
 

@@ -190,7 +190,7 @@ function getPrevNote(song, i) {
 function shortHandToGuqinJSON(shortHand) {
   var shortHandLines = shortHand.split('\n')
   var tuning=['g,','a,','c','d','e','g','a']
-  var intonation='\\tuningEqual'
+  var temperament='\\tuningEqual'
   var composer=undefined
   var tuninglabel=undefined
   var title=undefined
@@ -214,8 +214,8 @@ function shortHandToGuqinJSON(shortHand) {
           var tuningStr = shortHandLines[i].split('tuning:')[1]
           tuning = tuningStr.trim().split(' ')
         }
-        if (shortHandLines[i].beginsWith("intonation:")) {
-          var intonation = shortHandLines[i].split('intonation:')[1].trim() == 'just' ? '\\tuningJust' : '\\tuningEqual'
+        if (shortHandLines[i].beginsWith("temperament:")) {
+          var temperament = shortHandLines[i].split('temperament:')[1].trim() == 'just' ? '\\tuningJust' : '\\tuningEqual'
         }
         else if (shortHandLines[i].beginsWith('showtimesig:')) {
           showtimesig = shortHandLines[i].split('showtimesig:')[1].trim()
@@ -617,7 +617,7 @@ function shortHandToGuqinJSON(shortHand) {
   return {
     tuning: tuning,
     tuninglabel: tuninglabel,
-    intonation: intonation,
+    temperament: temperament,
     title: title,
     composer: composer,
     endnote: endnote,
@@ -927,7 +927,7 @@ function guqinToLilyPond(guqinJSON) {
 
   // { Tuning, score layouts
     ly += lyStr3 + '\n\n' +
-      `\\score {\n  ` + lyStr4 + guqin.intonation + ' }\n'
+      `\\score {\n  ` + lyStr4 + guqin.temperament + ' }\n'
     if (guqin.showtimesig == 'no') {
       ly += `  \\context { \\Staff \\omit TimeSignature }\n`
     }
