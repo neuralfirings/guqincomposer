@@ -48,6 +48,7 @@ String.prototype.getParentheticals = function() {
   var txt2 = this.split('(');
   var matches = []
   for (var i = 1; i < txt2.length; i++) {
+    if (txt2[i].split(')')[0].substr(0,1) != "l" && txt2[i].split(')')[0].substr(0,1) != "r")
       matches.push(txt2[i].split(')')[0]);
   }
   return matches
@@ -57,6 +58,7 @@ String.prototype.removeParentheses = function() {
   var newTxt = this
   var matches = []
   for (var i = 1; i < txt2.length; i++) {
+    if (txt2[i].split(')')[0].substr(0,1) != "l" && txt2[i].split(')')[0].substr(0,1) != "r")
       matches.push(txt2[i].split(')')[0]);
   }
   for (var i=0; i<matches.length;i++) {
