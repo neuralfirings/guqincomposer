@@ -15,7 +15,7 @@ CodeMirror.defineSimpleMode("guqinshorthand", {
     // {regex: /(?:function|var|return|if|for|while|else|do|this)\b/, token: "keyword"},
     // {regex: /(?:n:|f:|var)\b/, token: "keyword"},
     // { regex: /(n:)\b/, token: "keyword" }
-    {regex: /n:|f:|title:|composer:|timesig:|tuning:|temperament:|showtimesig:|bars:|key:|time:|clef:|tempo:|mark:/, token: "keyword"},
+    {regex: /n:|f:|title:|composer:|timesig:|fyhuirange:|tuning:|temperament:|showtimesig:|bars:|key:|time:|clef:|tempo:|mark:/, token: "keyword"},
     {regex: / \| | \. | \|\| | \.\| | \.\. | \|\.\| | \|. | \.\|\: | \:\.\.\: | \:\|\.\|\: | \:\.\|\.: | \[\|\: | \:\|\]\[\|\: | \:\|\] | \:\|\. /, token: "bars"},
     {regex: / \|$| \.$| \|\|$| \.\|$| \.\.$| \|\.\|$| \|.$| \.\|\:$| \:\.\.\:$| \:\|\.\|\:$| \:\.\|\.:$| \[\|\:$| \:\|\]\[\|\:$| \:\|\]$| \:\|\./, token: "bars"},
     {regex: /\\n/, token: "endl"},
