@@ -18,6 +18,7 @@ CodeMirror.defineSimpleMode("guqinshorthand", {
     {regex: /n:|f:|title:|composer:|tuning:|temperament:|showtimesig:|bars:|key:|time:|clef:|tempo:|mark:/, token: "keyword"},
     {regex: / \| | \. | \|\| | \.\| | \.\. | \|\.\| | \|. | \.\|\: | \:\.\.\: | \:\|\.\|\: | \:\.\|\.: | \[\|\: | \:\|\]\[\|\: | \:\|\] | \:\|\. /, token: "bars"},
     {regex: / \|$| \.$| \|\|$| \.\|$| \.\.$| \|\.\|$| \|.$| \.\|\:$| \:\.\.\:$| \:\|\.\|\:$| \:\.\|\.:$| \[\|\:$| \:\|\]\[\|\:$| \:\|\]$| \:\|\./, token: "bars"},
+    {regex: /\\n/, token: "endl"},
     {regex: /\?/, token: "uncertainty"},
 
     // {regex: /true|false|null|undefined/, token: "atom"},
