@@ -129,7 +129,7 @@
 
 					These are all optional.
 
-					* **key**: (*default: c major*) This is the key, you can write signatures like `c minor`, `bes major` (b-flat major), etc.
+					* **key**: (*default: c major*) This is the key, you can write signatures like `c minor`, `b- major` (b-flat major), `b# minor` etc.
 					* **time**: (*default: 4/4*, shown as C or common time) This is the time signature. Valid notations are 2/4, 3/4, etc using Lilypond's time signature notation.
 					* **clef**: (*default: bass*) Valid values are bass, treble, alto, tenor. 
 					* **tempo**: (*default: 4=60*, not visible on the score) This appears above the staff and also effects the tempo of the MIDI file. Notations uses Lilypond's tempo notation, so 4=60 is quarter note at 60 beats per minute (bpm). Default is 4=60
@@ -161,6 +161,8 @@
 					| -------------------    | --------------------------------------------------|
 					| `a` to `g`             | notes when string is pressed or open              |
 					| `A` to `G` (capitalized)      | Fanyin Notes                               |
+					| `-`                    | flats, used after the note (ex: `c-` is c flat)   |
+					| `#`                    | sharps, used after the note (ex: `c#` is c sharp) |
 					| `r`	                   | rest                                              |
 					| `1-64`                 | 1 = whole notes, 4 quarter, etc.<br /> NOTE: notes in the chord must be ordered from lowest to highest string <br />(lowest string is furthest away from the player) |
 					| `.` (period)           | dot indicate half notes, so `2.` equals three beats   |

@@ -291,6 +291,7 @@ function shortHandToGuqinJSON(shortHand) {
           var noteStr = shortHandLines[i].split('n:')[1]
           // noteStr = noteStr.split('-').join(' -')
           noteStr = noteStr.replace(/ +(?= )/g,'');
+          noteStr = noteStr.split('#').join('is').split('-').join('es')
           var notes = noteStr.trim().split(' ') //split(/[\s-]+/) 
           for (var j=0; j<notes.length; j++) {
             song[nCtr] = (song[nCtr] == undefined ?  notes[j] : notes[j] + ';' + song[nCtr])
@@ -398,6 +399,7 @@ function shortHandToGuqinJSON(shortHand) {
     }
     else if (song[i].beginsWith('key:')) {
       var key = song[i].split('key:')[1]
+      key = key.split('#').join('is').split('-').join('es')
       guqin[i] = {"type": "key", "value": key}
     }
     else if (song[i].beginsWith('tempo:')) {
