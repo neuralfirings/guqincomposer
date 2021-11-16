@@ -15,6 +15,9 @@
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
     <script src="/lib/codemirror.js"></script>
     <link rel="stylesheet" href="/lib/codemirror.css">
+    <script src="/mode/simple.js"></script>
+    <script src="/mode/guqinshorthand.js"></script>
+    <script src="/mode/markdown/markdown.js"></script>
 
     <script src="https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/@magenta/music@1.23.1/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.4.0"></script>
 
@@ -345,7 +348,8 @@
         $('.input-container-ly').css('width', $('.input-container-ly').width() + 'px')
 
         shCodeMirror = CodeMirror.fromTextArea($('.shorthand')[0], {
-            lineNumbers: true
+            lineNumbers: true,
+            mode: 'guqinshorthand'
         });
         lyCodeMirror = CodeMirror.fromTextArea($('.lilypond')[0], {
             lineNumbers: true
@@ -445,6 +449,17 @@
         height: 100%;
         width: 100%;
         font-size: 13px;
+      }
+      .sh .cm-keyword {
+        font-weight: bold;
+        color:  #007bff;
+      }
+      .sh .cm-comment {
+        color:  #888;
+        font-style: italic;
+      }
+      .sh .cm-bars {
+        color:  #c00;
       }
       .input-container {
         height:  600px;
