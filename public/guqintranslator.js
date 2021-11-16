@@ -904,6 +904,9 @@ function guqinToLilyPond(guqinJSON) {
       // correct glissando between grace and parent notes
       lySongs[v] = lySongs[v]
         .split('} \\glissando').join('\\glissando }')
+      // correct fanyin ties
+      lySongs[v] = lySongs[v]
+        .split('>> ~').join('~ >>')
       //add manual bar numbers
       if (guqin.bars != 'auto') {
         lyBarSplit = lySongs[v].split('\\bar')
