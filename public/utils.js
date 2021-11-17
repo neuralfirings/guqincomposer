@@ -1,6 +1,6 @@
 $(document).ready(function() {
-	var newBodyHTML = $('body').html().split('[[').join('<span class="jzp">').split(']]').join('</span>')
-  $('body').html(newBodyHTML)
+	// var newBodyHTML = $('.jzpify').html().split('[[').join('<span class="jzp">').split(']]').join('</span>')
+ //  $('.jzpify').html(newBodyHTML)
     		
 
   var nav = `
