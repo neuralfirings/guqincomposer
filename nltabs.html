@@ -34,20 +34,6 @@
     <script>
       {{variables}}
 
-      function toggleJzp() {
-        jzp = !jzp
-        if (jzp) {
-          $('.cm-fingers').each(function() {
-            $(this).parent().addClass('jzp')
-          })
-        }
-        else {
-          $('.cm-fingers').each(function() {
-            $(this).parent().removeClass('jzp')
-          })
-        }
-      }
-
       $(document).ready(function() {
         currWidth = 100
         if (session.hasPDF) {
@@ -155,20 +141,6 @@
             $('.ly-view').show().addClass('no-link').addClass('tab-active')
             $('.sh-view').show().removeClass('no-link').removeClass('tab-active')
             $('.sh').hide()
-          }
-        })
-        jzp = false
-        $('.toggle-jzp').click(function() {
-          jzp = !jzp
-          if (jzp) {
-            $('.cm-fingers').each(function() {
-              $(this).parent().addClass('jzp')
-            })
-          }
-          else {
-            $('.cm-fingers').each(function() {
-              $(this).parent().removeClass('jzp')
-            })
           }
         })
 
@@ -585,7 +557,6 @@
                 <button class="render sh btn btn-primary" data-to="score" data-from="shorthand">Render Score</button>
                 <button class="render sh btn btn-link" data-to="lilypond" data-from="shorthand">Convert to LilyPond Code</button>
                 <button class="render ly btn btn-primary" data-to="score" data-from="lilypond">Render Score</button>
-                <button class="toggle-jzp btn btn-link float-right" data-to="score" data-from="lilypond">Toggle JZP</button>
               </div>
             </div>
           </div>
