@@ -209,8 +209,12 @@ function shortHandToGuqinJSON(shortHand) {
     fCtr = 0
     for (var i=0;i<shortHandLines.length;i++) {
       // shortHandLines[i] = shortHandLines[i].split("|").join(' ')
+      // ignore comments
       if (shortHandLines[i].split('//').length>1)
         shortHandLines[i] =   shortHandLines[i].split('//')[0]
+      // ignore brackets for jzp
+      shortHandLines[i] = shortHandLines[i].split('[[').join('').split(']]').join('')
+
       if (shortHandLines[i].trim() != "") {
         if (shortHandLines[i].beginsWith("tuning:")) {
           var tuningStr = shortHandLines[i].split('tuning:')[1]
