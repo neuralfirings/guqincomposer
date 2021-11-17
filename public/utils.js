@@ -1,4 +1,8 @@
 $(document).ready(function() {
+	var newBodyHTML = $('body').html().split('[[').join('<span class="jzp">').split(']]').join('</span>')
+  $('body').html(newBodyHTML)
+    		
+
   var nav = `
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <a class="navbar-brand" href="/"><i class="fas fa-sliders-h"></i> Guqin Music Using NLTabs</a>
@@ -61,12 +65,12 @@ $(document).ready(function() {
   				return
   			}
   			
-  			console.log(output.shorthand)
+  			// console.log(output.shorthand)
   			thisDiv.html(`
 					<div class="row">
 						<div class="col" style="width:50%">
 							<h5>Shorthand</h5>
-							<pre class="pre-ws-fix">` + output.shorthand + `</pre>
+							<pre class="pre-ws-fix">` + output.shorthand.jzp({brackets: 'keep'}) + `</pre>
 						</div>
 						<div class="col" style="width:50%">
 							<h5>Score Render</h5>
@@ -82,6 +86,13 @@ $(document).ready(function() {
   	})
   })
 })
+
+String.prototype.jzp = function(obj) {
+	if (typeof obj != 'undefined' && obj.brackets == "keep")
+		return this.split('[[').join('[[<span class="jzp">').split(']]').join('</span>]]')
+	else
+		return this.split('[[').join('<span class="jzp">').split(']]').join('</span>')
+}
 
 function errorLog(str, includeLy) {
   var err = new Error();

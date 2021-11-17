@@ -35,13 +35,14 @@
     	}
 
     	$(document).ready(function() {
+    		
     		var std = $('.standards').html()
     		for (var k in characterDataUrlMap) {
     			std = std.split(k).join(characterDataUrlMap[k])
     		}
 
-    		std = std.split('[[').join('<span class="jzp">').split(']]').join('</span>')
-    		$('.standards').html(std)
+    		// std = std.split('[[').join('<span class="jzp">').split(']]').join('</span>')
+    		// $('.standards').html(std)
 
 
 
@@ -76,14 +77,6 @@
     </script>
 
     <style>
-    	@font-face {
-		    font-family: JianZiPu;
-		    src: url("/GuqinJianzipu-Regular.otf") format("opentype");
-			}
-			.jzp {
-				font-family: JianZiPu;
-				font-size: 2rem;
-			}
     </style>
   </head>
   <body>
@@ -99,11 +92,11 @@
 					### Basic Fingering (single string with single sound)
 
 					<div class="jzp">hjukilo</div>
-					[[hjukilo]]
+					[[hjukilobyyb88bb99b]]
 
 					| Script | Name      | Details                                     | NLTabs |
 					|--------|-----------|---------------------------------------------|--------|
-					| {{2}}  | 擘 (Bo4)   | Thumb plucking in towards player            | 1v     |
+					| [[n]]  | 擘 (Bo4)   | Thumb plucking in towards player            | 1v     |
 					| [[h]]  | 托 (Tuo1)  | Thumb plucking out away from player         | 1^     |
 					| [[j]]  | 抹 (Mo3)   | Index finger plucking in towards player     | 2v     |
 					| [[u]]  | 挑 (Tiao1) | Index finger plucking out away from player  | 2^     |

@@ -105,3 +105,17 @@ body:after{
   transform:rotate(-45deg);
   /*padding-left: 10px;*/
 }
+
+/* Guqin */
+@font-face {
+  font-family: JianZiPu;
+  src: url("/GuqinJianzipu-Regular.otf") format("opentype");
+}
+.jzp {
+  font-family: JianZiPu, monospace;
+  font-variant-ligatures: contextual common-ligatures;
+  -moz-font-feature-settings: "kern", "calt", "liga";
+  -ms-font-feature-settings: "kern", "calt", "liga";
+  -webkit-font-feature-settings: "kern", "calt", "liga";
+  font-feature-settings: "kern", "calt", "liga";
+}
