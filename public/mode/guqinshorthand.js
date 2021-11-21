@@ -10,7 +10,11 @@ CodeMirror.defineSimpleMode("guqinshorthand", {
     {regex: /\?/, token: "uncertainty"},
     {regex: /\[\[/, token: "jzpbrackets", mode: {spec: "guqinjzp", end: /\]\]/}},
     // {regex: /f:/, token: "jzpbrackets", mode: {spec: "guqinjzp", end: /$/}},
-  ]
+  ],
+  meta: {
+    dontIndentStates: ["comment"],
+    lineComment: "//"
+  }
 });
 
 CodeMirror.defineSimpleMode("guqinjzp", {
@@ -31,6 +35,11 @@ CodeMirror.defineSimpleMode("guqinjzp", {
 CodeMirror.defineSimpleMode("javascript", {
   // The start state contains the rules that are initially used
   start: [
+    {regex: /\/\/.*/, token: "comment"},
+    // You can embed other modes with the mode property. This rule
+    // causes all code between << and >> to be highlighted with the XML
+    // mode.
+    {regex: /<</, token: "meta", mode: {spec: "xml", end: />>/}},
     // The regex matches the token, the token property contains the type
     {regex: /"(?:[^\\]|\\.)*?(?:"|$)/, token: "string"},
     // You can match multiple tokens at once. Note that the captured
@@ -44,7 +53,6 @@ CodeMirror.defineSimpleMode("javascript", {
     {regex: /true|false|null|undefined/, token: "atom"},
     {regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i,
      token: "number"},
-    {regex: /\/\/.*/, token: "comment"},
     {regex: /\/(?:[^\\]|\\.)*?\//, token: "variable-3"},
     // A next property will cause the mode to move to a different state
     {regex: /\/\*/, token: "comment", next: "comment"},
@@ -53,10 +61,6 @@ CodeMirror.defineSimpleMode("javascript", {
     {regex: /[\{\[\(]/, indent: true},
     {regex: /[\}\]\)]/, dedent: true},
     {regex: /[a-z$][\w$]*/, token: "variable"},
-    // You can embed other modes with the mode property. This rule
-    // causes all code between << and >> to be highlighted with the XML
-    // mode.
-    {regex: /<</, token: "meta", mode: {spec: "xml", end: />>/}}
   ],
   // The multi-line comment state.
   comment: [
