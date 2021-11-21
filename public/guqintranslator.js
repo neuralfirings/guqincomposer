@@ -212,8 +212,6 @@ function shortHandToGuqinJSON(shortHand) {
       // ignore comments
       if (shortHandLines[i].split('//').length>1)
         shortHandLines[i] =   shortHandLines[i].split('//')[0]
-      // ignore ?s
-      shortHandLines[i] = shortHandLines[i].split('?').join('')
 
       // ignore brackets for jzp
       shortHandLines[i] = shortHandLines[i].split('[[').join('').split(']]').join('')
@@ -296,6 +294,7 @@ function shortHandToGuqinJSON(shortHand) {
         }
         else if (shortHandLines[i].beginsWith("n:")) {
           var noteStr = shortHandLines[i].split('n:')[1]
+          noteStr = noteStr.split('?').join('')
           // noteStr = noteStr.split('-').join(' -')
           noteStr = noteStr.replace(/ +(?= )/g,'');
           noteStr = noteStr.split('#').join('is').split('-').join('es')
@@ -567,14 +566,14 @@ function shortHandToGuqinJSON(shortHand) {
             var customRH = false
             if (gq.indexOf('(lh:') > -1) { // custom LH
               customLH = true
-              customLHStr = gq.split('(lh:')[1].split(')')[0].trim()
-              gq = gq.split(customLHStr).join('')
+              customLHStr = gq.split('(lh:')[1].split(')')[0]
+              gq = gq.split('(lh:'+customLHStr+')').join('')
               guqin[i].lh.push(customLHStr.split('_').join(' '))
             }
             if (gq.indexOf('(rh:') > -1) { // custom RH
               customRH = true
-              customRHStr = gq.split('(rh:')[1].split(')')[0].trim()
-              gq = gq.split(customRHStr).join('')
+              customRHStr = gq.split('(rh:')[1].split(')')[0]
+              gq = gq.split('(rh:'+customRHStr+')').join('')
               guqin[i].rh.push(customRHStr.split('_').join(' '))
             }
           // }
