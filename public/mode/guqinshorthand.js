@@ -1,5 +1,6 @@
 CodeMirror.defineSimpleMode("guqinshorthand", {
   start: [
+    {regex: /\/\/.*/, token: "comment"},
     {regex: /title:|composer:|timesig:|fyhuirange:|tuning:|temperament:|showtimesig:|bars:|key:|time:|clef:|tempo:|mark:/, token: "keyword"},
     {regex: /n:/, token: "notes"},
     {regex: /f:/, token: "fingers"},
@@ -7,17 +8,18 @@ CodeMirror.defineSimpleMode("guqinshorthand", {
     {regex: / \|$| \.$| \|\|$| \.\|$| \.\.$| \|\.\|$| \|.$| \.\|\:$| \:\.\.\:$| \:\|\.\|\:$| \:\.\|\.\:$| \[\|\:$| \:\|\]\[\|\:$| \:\|\]$| \:\|\./, token: "bars"},
     {regex: /\\n/, token: "endl"},
     {regex: /\?/, token: "uncertainty"},
-    {regex: /\/\/.*/, token: "comment"},
-    {regex: /\[\[/, token: "jzpbrackets", mode: {spec: "guqinjzp", end: /\]\]/}}
+    {regex: /\[\[/, token: "jzpbrackets", mode: {spec: "guqinjzp", end: /\]\]/}},
+    // {regex: /f:/, token: "jzpbrackets", mode: {spec: "guqinjzp", end: /$/}},
   ]
 });
 
 CodeMirror.defineSimpleMode("guqinjzp", {
   start: [
+    // {regex: /\/\/.*/, token: "comment"},
+    {regex: /\?/, token: "uncertainty"},
     {regex: /D|F|S|V|c|d|f|g|h|i|j|k|l|n|o|s|u|v|w|x|by|yb|b8|8b/, token: "jzp"},
     {regex: / \| | \. | \|\| | \.\| | \.\. | \|\.\| | \|. | \.\|\: | \:\.\.\: | \:\|\.\|\: | \:\.\|\.\: | \[\|\: | \:\|\]\[\|\: | \:\|\] | \:\|\. /, token: "bars"},
     {regex: / \|$| \.$| \|\|$| \.\|$| \.\.$| \|\.\|$| \|.$| \.\|\:$| \:\.\.\:$| \:\|\.\|\:$| \:\.\|\.\:$| \[\|\:$| \:\|\]\[\|\:$| \:\|\]$| \:\|\./, token: "bars"},
-    {regex: /\?/, token: "uncertainty"}
   ]
 });
 

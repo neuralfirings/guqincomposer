@@ -212,6 +212,9 @@ function shortHandToGuqinJSON(shortHand) {
       // ignore comments
       if (shortHandLines[i].split('//').length>1)
         shortHandLines[i] =   shortHandLines[i].split('//')[0]
+      // ignore ?s
+      shortHandLines[i] = shortHandLines[i].split('?').join('')
+
       // ignore brackets for jzp
       shortHandLines[i] = shortHandLines[i].split('[[').join('').split(']]').join('')
 
