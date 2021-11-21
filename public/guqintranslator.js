@@ -328,10 +328,7 @@ function shortHandToGuqinJSON(shortHand) {
 
   // { error check the song
     for (var i=0; i<song.length; i++) {
-      // if (song[i].indexOf('||') > -1 && song[i] != '||:||') {
-      //   errorLog(`Line ${songLineIdx[i]}: There's a mismatch between the number of notes in the note (n:) and finger positions (f:) lines.`)
-      //   return false
-      // }
+
       if (song[i].indexOf('|') > -1) {
         if (lyBars.indexOf(song[i].split(';')[0]) == -1) {
           errorLog(`Line ${songLineIdx[i]}: ${song[i].split(';')[0]} is not a valid bar notation.`)
@@ -375,6 +372,30 @@ function shortHandToGuqinJSON(shortHand) {
       if (!validNote) {
         errorLog(`Line ${songLineIdx[i]}: Looks like an invalid entry in the note line (n:): ${notePart}`)
         return false
+      }
+    }
+  // }
+
+
+
+  // { move slides from n to f level
+    for (var i=0; i<song.length; i++) {
+      var notePart = song[i].split(';')[0]
+      var fingerPart = song[i].split(';')[1]
+
+      if (notePart.indexOf('/') > -1) {
+        if (fingerPart.indexOf('/') == -1) {
+          fingerPart = '/' + fingerPart
+        }
+        notePart.split('/').join('')
+        song[i] = notePart + ';' + fingerPart
+      }
+      if (notePart.indexOf('\\') > -1) {
+        if (fingerPart.indexOf('\\') == -1) {
+          fingerPart = '\\' + fingerPart
+        }
+        notePart.split('\\').join('')
+        song[i] = notePart + ';' + fingerPart
       }
     }
   // }
