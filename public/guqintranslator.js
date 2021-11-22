@@ -376,8 +376,6 @@ function shortHandToGuqinJSON(shortHand) {
     }
   // }
 
-
-
   // { move slides from n to f level
     for (var i=0; i<song.length; i++) {
       var notePart = song[i].split(';')[0]
@@ -462,6 +460,7 @@ function shortHandToGuqinJSON(shortHand) {
         rh: [],
         lh: [],
         fyHuis: [],
+        pressedHuis: [],
         slur: [],
         grace: [],
         voice: voice
@@ -640,6 +639,13 @@ function shortHandToGuqinJSON(shortHand) {
           guqin[i].str = prevStr
         prevStr = guqin[i].str
       // } end
+
+      // get pressed huis
+        for (var j=0;j<guqin[i].note.length; j++) {
+          if (guqin[i].note[j].toLowerCase() == guqin[i].note[j]) {
+            guqin[i].pressedHuis[j] = getPressedPosition(guqin[i].note[j], guqin[i].str[j])
+          }
+        }
       }
     }
   }
