@@ -42,32 +42,32 @@
 
 
 
-    		$('.standards').each(function() {
-					var md = $(this).html()
-					var mdLines = md.split('\n')
-					var ws = ''
-					var i=0
-					do {
-						if (mdLines[i] != '')
-							ws = mdLines[i].split(mdLines[i].trim())[0]
-						i++
-					} while (i < mdLines.length && ws == '')
+    	// 	$('.standards').each(function() {
+					// var md = $(this).html()
+					// var mdLines = md.split('\n')
+					// var ws = ''
+					// var i=0
+					// do {
+					// 	if (mdLines[i] != '')
+					// 		ws = mdLines[i].split(mdLines[i].trim())[0]
+					// 	i++
+					// } while (i < mdLines.length && ws == '')
 					
-					for (var i=0;i<mdLines.length;i++) {
-						if (mdLines[i].substr(0, ws.length) == ws) {
-							mdLines[i] = mdLines[i].substr(ws.length)
-						}
-					}
-					// console.log(mdLines.join('\n'))
-			    marked.setOptions({
-			      gfm: true
-			    })
-					$(this).html(marked.parse(mdLines.join('\n')))
+					// for (var i=0;i<mdLines.length;i++) {
+					// 	if (mdLines[i].substr(0, ws.length) == ws) {
+					// 		mdLines[i] = mdLines[i].substr(ws.length)
+					// 	}
+					// }
+					// // console.log(mdLines.join('\n'))
+			  //   marked.setOptions({
+			  //     gfm: true
+			  //   })
+					// $(this).html(marked.parse(mdLines.join('\n')))
 
-			    $(this).find('table').each(function() {
-			      $(this).addClass('table table-sm')
-			    })       			
-    		})
+			  //   $(this).find('table').each(function() {
+			  //     $(this).addClass('table table-sm')
+			  //   })       			
+    	// 	})
  		
     	})
     </script>
@@ -75,11 +75,14 @@
     <style>
     	.jzp {
     		font-weight: bold;
-    		color:  #007bff;
+    		color:  #842029;
     	}
     	.jzp-use-characters {
     		font-size: 3rem;
     		font-weight: normal;
+    	}
+    	.standards table img {
+    		width:  50px;
     	}
     </style>
   </head>
@@ -88,12 +91,14 @@
     <br />	
 		<div class="container" id="content">
 			<div class="row">
-				<div class="col doc markdown jzp-use-brackets">
+				<div class="col standards doc markdown jzp-use-brackets">
 					# Standards of Guqin Notations 
 
 					## Fingering – Right Hand
 
 					### Basic Fingering (single string with single sound)
+
+					<div class='gq-snippet' data-id="WOCyWDt" data-img-height="200" data-shorthand-height="200" data-link="link to example"></div>
 
 					| Script | Name      | Details                                     | NLTabs | Shorthand | 
 					|--------|-----------|---------------------------------------------|--------| -----|
@@ -106,26 +111,29 @@
 					| [[l]]  | 打 (dǎ)   | Ring finger plucking in towards player      | 4v     | l |
 					| [[o]]  | 摘 (zhāi) | Ring finger plucking out away from player   | 4^     | o |
 
-					<div class='gq-snippet' data-id="WOCyWDt" data-img-height="200" data-shorthand-height="200" data-link="link to example"></div>
 
 					### Single-string movements (multiple sound movements)
+
+					<div class='gq-snippet' data-id="wTwaa2V" data-img-height="300" data-shorthand-height="300" data-link="link to example"></div>
 
 					| Script | Name      | Details                                     | NLTabs | Shorthand | 
 					|--------|-----------|---------------------------------------------|--------|--|
 					| [[[ju ]]] | 抹挑            | Index finger plucking inward then outward motion. This may have an implication to play the two notes faster than if written separately. | 2v^ | ju |
-					| TBD    | 勾剔            | As above, middle finger. | 3v^ | ki |
+					| ![](/standards/勾剔.png)   | 勾剔            | As above, middle finger. | 3v^ | ki |
 					| [[lo]] | 打摘            |  As above, ring finger. | 4v^ | lo | 
-					| TBD    | 疊蠲 (dǐe juān) | [[jk]] in rapid succession on the same string. Produces two quick but clear sounds. The simplified version of this shorthand is not to be confused with Quanfu and Banfu (全扶,半扶). However, some old scores will record this movement with multiple strings. In that case, perform a quick [[j]] on all involved strings, while using the middle finger to stop the previous string as the next is played. | 2v3v | jk |
+					| ![](/standards/疊蠲.png)     | 疊蠲 (dǐe juān) | [[jk]] in rapid succession on the same string. Produces two quick but clear sounds. The simplified version of this shorthand is not to be confused with Quanfu and Banfu (全扶,半扶). However, some old scores will record this movement with multiple strings. In that case, perform a quick [[j]] on all involved strings, while using the middle finger to stop the previous string as the next is played. | 2v3v | jk |
 					| [[[jk]]] | 抹勾 (mǒ gōu)   | Similar to above, but has implication to play slower, making the two sounds distinct from each other. | <2v3v | &lt;jk |
-					| TBD    | 半輪 (bān lún)  | [[oi]] in rapid succession on the same string. Knuckles should be bent and lined against each other, firing off in an unrushed manner. Speed of playing this movement depends on context of the piece. | 4^3^ | oi | 
-					| TBD    | 輪 (lún)        | [[oiu]] in rapid succession on the same string. Produces 3 sounds. Knuckles should be bent and lined against each other, firing off in an unrushed manner. Speed of playing this movement depends on context of the piece. | 4^3^2^ | oiu |
-					| TBD    | 背鎖 (bēi suǒ) or 小鎖 (xiao3 suo3) | [[juk]] in rapid succession on the same string. Produces 3 sounds. Please see note   regarding rhythm. | 2v^3v | juk |
-					| TBD    | 短鎖 (dúan xuǒ)  | [[jukij]] on the same string. Produces 5 sounds. See note 2 regarding rhythm. | 2v^3v^2v | jukij |
-					| TBD    | 長鎖 (cháng xuǒ) | [[(ju)jukijuk]] on the same string. Produces 7 sounds (sometimes specified as 9 sounds with the term 九声). See note 2 regarding rhythm. | (2v^)2v^3v^2v^3v | (ju)jukijuk |
+					| ![](/standards/半輪.png)     | 半輪 (bān lún)  | [[oi]] in rapid succession on the same string. Knuckles should be bent and lined against each other, firing off in an unrushed manner. Speed of playing this movement depends on context of the piece. | 4^3^ | oi | 
+					| ![](/standards/輪.png)     | 輪 (lún)        | [[oiu]] in rapid succession on the same string. Produces 3 sounds. Knuckles should be bent and lined against each other, firing off in an unrushed manner. Speed of playing this movement depends on context of the piece. | 4^3^2^ | oiu |
+					| ![](/standards/背鎖or小鎖.png)   | 背鎖 (bēi suǒ) or 小鎖 (xiao3 suo3) | [[juk]] in rapid succession on the same string. Produces 3 sounds. Please see note   regarding rhythm. | 2v^3v | juk |
+					| ![](/standards/短鎖.png)     | 短鎖 (dúan xuǒ)  | [[jukij]] on the same string. Produces 5 sounds. See note 2 regarding rhythm. | 2v^3v^2v | jukij |
+					| ![](/standards/長鎖.png)     | 長鎖 (cháng xuǒ) | [[(ju)jukijuk]] on the same string. Produces 7 sounds (sometimes specified as 9 sounds with the term 九声). See note 2 regarding rhythm. | (2v^)2v^3v^2v^3v | (ju)jukijuk |
 
-					<div class='gq-snippet' data-id="wTwaa2V" data-img-height="300" data-shorthand-height="300" data-link="link to example"></div>
 
 					### Multiple-String Movements (single/double-sound movements)
+
+					<div class='gq-snippet' data-id="X4RuT8i" data-img-height="400" data-shorthand-height="400" data-link="link to example"></div>
+					
 					| Script | Name      | Details                                     | NLTabs | Shorthand | 
 					|--------|-----------|---------------------------------------------|--------|--|
 					| TBD | 歷 (lì) | A [[u]] movement on two (or more) consecutive strings. The focus is on being light, brisk, and clear.  | 2^^^ | uuu | 
@@ -140,9 +148,16 @@
 					| TBD | 雙彈 (shuāng tǎn) | [[iu]] on two strings simultaneously with power, each finger in consecutive order. An alternative name for this is 支 (鼓, gǔ). | 3^2^ | iu |
 					| TBD | 三彈 (sān tǎn) | [[oiu]] on two strings simultaneously with strength, each finger in consecutive order. (For emphasis, some may replace the first [[o]] with another [[i]] ) | 4^3^2^ | oiu |
 
-					<div class='gq-snippet' data-id="X4RuT8i" data-img-height="400" data-shorthand-height="400" data-link="link to example"></div>
 
 					### Multiple-String Movements (Multiple-sound movements)
+
+					---
+
+					#### Credits
+
+					This page is adapted from [Standards of the Guqin by Juni Lefeuille Yeung](https://torguqin.wordpress.com/2008/11/04/standards-of-the-guqin-project/).
+
+					<a rel="license" href="http://creativecommons.org/licenses/by-sa/2.5/ca/"><img style="border-width:0;" src="https://i2.wp.com/i.creativecommons.org/l/by-sa/2.5/ca/88x31.png" alt="Creative Commons License" width="88" height="31" srcset="https://i2.wp.com/i.creativecommons.org/l/by-sa/2.5/ca/88x31.png?zoom=2 2x" scale="2"></a>
 
 				</div>
 			</div>
