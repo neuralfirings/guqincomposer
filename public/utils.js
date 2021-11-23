@@ -70,16 +70,25 @@ $(document).ready(function() {
 					<div class="row">
 						<div class="col" style="width:50%">
 							<h5>Shorthand</h5>
-							<pre class="pre-ws-fix">` + output.shorthand.jzp({brackets: 'keep'}) + `</pre>
+							<pre class="gq-snippet-sh pre-ws-fix">` + output.shorthand.jzp({brackets: 'keep'}) + `</pre>
 						</div>
 						<div class="col" style="width:50%">
-							<h5>Score Render</h5>
+							<h5>Score</h5>
 							<img src="/nltabfiles/${id}/${output.version}/music.png" class="gq-snippet-img" />
 						</div>
+					</div>
+					<div class="row">
+						<div class="col"><h5><a class="gq-snippet-link"></a></h5></div>
 					</div>
   			`)
   			if (thisDiv.attr('data-img-height') != undefined) {
   				thisDiv.find('.gq-snippet-img').css('height', thisDiv.attr('data-img-height') + 'px')
+  			}
+  			if (thisDiv.attr('data-shorthand-height') != undefined) {
+  				thisDiv.find('.gq-snippet-sh').css('height', thisDiv.attr('data-shorthand-height') + 'px')
+  			}
+  			if (thisDiv.attr('data-link') != undefined) {
+  				thisDiv.find('.gq-snippet-link').attr('href', '/nltabs/' + id).text(thisDiv.attr('data-link'))
   			}
   			
   		}

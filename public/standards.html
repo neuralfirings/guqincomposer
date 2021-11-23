@@ -17,6 +17,10 @@
 
 		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
+
+		<script src="/lib/jianzipu.js"></script>
+    <link rel="stylesheet" href="/lib/jianzipu.css" />
+
 		<script src="/utils.js"></script>
     <link rel="stylesheet" href="/style.css" />
 
@@ -69,61 +73,76 @@
     </script>
 
     <style>
-			@font-face {
-			  font-family: NancyTest;
-			  src: url("/NancyTest.otf") format("opentype");
-			}
-			.nancy-test {
-			  font-family: NancyTest, monospace;
-			  font-variant-ligatures: contextual common-ligatures;
-			  -moz-font-feature-settings: "kern", "calt", "liga";
-			  -ms-font-feature-settings: "kern", "calt", "liga";
-			  -webkit-font-feature-settings: "kern", "calt", "liga";
-			  font-feature-settings: "kern", "calt", "liga";
-			}
+    	.jzp {
+    		font-weight: bold;
+    		color:  #007bff;
+    	}
+    	.jzp-use-characters {
+    		font-size: 3rem;
+    		font-weight: normal;
+    	}
     </style>
   </head>
   <body>
 		<nav class="nav"></nav>  
     <br />	
-    	<div class="nancy-test">jbjy by</div>
-
-					<i class="jzp jz-j"></i>
-
-					<span class="jzp-stack jzp-2x">
-					  <i class="jzp jz-s jzp-stack-1x"></i>
-					  <i class="jzp jz-k jzp-stack-2x" style="color:Tomato"></i>
-					</span>
-
-					A&#775;&#775;
-
 		<div class="container" id="content">
 			<div class="row">
-				<div class="col doc standards ![[jzp]]">
+				<div class="col doc markdown jzp-use-brackets">
 					# Standards of Guqin Notations 
 
 					## Fingering – Right Hand
 
 					### Basic Fingering (single string with single sound)
 
-					<div class="jzp">hjukilo</div>
+					| Script | Name      | Details                                     | NLTabs | Shorthand | 
+					|--------|-----------|---------------------------------------------|--------| -----|
+					| [[n]]  | 擘 (bò)   | Thumb plucking in towards player            | 1v     | n |
+					| [[h]]  | 托 (tūo)  | Thumb plucking out away from player         | 1^     | h |
+					| [[j]]  | 抹 (mǒ)   | Index finger plucking in towards player     | 2v     | j |
+					| [[u]]  | 挑 (tīao) | Index finger plucking out away from player  | 2^     | u |
+					| [[k]]  | 勾 (gōu)  | Middle finger plucking in towards player    | 3v     | k |
+					| [[i]]  | 剔 (tī)   | Middle finger plucking out away from player | 3^     | i |
+					| [[l]]  | 打 (dǎ)   | Ring finger plucking in towards player      | 4v     | l |
+					| [[o]]  | 摘 (zhāi) | Ring finger plucking out away from player   | 4^     | o |
 
-
-					[[hjukilobyyb88bb99b]]
-
-					| Script | Name      | Details                                     | NLTabs |
-					|--------|-----------|---------------------------------------------|--------|
-					| [[n]]  | 擘 (Bo4)   | Thumb plucking in towards player            | 1v     |
-					| [[h]]  | 托 (Tuo1)  | Thumb plucking out away from player         | 1^     |
-					| [[j]]  | 抹 (Mo3)   | Index finger plucking in towards player     | 2v     |
-					| [[u]]  | 挑 (Tiao1) | Index finger plucking out away from player  | 2^     |
-					| [[k]]  | 勾 (Gou1)  | Middle finger plucking in towards player    | 3v     |
-					| [[i]]  | 剔 (Ti1)   | Middle finger plucking out away from player | 3^     |
-					| [[l]]  | 打 (Da3)   | Ring finger plucking in towards player      | 4v     |
-					| [[o]]  | 摘 (Zhai1) | Ring finger plucking out away from player   | 4^     |
+					<div class='gq-snippet' data-id="WOCyWDt" data-img-height="200" data-shorthand-height="200" data-link="link to example"></div>
 
 					### Single-string movements (multiple sound movements)
 
+					| Script | Name      | Details                                     | NLTabs | Shorthand | 
+					|--------|-----------|---------------------------------------------|--------|--|
+					| [[[ju ]]] | 抹挑            | Index finger plucking inward then outward motion. This may have an implication to play the two notes faster than if written separately. | 2v^ | ju |
+					| TBD    | 勾剔            | As above, middle finger. | 3v^ | ki |
+					| [[lo]] | 打摘            |  As above, ring finger. | 4v^ | lo | 
+					| TBD    | 疊蠲 (dǐe juān) | [[jk]] in rapid succession on the same string. Produces two quick but clear sounds. The simplified version of this shorthand is not to be confused with Quanfu and Banfu (全扶,半扶). However, some old scores will record this movement with multiple strings. In that case, perform a quick [[j]] on all involved strings, while using the middle finger to stop the previous string as the next is played. | 2v3v | jk |
+					| [[[jk]]] | 抹勾 (mǒ gōu)   | Similar to above, but has implication to play slower, making the two sounds distinct from each other. | <2v3v | &lt;jk |
+					| TBD    | 半輪 (bān lún)  | [[oi]] in rapid succession on the same string. Knuckles should be bent and lined against each other, firing off in an unrushed manner. Speed of playing this movement depends on context of the piece. | 4^3^ | oi | 
+					| TBD    | 輪 (lún)        | [[oiu]] in rapid succession on the same string. Produces 3 sounds. Knuckles should be bent and lined against each other, firing off in an unrushed manner. Speed of playing this movement depends on context of the piece. | 4^3^2^ | oiu |
+					| TBD    | 背鎖 (bēi suǒ) or 小鎖 (xiao3 suo3) | [[juk]] in rapid succession on the same string. Produces 3 sounds. Please see note   regarding rhythm. | 2v^3v | juk |
+					| TBD    | 短鎖 (dúan xuǒ)  | [[jukij]] on the same string. Produces 5 sounds. See note 2 regarding rhythm. | 2v^3v^2v | jukij |
+					| TBD    | 長鎖 (cháng xuǒ) | [[(ju)jukijuk]] on the same string. Produces 7 sounds (sometimes specified as 9 sounds with the term 九声). See note 2 regarding rhythm. | (2v^)2v^3v^2v^3v | (ju)jukijuk |
+
+					<div class='gq-snippet' data-id="wTwaa2V" data-img-height="300" data-shorthand-height="300" data-link="link to example"></div>
+
+					### Multiple-String Movements (single/double-sound movements)
+					| Script | Name      | Details                                     | NLTabs | Shorthand | 
+					|--------|-----------|---------------------------------------------|--------|--|
+					| TBD | 歷 (lì) | A [[u]] movement on two (or more) consecutive strings. The focus is on being light, brisk, and clear.  | 2^^^ | uuu | 
+					| TBD | 如一 (rú yī) | “As one”, perform a [[i]] on two strings simultaneously to produce one whole sound. This character is usually written in subscript (and looks like accompaniment notation) and includes one pressed and one open string. E.g. (4th string at 7.6 hui, open 3rd string 如一) | 3^3^ | ii |
+					| [[by]] | 撮 (cuō) | There are two variations of this movement: [[uk]] on two separate strings to produce 1 sound for smaller distances (2~4 strings apart), OR [[hk]]  on two separate strings to produce 1 sound for larger distances (5 strings apart or more, usually used for perfect octaves) | 2^3v or 1^3v| by | 
+					| [[b9]] | 反撮 (fǎn cuō) | Same as above, reverse motion: [[ji]] for smaller distances (this movement may require some practice), OR [[ni]] for larger distances. Appears only after a [[by]]. | 2v3^ or 1v3^ | b9 |
+					| TBD | 潑 (bō) | [[lkj]] simultaneously to produce 1 sound. The fingers are lined up close to each other and act as one moving body part to produce a powerful sound from the string(s). | [432]v | (rh:[432]v) |
+					| TBD | 剌 (lā) | [[oiu]] simultaneously to produce 1 sound. The fingers are lined up close to each other and act as one moving body part to produce a powerful sound from the string(s). | [432]^ | (rh:[432]^) |
+					| TBD | 潑剌 | A combination of the above, playing. 潑 followed by 剌. | [432]v [432]^ | (rh:[432]v [432]^) |
+					| TBD | 打圓 (dǎ yuán) | Play [[uk]] (moderately, then pause) [[uku]] (quickly, then pause) and [[k]] (drift out) on the two previously mentioned strings. This character is written in subscript, separately from the indicated strings. | 2^3v 2^3v2^ 3v | uk uku k |
+					| TBD | 摟圓 (lōu yuán) | Play [[j]] and [[k]] on two separate strings simultaneously. Produces 1 sound. The effect is similar to a small [[by]], but only used for harmonics and gentler in strength. There is another movement played similarly, but can be used for open and pressed notes called 齪 (chùo), denoted by the simplified symbol 足. | [23]v | (rh:[23]v) |
+					| TBD | 雙彈 (shuāng tǎn) | [[iu]] on two strings simultaneously with power, each finger in consecutive order. An alternative name for this is 支 (鼓, gǔ). | 3^2^ | iu |
+					| TBD | 三彈 (sān tǎn) | [[oiu]] on two strings simultaneously with strength, each finger in consecutive order. (For emphasis, some may replace the first [[o]] with another [[i]] ) | 4^3^2^ | oiu |
+
+					<div class='gq-snippet' data-id="X4RuT8i" data-img-height="400" data-shorthand-height="400" data-link="link to example"></div>
+
+					### Multiple-String Movements (Multiple-sound movements)
 
 				</div>
 			</div>
@@ -132,3 +151,4 @@
 </html>
 
 
+a

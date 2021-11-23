@@ -109,8 +109,7 @@ body:after{
 /* Guqin */
 @font-face {
   font-family: JianZiPu;
-  /*src: url("/GuqinJianzipu-Regular.otf") format("opentype");*/
-  src: url("/JianZiPu.v9.otf") format("opentype");
+  src: url("/lib/JianZiPu.v10.otf") format("opentype");
 }
 .jzp {
   font-family: JianZiPu, monospace;

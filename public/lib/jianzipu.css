@@ -1,0 +1,12 @@
+@font-face {
+  font-family: JianZiPu;
+  src: url("JianZiPu.v10.otf") format("opentype");
+}
+.jzp {
+  font-family: JianZiPu, monospace;
+  font-variant-ligatures: contextual common-ligatures;
+  -moz-font-feature-settings: "kern", "calt", "liga";
+  -ms-font-feature-settings: "kern", "calt", "liga";
+  -webkit-font-feature-settings: "kern", "calt", "liga";
+  font-feature-settings: "kern", "calt", "liga";
+}
