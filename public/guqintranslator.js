@@ -220,7 +220,7 @@ function shortHandToGuqinJSON(shortHand) {
 
       if (shortHandLines[i].trim() != "") {
         if (shortHandLines[i].beginsWith("tuning:")) {
-          var tuningStr = shortHandLines[i].split('tuning:')[1]
+          var tuningStr = shortHandLines[i].split('tuning:')[1].split('#').join('is').split('-').join('es')
           tuning = tuningStr.trim().split(' ')
         }
         if (shortHandLines[i].beginsWith("temperament:")) {
@@ -259,7 +259,7 @@ function shortHandToGuqinJSON(shortHand) {
           fCtr++
         }
         else if (shortHandLines[i].beginsWith('key:')) {
-          song.push("key:" + shortHandLines[i].split('key:')[1].trim())
+          song.push("key:" + shortHandLines[i].split('key:')[1].trim().split('#').join('is').split('-').join('es'))
           songLineIdx.push(i)
           nCtr++
           fCtr++

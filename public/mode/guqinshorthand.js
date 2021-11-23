@@ -1,7 +1,7 @@
 CodeMirror.defineSimpleMode("guqinshorthand", {
   start: [
     {regex: /\/\/.*/, token: "comment"},
-    {regex: /title:|composer:|timesig:|fyhuirange:|tuning:|temperament:|showtimesig:|bars:|key:|time:|clef:|tempo:|mark:/, token: "keyword"},
+    {regex: /title:|composer:|timesig:|tuninglabel:|voice:|fyhuirange:|tuning:|temperament:|showtimesig:|bars:|key:|time:|clef:|tempo:|mark:/, token: "keyword"},
     {regex: /n:/, token: "notes"},
     {regex: /f:/, token: "fingers"},
     {regex: / \| | \. | \|\| | \.\| | \.\. | \|\.\| | \|. | \.\|\: | \:\.\.\: | \:\|\.\|\: | \:\.\|\.\: | \[\|\: | \:\|\]\[\|\: | \:\|\] | \:\|\. /, token: "bars"},
