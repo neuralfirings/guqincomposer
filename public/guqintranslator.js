@@ -379,27 +379,27 @@ function shortHandToGuqinJSON(shortHand) {
   // }
 
   // { move slides from n to f level
-    for (var i=0; i<song.length; i++) {
-      if (!song[i].beginsWith('linebreak') && !song[i].beginsWith('ly:')) {
-        var notePart = song[i].split(';')[0]
-        var fingerPart = song[i].split(';')[1]
+    // for (var i=0; i<song.length; i++) {
+    //   if (!song[i].beginsWith('linebreak') && !song[i].beginsWith('ly:')) {
+    //     var notePart = song[i].split(';')[0]
+    //     var fingerPart = song[i].split(';')[1]
 
-        if (notePart.indexOf('/') > -1) {
-          if (fingerPart.indexOf('/') == -1) {
-            fingerPart = '/' + fingerPart
-          }
-          notePart.split('/').join('')
-          song[i] = notePart + ';' + fingerPart
-        }
-        if (notePart.indexOf('\\') > -1) {
-          if (fingerPart.indexOf('\\') == -1) {
-            fingerPart = '\\' + fingerPart
-          }
-          notePart.split('\\').join('')
-          song[i] = notePart + ';' + fingerPart
-        }
-      }
-    }
+    //     if (notePart.indexOf('/') > -1) {
+    //       if (fingerPart.indexOf('/') == -1) {
+    //         fingerPart = '/' + fingerPart
+    //       }
+    //       notePart.split('/').join('')
+    //       song[i] = notePart + ';' + fingerPart
+    //     }
+    //     if (notePart.indexOf('\\') > -1) {
+    //       if (fingerPart.indexOf('\\') == -1) {
+    //         fingerPart = '\\' + fingerPart
+    //       }
+    //       notePart.split('\\').join('')
+    //       song[i] = notePart + ';' + fingerPart
+    //     }
+    //   }
+    // }
   // }
 
   var fyhuirange = [7,4]
@@ -473,6 +473,24 @@ function shortHandToGuqinJSON(shortHand) {
       var notePart = song[i].split(';')
       var n = notePart[0]
       var gq = notePart[1]
+
+      // { move slides from n to f level
+        var notePart = song[i].split(';')[0]
+        var fingerPart = song[i].split(';')[1]
+
+        if (n.indexOf('/') > -1) {
+          if (gq.indexOf('/') == -1) {
+            gq = '/' + fingerPart
+          }
+          n.split('/').join('')
+        }
+        if (notePart.indexOf('\\') > -1) {
+          if (gq.indexOf('\\') == -1) {
+            gq = '\\' + gq
+          }
+          n.split('\\').join('')
+        }
+      // }
       // if (n == '|') { 
       //   guqin[i] = {"type": "bar", "value": "single"}
       // } 
