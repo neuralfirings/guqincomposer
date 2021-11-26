@@ -8,6 +8,7 @@
     "n": { "type": "rh", "value": "1v" }, "j": { "type": "rh", "value": "2v" }, "k": { "type": "rh", "value": "3v" }, "l": { "type": "rh", "value": "4v" }, ";": { "type": "rh", "value": "5v" }, 
     "h": { "type": "rh", "value": "1^" }, "u": { "type": "rh", "value": "2^" }, "i": { "type": "rh", "value": "3^" }, "o": { "type": "rh", "value": "4^" }, "p": { "type": "rh", "value": "5^" }, 
     "by": { "type": "rh", "value": "2^\"^\"3v" }, "yb": { "type": "rh", "value": "2^\"^\"3v" }, "b8": { "type": "rh", "value": "1^\"^\"3v" }, "8b": { "type": "rh", "value": "1^\"^\"3v" }, "b9": { "type": "rh", "value": "1v\"^\"3^" }, "9b": { "type": "rh", "value": "1v\"^\"3^" },  
+    "H": { "type": "rh", "value": "2^\"^\"3v" }, "U": { "type": "rh", "value": "2v\"^\"3^" }, "I": { "type": "rh", "value": "1^\"^\"3v" }, "O": { "type": "rh", "value": "1v\"^\"3^" }, 
     "g": { "type": "lh", "value": "1K" }, "w": { "type": "lh", "value": "4K" }, 
     "v": { "type": "lh", "value": 1 }, "f": { "type": "lh", "value": 2 }, "d": { "type": "lh", "value": 3 }, "s": { "type": "lh", "value": 4 }, "a": { "type": "lh", "value": 5 }, 
     "c": { "type": "lh", "value": "1v" }, "x": { "type": "lh", "value": "4G" }, "e": { "type": "lh", "value": "3^" }, 

@@ -21,7 +21,7 @@ CodeMirror.defineSimpleMode("guqinjzp", {
   start: [
     // {regex: /\/\/.*/, token: "comment"},
     {regex: /\?/, token: "uncertainty"},
-    {regex: /D|F|S|V|c|d|f|g|h|i|j|k|l|n|o|s|u|v|w|x|by|yb|b9|9b|b8|8b/, token: "jzp"},
+    {regex: /D|F|S|V|c|d|f|g|h|i|j|k|l|n|o|s|u|v|w|x|by|yb|b9|9b|b8|8b|H|U|I|O/, token: "jzp"},
     {regex: / \| | \. | \|\| | \.\| | \.\. | \|\.\| | \|. | \.\|\: | \:\.\.\: | \:\|\.\|\: | \:\.\|\.\: | \[\|\: | \:\|\]\[\|\: | \:\|\] | \:\|\. /, token: "bars"},
     {regex: / \|$| \.$| \|\|$| \.\|$| \.\.$| \|\.\|$| \|.$| \.\|\:$| \:\.\.\:$| \:\|\.\|\:$| \:\.\|\.\:$| \[\|\:$| \:\|\]\[\|\:$| \:\|\]$| \:\|\./, token: "bars"},
   ]
