@@ -767,7 +767,8 @@ function guqinToLilyPond(guqinJSON) {
     else {
       var tuninglabel = "Tuning: " 
       for (var j=0;j<guqin.tuning.length;j++) {
-        tuninglabel+=guqin.tuning[j].toUpperCase() + ' '
+        tuninglabel+=guqin.tuning[j].toUpperCase().replaceAll('IS', "#").replaceAll('ES', '♭') + ' '
+        // tuninglabel+=guqin.tuning[j].toUpperCase()replaceAll('IS', "#").replaceAll('ES', 'b') + ' '
       }
       ly += '  poet = \\markup \\column {"' + tuninglabel + '" " "}\n'
     }
