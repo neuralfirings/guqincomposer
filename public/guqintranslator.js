@@ -207,6 +207,7 @@ function shortHandToGuqinJSON(shortHand) {
   var endnote=undefined
   var bars="manual"
   var showtimesig=''
+  var showtabs=true
   var guqin = []
   var voices = {}
 
@@ -235,6 +236,9 @@ function shortHandToGuqinJSON(shortHand) {
         }
         else if (shortHandLines[i].beginsWith('showtimesig:')) {
           showtimesig = shortHandLines[i].split('showtimesig:')[1].trim()
+        }
+        else if (shortHandLines[i].beginsWith('showtabs:')) {
+          showtabs = shortHandLines[i].split('showtabs:')[1].trim()=="no" ? false : true
         }
         else if (shortHandLines[i].beginsWith("bars:")) {
           var barsString = shortHandLines[i].split('bars:')[1]
@@ -311,12 +315,15 @@ function shortHandToGuqinJSON(shortHand) {
           noteStr = noteStr.split('#').join('is').split('-').join('es')
           var notes = noteStr.trim().split(' ') //split(/[\s-]+/) 
           for (var j=0; j<notes.length; j++) {
-            song[nCtr] = (song[nCtr] == undefined ?  notes[j] : notes[j] + ';' + song[nCtr])
+            if (showtabs)
+              song[nCtr] = (song[nCtr] == undefined ?  notes[j] : notes[j] + ';' + song[nCtr]) /// TEST!!!
+            else
+              song[nCtr] = notes[j] + ';' + notes[j] 
             songLineIdx[nCtr] = i
             nCtr++
           }
         }
-        else if (shortHandLines[i].beginsWith("f:")) {
+        else if (showtabs && shortHandLines[i].beginsWith("f:")) {
           var fingerStr = shortHandLines[i].split('f:')[1]
           // fingerStr = fingerStr.split('-').join(' -')
           fingerStr = fingerStr.replace(/ +(?= )/g,'');
@@ -327,7 +334,7 @@ function shortHandToGuqinJSON(shortHand) {
             fCtr++
           }
         }
-        else if (shortHandLines[i].beginsWith("jianzipu")) {
+        else if (shortHandLines[i].beginsWith("jianzipu") || shortHandLines[i].beginsWith("j")) {
           jzpForVoice = shortHandLines[i].split(':')[0].split('(')
           if (jzpForVoice.length == 1) {
             jzpForVoice = 'default'
@@ -399,30 +406,6 @@ function shortHandToGuqinJSON(shortHand) {
         return false
       }
     }
-  // }
-
-  // { move slides from n to f level
-    // for (var i=0; i<song.length; i++) {
-    //   if (!song[i].beginsWith('linebreak') && !song[i].beginsWith('ly:')) {
-    //     var notePart = song[i].split(';')[0]
-    //     var fingerPart = song[i].split(';')[1]
-
-    //     if (notePart.indexOf('/') > -1) {
-    //       if (fingerPart.indexOf('/') == -1) {
-    //         fingerPart = '/' + fingerPart
-    //       }
-    //       notePart.split('/').join('')
-    //       song[i] = notePart + ';' + fingerPart
-    //     }
-    //     if (notePart.indexOf('\\') > -1) {
-    //       if (fingerPart.indexOf('\\') == -1) {
-    //         fingerPart = '\\' + fingerPart
-    //       }
-    //       notePart.split('\\').join('')
-    //       song[i] = notePart + ';' + fingerPart
-    //     }
-    //   }
-    // }
   // }
 
   var fyhuirange = [7,4]
@@ -513,12 +496,6 @@ function shortHandToGuqinJSON(shortHand) {
           }
           n.split('\\').join('')
         }
-      // }
-      // if (n == '|') { 
-      //   guqin[i] = {"type": "bar", "value": "single"}
-      // } 
-      // else if (n == '||') {
-      //   guqin[i] = {"type": "bar", "value": "double"}
       // }
       if (lyBars.indexOf(n) > -1) { 
         guqin[i] = {"type": "bar", "value": n}
@@ -707,6 +684,7 @@ function shortHandToGuqinJSON(shortHand) {
     composer: composer,
     endnote: endnote,
     showtimesig: showtimesig,
+    showtabs: showtabs,
     bars: bars,
     song: guqin,
     jianzipu: jianzipuCharacters
@@ -1019,25 +997,56 @@ function guqinToLilyPond(guqinJSON) {
   // { Lyrics/JianZiPu
     console.log('guqin.jianzipu', guqin.jianzipu)
     for (var v in guqin.jianzipu) {
-      var jzp = paragraphToCharacters(guqin.jianzipu[v])
+      // var jzp = paragraphToCharacters(guqin.jianzipu[v])
       var words = guqin.jianzipu[v].split(' ') 
       for (var i=0;i<words.length;i++) {
         // console.log('words', words[i])
-        if (words[i].split('-').length > 1) {
+        if (words[i].split('-').length > 1) { // multi character per note
           var wordParts = words[i].split('-')
           for (var j=0; j<wordParts.length;j++) {
-            wordParts[j] = stringToCharacter(wordParts[j])
+            // wordParts[j] = stringToCharacter(wordParts[j])
+            if (wordParts[j][0] == '"' && wordParts[j][wordParts[j].length-1] == '"') { // return untranslated text vertically stacked
+              var ogWord = wordParts[j]
+              var wordLen = wordParts[j].length-2
+              wordParts[j] = "\\override #'(font-size . 1) \\override #'(font-name . \"Ma Shan Zheng \") \\raise #" + wordLen + " \\column { "
+              for (var k=1;k<ogWord.length-1;k++) {
+                if (ogWord[k] != "")
+                  wordParts[j] += "\\line {\"" + ogWord[k] + "\"} "
+              }
+              wordParts[j] += "} "
+            }
+            else if (wordParts[j][0] == '\'' && wordParts[j][wordParts[j].length-1] == '\'') { // return untranslated text
+              wordParts[j] = "\\override #'(font-size . 3) \\override #'(font-name . \"sans\") \\raise #1 {\"" + wordParts[j].substr(1, wordParts[j].length-2) + "\"}"
+            }
+            else {
+              wordParts[j] = '"' + stringToCharacter(wordParts[j]) + ' "'
+            }
           }
-          words[i] = wordParts.join(' ')
+          words[i] = '\\markup { ' + wordParts.join(' ') + ' }'
         }
         else {
-          words[i] = stringToCharacter(words[i])
+          if (words[i][0] == '"' && words[i][words[i].length-1] == '"') { // return untranslated text vertically stacked
+            var ogWord = words[i]
+            var wordLen = words[i].length-2
+            words[i] = "\\markup \\override #'(font-size . 1) \\override #'(font-name . \"Ma Shan Zheng \") \\raise #" + wordLen + " \\column { "
+            for (var j=1;j<ogWord.length-1;j++) {
+              if (ogWord[j] != "")
+                words[i] += "\\line {\"" + ogWord[j] + "\"} "
+            }
+            words[i] += "} "
+          }
+          else if (words[i][0] == '\'' && words[i][words[i].length-1] == '\'') { // return untranslated text
+            words[i] = "\\markup \\override #'(font-size . 3) \\override #'(font-name . \"sans\") \\raise #1 {\"" + words[i].substr(1, words[i].length-2) + "\"}"
+          }
+          else {
+            words[i] = '"' + stringToCharacter(words[i]) + ' "'
+          }
         }
       }
-      console.log(words)
+      // console.log(words)
       jzp = words.join(' " "')
       // ly += 'lyrics_voice_' + l + ' = \\lyricmode { "' + guqin.lyrics[l].split(' ').join(' " "') + ' " }\n'
-      ly += 'jzp_voice_' + v + ' = \\lyricmode { "' + words.join(' " "') + ' " }\n'
+      ly += 'jzp_voice_' + v + ' = \\lyricmode { ' + words.join(' ') + '}\n'
    
     }
     ly += '\n'
@@ -1059,13 +1068,15 @@ function guqinToLilyPond(guqinJSON) {
       ly += ' \\new Voice = "' + v + '" { \\' + v + ' } '
       ly += '\\new Lyrics \\lyricsto "' + v + '" { \\set ignoreMelismata = ##t \\set includeGraceNotes = ##t \\jzp_' + v + ' } '
     }
-    ly += '\\new TabStaff  { \\clef "moderntab" << '
-    for (var v in lySongs) {
-      ly += ' \\' + v + ' '
+    if (guqin.showtabs) {
+      ly += '\\new TabStaff  { \\clef "moderntab" << '
+      for (var v in lySongs) {
+        ly += ' \\' + v + ' '
+      }
+      ly += '>> }'
     }
-    ly += '>> } >>'
 
-    ly += '\n}\n'
+    ly += ' >>\n}\n'
   // }
 
   return ly

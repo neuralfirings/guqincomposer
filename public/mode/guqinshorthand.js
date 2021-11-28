@@ -4,8 +4,9 @@ CodeMirror.defineSimpleMode("guqinshorthand", {
     {regex: /jianzipu (.*):|jianzipu:|title:|composer:|timesig:|tuninglabel:|voice:|fyhuirange:|tuning:|temperament:|showtimesig:|bars:|key:|time:|clef:|tempo:|mark:/, token: "keyword"},
     {regex: /n:/, token: "notes"},
     {regex: /f:/, token: "fingers"},
-    {regex: / \| | \. | \|\| | \.\| | \.\. | \|\.\| | \|. | \.\|\: | \:\.\.\: | \:\|\.\|\: | \:\.\|\.\: | \[\|\: | \:\|\]\[\|\: | \:\|\] | \:\|\. /, token: "bars"},
-    {regex: / \|$| \.$| \|\|$| \.\|$| \.\.$| \|\.\|$| \|.$| \.\|\:$| \:\.\.\:$| \:\|\.\|\:$| \:\.\|\.\:$| \[\|\:$| \:\|\]\[\|\:$| \:\|\]$| \:\|\./, token: "bars"},
+    {regex: /j:/, token: "keyword"},
+    {regex: /\||\.|\|\||\.\||\.\.|\|\.\||\|.|\.\|\:|\:\.\.\:|\:\|\.\|\:|\:\.\|\.\:|\[\|\:|\:\|\]\[\|\:|\:\|\]|\:\|\./, token: "bars"},
+    {regex: /\|$|\.$|\|\|$|\.\|$|\.\.$|\|\.\|$|\|.$|\.\|\:$|\:\.\.\:$|\:\|\.\|\:$|\:\.\|\.\:$|\[\|\:$|\:\|\]\[\|\:$|\:\|\]$|\:\|\./, token: "bars"},
     {regex: /\\n/, token: "endl"},
     {regex: /\?/, token: "uncertainty"},
     {regex: /\[\[/, token: "jzpbrackets", mode: {spec: "guqinjzp", end: /\]\]/}},
@@ -24,6 +25,8 @@ CodeMirror.defineSimpleMode("guqinjzp", {
     {regex: /D|F|S|V|c|d|f|g|h|i|j|k|l|n|o|s|u|v|w|x|by|yb|b9|9b|b8|8b|H|U|I|O/, token: "jzp"},
     {regex: /\||\.|\|\||\.\||\.\.|\|\.\||\|.|\.\|\:|\:\.\.\:|\:\|\.\|\:|\:\.\|\.\:|\[\|\:|\:\|\]\[\|\:|\:\|\]|\:\|\./, token: "bars"},
     {regex: /\|$|\.$|\|\|$|\.\|$|\.\.$|\|\.\|$|\|.$|\.\|\:$|\:\.\.\:$|\:\|\.\|\:$|\:\.\|\.\:$|\[\|\:$|\:\|\]\[\|\:$|\:\|\]$|\:\|\./, token: "bars"},
+    {regex: /\"/, token: "jzpbrackets", mode: {spec: "text", end: /\"/}},
+    {regex: /\'/, token: "jzpbrackets", mode: {spec: "text", end: /\'/}},
   ]
 });
 
