@@ -103,14 +103,4 @@ body:after{
   color: #fff;
   line-height: 27px;
   transform:rotate(-45deg);
-  /*padding-left: 10px;*/
-}
-
-/* Guqin */
-@font-face {
-  font-family: JianZiPu;
-  src: url("/lib/JianZiPu.otf") format("opentype");
-}
-.jzp {
-  font-family: JianZiPu, monospace;
 }

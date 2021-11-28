@@ -12,6 +12,11 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 
+    <!-- JianZiPu Font -->
+    <script src="https://neuralfirings.github.io/jianzipu/dist/jianzipu.js"></script>
+    <link rel="stylesheet" href="https://neuralfirings.github.io/jianzipu/dist/jianzipu.css">
+
+    <!-- Code Mirror -->
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
     <script src="/lib/codemirror.js"></script>
     <link rel="stylesheet" href="/lib/codemirror.css">
@@ -19,14 +24,18 @@
     <script src="/mode/simple.js"></script>
     <script src="/mode/guqinshorthand.js"></script>
 
+    <!-- MIDI Player -->
     <script src="https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/@magenta/music@1.23.1/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.4.0"></script>
 
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-5HRDLPY0K8"></script>
 
+    <!-- Guqin Composer Utils -->
     <script src="/utils.js"></script>
     <link rel="stylesheet" href="/style.css" />
-    
     <script src="/guqintranslator.js"></script>
+
+    <!-- OG Tags -->
     <meta property="og:title" content="{{ogtitle}}" />
     <meta property="og:description" content="{{ogdescription}}" />
     <meta property="og:image" content="{{ogimgurl}}" />
@@ -390,7 +399,6 @@
 
         // copy link
         $('.copy-link').click(function() {  
-          console.log('sdf')
           var copyText = $(".link")[0]
           copyText.select();
           copyText.setSelectionRange(0, 99999); 

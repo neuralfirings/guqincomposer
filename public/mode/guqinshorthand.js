@@ -1,7 +1,7 @@
 CodeMirror.defineSimpleMode("guqinshorthand", {
   start: [
     {regex: /\/\/.*/, token: "comment"},
-    {regex: /title:|composer:|timesig:|tuninglabel:|voice:|fyhuirange:|tuning:|temperament:|showtimesig:|bars:|key:|time:|clef:|tempo:|mark:/, token: "keyword"},
+    {regex: /jianzipu (.*):|jianzipu:|title:|composer:|timesig:|tuninglabel:|voice:|fyhuirange:|tuning:|temperament:|showtimesig:|bars:|key:|time:|clef:|tempo:|mark:/, token: "keyword"},
     {regex: /n:/, token: "notes"},
     {regex: /f:/, token: "fingers"},
     {regex: / \| | \. | \|\| | \.\| | \.\. | \|\.\| | \|. | \.\|\: | \:\.\.\: | \:\|\.\|\: | \:\.\|\.\: | \[\|\: | \:\|\]\[\|\: | \:\|\] | \:\|\. /, token: "bars"},
@@ -22,8 +22,8 @@ CodeMirror.defineSimpleMode("guqinjzp", {
     // {regex: /\/\/.*/, token: "comment"},
     {regex: /\?/, token: "uncertainty"},
     {regex: /D|F|S|V|c|d|f|g|h|i|j|k|l|n|o|s|u|v|w|x|by|yb|b9|9b|b8|8b|H|U|I|O/, token: "jzp"},
-    {regex: / \| | \. | \|\| | \.\| | \.\. | \|\.\| | \|. | \.\|\: | \:\.\.\: | \:\|\.\|\: | \:\.\|\.\: | \[\|\: | \:\|\]\[\|\: | \:\|\] | \:\|\. /, token: "bars"},
-    {regex: / \|$| \.$| \|\|$| \.\|$| \.\.$| \|\.\|$| \|.$| \.\|\:$| \:\.\.\:$| \:\|\.\|\:$| \:\.\|\.\:$| \[\|\:$| \:\|\]\[\|\:$| \:\|\]$| \:\|\./, token: "bars"},
+    {regex: /\||\.|\|\||\.\||\.\.|\|\.\||\|.|\.\|\:|\:\.\.\:|\:\|\.\|\:|\:\.\|\.\:|\[\|\:|\:\|\]\[\|\:|\:\|\]|\:\|\./, token: "bars"},
+    {regex: /\|$|\.$|\|\|$|\.\|$|\.\.$|\|\.\|$|\|.$|\.\|\:$|\:\.\.\:$|\:\|\.\|\:$|\:\.\|\.\:$|\[\|\:$|\:\|\]\[\|\:$|\:\|\]$|\:\|\./, token: "bars"},
   ]
 });
 

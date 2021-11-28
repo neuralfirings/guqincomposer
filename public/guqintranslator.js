@@ -35,7 +35,10 @@
   const lyStr3 = `tuningEqual = #'("(0)" "(13.6)" "(13.1)" "(12.2)" "(10.9)" "(10)" "(9.5)" "(9)" "(8.4)" "(7.9)" "(7.6)" "(7.3)" "(7)" "(6.7)" "(6.5)" "(6.2)" "(6)" "(5.6)" "(5.3)" "(5)" "(4.8)" "(4.6)" "(4.4)" "(4.2)" "(4)" "(3.7)" "(3.5)" "(3.2)" "(3)" "(2.6)" "(2.3)" "(2)" "(1.8)" "(1.6)" "(1.4)" "(1.2)" "(1)")\ntuningJust = #'("(0)" "(13.6)" "(13.1)" "(12.2)" "(11)" "(10)" "(9.5)" "(9)" "(8.5)" "(8)" "(7.7)" "(7.3)" "(7)" "(6.7)" "(6.4)" "(6.2)" "(6)" "(5.6)" "(5.3)" "(5)" "(4.8)" "(4.6)" "(4.4)" "(4.2)" "(4)" "(3.7)" "(3.4)" "(3.2)" "(3)" "(2.6)" "(2.3)" "(2)" "(1.8)" "(1.6)" "(1.4)" "(1.2)" "(1)")`
   const lyStr4 = `\\layout { \\context { \\TabStaff stringTunings = \\stringTuning \\tuning fretLabels = ` //\\tuningEqual }`
   // removed the following in lyStr5: \\override RehearsalMark.font-size = #-1 
-  const lyStr5 = `\\context { \\Score \\override RehearsalMark.self-alignment-X = #LEFT } \\context { \\Staff \\hide TextScript \\override TrillSpanner.bound-details.left.text = ##f \\override Glissando.style = #'zigzag }`
+  const lyStr4b = ``
+  const lyStr5 = `\\context { \\Lyrics \\override LyricText.font-name = "JianZiPu"}\n  ` + 
+    `\\context { \\Lyrics \\override LyricText.font-size = #7 }\n  ` + 
+    `\\context { \\Score \\override RehearsalMark.self-alignment-X = #LEFT } \\context { \\Staff \\hide TextScript \\override TrillSpanner.bound-details.left.text = ##f \\override Glissando.style = #'zigzag }`
   const lyStr6 = `\\context { \\TabStaff \\omit Clef \\omit ClefModifier \\revert TextScript.stencil \\override TextScript.font-size = #-3 \\override Glissando.style = #'zigzag \\override TabNoteHead.font-family = #'typewriter tablatureFormat = #fret-letter-tablature-format } \\textLengthOn \\omit Voice.StringNumber } \\midi {}`
   // const lyStr7 = `<< \\new Staff  { \\song } \\new TabStaff { \\clef "moderntab" \\song } >>`
 // } end
@@ -91,6 +94,8 @@ function addToAll(str, obj, voice) {
 
 // Helper Functions
 function getPressedPosition(note,str) {
+  if (str == 0)
+    return 0
   if (tuning == undefined || tuning == '')
     var tuning = ['g,', 'a,', 'c', 'd', 'e', 'g', 'a']
   var tuningMethod = tuningEqual
@@ -210,6 +215,7 @@ function shortHandToGuqinJSON(shortHand) {
     var songLineIdx = []
     nCtr = 0
     fCtr = 0
+    jianzipuCharacters = {}
     for (var i=0;i<shortHandLines.length;i++) {
       // shortHandLines[i] = shortHandLines[i].split("|").join(' ')
       // ignore comments
@@ -249,6 +255,8 @@ function shortHandToGuqinJSON(shortHand) {
         else if (shortHandLines[i].beginsWith('voice:')) {
           song.push("voice:" + shortHandLines[i].split('voice:')[1].trim())
           voices[shortHandLines[i].split('voice:')[1].trim()] = true
+          if (jianzipuCharacters[shortHandLines[i].split('voice:')[1].trim()] == undefined)
+            jianzipuCharacters[shortHandLines[i].split('voice:')[1].trim()] = ''
           songLineIdx.push(i)
           nCtr++
           fCtr++
@@ -318,6 +326,20 @@ function shortHandToGuqinJSON(shortHand) {
             songLineIdx[fCtr] = i
             fCtr++
           }
+        }
+        else if (shortHandLines[i].beginsWith("jianzipu")) {
+          jzpForVoice = shortHandLines[i].split(':')[0].split('(')
+          if (jzpForVoice.length == 1) {
+            jzpForVoice = 'default'
+          }
+          else {
+            jzpForVoice = jzpForVoice[1].split(')')[0]
+          }
+
+          if (jianzipuCharacters[jzpForVoice] == undefined) {
+            jianzipuCharacters[jzpForVoice] = ''
+          }
+          jianzipuCharacters[jzpForVoice] += shortHandLines[i].substr(shortHandLines[i].split(':')[0].length+1).trimStart().replaceAll('[[','').replaceAll(']]', '')     
         }
       }
       else {
@@ -674,6 +696,9 @@ function shortHandToGuqinJSON(shortHand) {
   }
 
   // return
+  if (JSON.stringify(jianzipuCharacters) == '{}') {
+    jianzipuCharacters['default'] = ''
+  }
   return {
     tuning: tuning,
     tuninglabel: tuninglabel,
@@ -683,11 +708,13 @@ function shortHandToGuqinJSON(shortHand) {
     endnote: endnote,
     showtimesig: showtimesig,
     bars: bars,
-    song: guqin
+    song: guqin,
+    jianzipu: jianzipuCharacters
   }
 }
 function guqinToLilyPond(guqinJSON) {
   var guqin = JSON.parse(JSON.stringify(guqinJSON))
+  console.log(guqin)
   var ly = ""
 
   // { Fanyin & Left Mute method def
@@ -988,6 +1015,33 @@ function guqinToLilyPond(guqinJSON) {
     }
   // }
 
+  // { Lyrics/JianZiPu
+    console.log('guqin.jianzipu', guqin.jianzipu)
+    for (var v in guqin.jianzipu) {
+      var jzp = paragraphToCharacters(guqin.jianzipu[v])
+      var words = guqin.jianzipu[v].split(' ') 
+      for (var i=0;i<words.length;i++) {
+        // console.log('words', words[i])
+        if (words[i].split('-').length > 1) {
+          var wordParts = words[i].split('-')
+          for (var j=0; j<wordParts.length;j++) {
+            wordParts[j] = stringToCharacter(wordParts[j])
+          }
+          words[i] = wordParts.join(' ')
+        }
+        else {
+          words[i] = stringToCharacter(words[i])
+        }
+      }
+      console.log(words)
+      jzp = words.join(' " "')
+      // ly += 'lyrics_voice_' + l + ' = \\lyricmode { "' + guqin.lyrics[l].split(' ').join(' " "') + ' " }\n'
+      ly += 'jzp_voice_' + v + ' = \\lyricmode { "' + words.join(' " "') + ' " }\n'
+   
+    }
+    ly += '\n'
+  // }
+
   // { Tuning, score layouts
     ly += lyStr3 + '\n\n' +
       `\\score {\n  ` + lyStr4 + guqin.temperament + ' }\n'
@@ -1001,7 +1055,8 @@ function guqinToLilyPond(guqinJSON) {
 
     ly += '<< '
     for (var v in lySongs) {
-      ly += ' \\new Staff { \\' + v + ' } '
+      ly += ' \\new Voice = "' + v + '" { \\' + v + ' } '
+      ly += '\\new Lyrics \\lyricsto "' + v + '" { \\set ignoreMelismata = ##t \\set includeGraceNotes = ##t \\jzp_' + v + ' } '
     }
     ly += '\\new TabStaff  { \\clef "moderntab" << '
     for (var v in lySongs) {
