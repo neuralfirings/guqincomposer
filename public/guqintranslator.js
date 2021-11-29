@@ -318,7 +318,7 @@ function shortHandToGuqinJSON(shortHand) {
             if (showtabs)
               song[nCtr] = (song[nCtr] == undefined ?  notes[j] : notes[j] + ';' + song[nCtr]) /// TEST!!!
             else
-              song[nCtr] = notes[j] + ';' + notes[j] 
+              song[nCtr] = notes[j] 
             songLineIdx[nCtr] = i
             nCtr++
           }
@@ -360,8 +360,7 @@ function shortHandToGuqinJSON(shortHand) {
 
   // { error check the song
     for (var i=0; i<song.length; i++) {
-
-      if (song[i].indexOf('|') > -1) {
+      if (showtabs && song[i].indexOf('|') > -1) {
         if (lyBars.indexOf(song[i].split(';')[0]) == -1) {
           errorLog(`Line ${songLineIdx[i]}: ${song[i].split(';')[0]} is not a valid bar notation.`)
           return false
@@ -371,7 +370,7 @@ function shortHandToGuqinJSON(shortHand) {
           return false
         }
       }
-      else if (song[i].indexOf('$') > -1 && song[i] != '$;$') {
+      else if (showtabs && song[i].indexOf('$') > -1 && song[i] != '$;$') {
         errorLog(`Line ${songLineIdx[i]}: There's a mismatch between the number of notes in the note (n:) and finger positions (f:) lines around the glissando ($).`)
         return false
       }
@@ -512,7 +511,7 @@ function shortHandToGuqinJSON(shortHand) {
             n = n + "4"
           firstNote = false
         }
-        if (typeof gq == 'undefined') {
+        if (showtabs && typeof gq == 'undefined') {
           errorLog(`Line ${songLineIdx[i]+1}: error parsing note/finger combo: ${song[i]}. There's likely a mismatch between note and finger positions.`)
           $('.rendering').hide()
           return
@@ -546,7 +545,7 @@ function shortHandToGuqinJSON(shortHand) {
             guqin[i].grace.push('middle')
         }
 
-        if (gq.indexOf('!') > -1 || Object.keys(voices).length > 1) {
+        if (showtabs && (gq.indexOf('!') > -1 || Object.keys(voices).length > 1)) {
           guqin[i].rhpos = 'show'
         }
       
@@ -664,7 +663,7 @@ function shortHandToGuqinJSON(shortHand) {
 
       // get pressed huis
         for (var j=0;j<guqin[i].note.length; j++) {
-          if (guqin[i].note[j].toLowerCase() == guqin[i].note[j]) {
+          if (showtabs && guqin[i].note[j].toLowerCase() == guqin[i].note[j]) {
             guqin[i].pressedHuis[j] = getPressedPosition(guqin[i].note[j], guqin[i].str[j])
           }
         }
@@ -821,6 +820,11 @@ function guqinToLilyPond(guqinJSON) {
           addToAll(' ~ ', lySongs, voice)
         }
         else { // actual note
+          if (!guqin.showtabs) {
+            for (var j=0;j<guqin.song[i].note.length; j++) {
+              guqin.song[i].note[j] = guqin.song[i].note[j].toLowerCase()
+            }
+          }
           voice = guqin.song[i].voice
           if (guqin.song[i].note[0] == undefined) {
             errorLog(`Line ${songLineIdx[i]+1}: error parsing note: ${guqin.song[i]}`)
@@ -844,8 +848,10 @@ function guqinToLilyPond(guqinJSON) {
           if (lyPitches.indexOf(guqin.song[i].note[0][0]) > -1) {
             if (guqin.song[i].note.length > 1) { // Chord
               addToAll('<', lySongs, voice)
-              for (var j=0;j<guqin.song[i].note.length;j++) {
-                addToAll(guqin.song[i].note[j] + '\\' + guqin.song[i].str[j], lySongs, voice)
+              if (guqin.showtabs) {
+                for (var j=0;j<guqin.song[i].note.length;j++) {
+                  addToAll(guqin.song[i].note[j] + '\\' + guqin.song[i].str[j], lySongs, voice)
+                }
               }
               addToAll('>', lySongs, voice)
               addToAll(guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "", lySongs, voice)
@@ -853,19 +859,22 @@ function guqinToLilyPond(guqinJSON) {
             else if (guqin.song[i].note.length == 1) { // Single Note
               addToAll(guqin.song[i].note[0] , lySongs, voice)
               addToAll(guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "" , lySongs, voice)
-              addToAll('\\' + guqin.song[i].str[0], lySongs, voice)
+              if (guqin.showtabs)
+                addToAll('\\' + guqin.song[i].str[0], lySongs, voice)
             }
-            if (guqin.song[i].rh.length > 0) {
-              var currRFH = guqin.song[i].rh.join('')
-              if ((guqin.song[i].rhpos == undefined || guqin.song[i].rhpos != 'show') && getNumOnly(currRFH) == prevRHF) {
-                addToAll('^"' + removeNums(currRFH)  + '"', lySongs, voice)
+            if (guqin.showtabs) {
+              if (guqin.song[i].rh.length > 0) {
+                var currRFH = guqin.song[i].rh.join('')
+                if ((guqin.song[i].rhpos == undefined || guqin.song[i].rhpos != 'show') && getNumOnly(currRFH) == prevRHF) {
+                  addToAll('^"' + removeNums(currRFH)  + '"', lySongs, voice)
+                }
+                else {
+                  addToAll('^"' + currRFH + '"', lySongs, voice)
+                  prevRHF = getNumOnly(currRFH)
+                }
               }
-              else {
-                addToAll('^"' + currRFH + '"', lySongs, voice)
-                prevRHF = getNumOnly(currRFH)
-              }
+              addToAll(guqin.song[i].lh.length > 0 ? '_"' + guqin.song[i].lh.join('') + '"' : "", lySongs, voice)
             }
-            addToAll(guqin.song[i].lh.length > 0 ? '_"' + guqin.song[i].lh.join('') + '"' : "", lySongs, voice)
           }
           else if (lyFanYins.indexOf(guqin.song[i].note[0][0]) > -1)  {
             if (guqin.song[i].note.length > 1) { // Fan Yin Chord
@@ -912,7 +921,7 @@ function guqinToLilyPond(guqinJSON) {
               if (guqin.song[i].fyHuis.length > 0) {
                 addToAll('#' + guqin.song[i].fyHuis[0] + ' ', lySongs, voice)
               }
-              else {
+              else if (guqin.showtabs) {
                 var fyhPossibilities = getHarmonicPositions(guqin.song[i].note[0], guqin.song[i].str[0], guqin.tuning)
                 var fyrMin = Math.min.apply(Math, fyhuirange) 
                 var fyrMax = Math.max.apply(Math, fyhuirange) 
@@ -927,18 +936,20 @@ function guqinToLilyPond(guqinJSON) {
               }
               addToAll(guqin.song[i].note[0].toLowerCase(), lySongs, voice)
               addToAll(guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "" , lySongs, voice)
-              addToAll('\\' + guqin.song[i].str[0], lySongs, voice)
-              if (guqin.song[i].rh.length > 0) {
-                var currRFH = guqin.song[i].rh.join('')
-                if ((guqin.song[i].rhpos == undefined || guqin.song[i].rhpos != 'show')  && getNumOnly(currRFH) == prevRHF) {
-                  addToAll('^"' + removeNums(currRFH)  + '"', lySongs, voice)
+              if (guqin.showtabs) {
+                addToAll('\\' + guqin.song[i].str[0], lySongs, voice)
+                if (guqin.song[i].rh.length > 0) {
+                  var currRFH = guqin.song[i].rh.join('')
+                  if ((guqin.song[i].rhpos == undefined || guqin.song[i].rhpos != 'show')  && getNumOnly(currRFH) == prevRHF) {
+                    addToAll('^"' + removeNums(currRFH)  + '"', lySongs, voice)
+                  }
+                  else {
+                    addToAll('^"' + currRFH + '"', lySongs, voice)
+                    prevRHF = getNumOnly(currRFH)
+                  }
                 }
-                else {
-                  addToAll('^"' + currRFH + '"', lySongs, voice)
-                  prevRHF = getNumOnly(currRFH)
-                }
+                addToAll(guqin.song[i].lh.length > 0 ? '_"' + guqin.song[i].lh.join('') + '"' : "", lySongs, voice)
               }
-              addToAll(guqin.song[i].lh.length > 0 ? '_"' + guqin.song[i].lh.join('') + '"' : "", lySongs, voice)
             }
           }
 
@@ -1035,7 +1046,7 @@ function guqinToLilyPond(guqinJSON) {
             }
             words[i] += "} "
           }
-          else if (words[i][0] == '\'' && words[i][words[i].length-1] == '\'') { // return untranslated text
+          else if (words[i][0] == '\'' && words[i][words[i].length-1] == '\'') { // return untranslated text 
             words[i] = "\\markup \\override #'(font-size . 3) \\override #'(font-name . \"sans\") \\raise #1 {\"" + words[i].substr(1, words[i].length-2) + "\"}"
           }
           else {
