@@ -350,7 +350,11 @@ function shortHandToGuqinJSON(shortHand) {
           if (jianzipuCharacters[jzpForVoice] == undefined) {
             jianzipuCharacters[jzpForVoice] = ''
           }
-          jianzipuCharacters[jzpForVoice] += shortHandLines[i].substr(shortHandLines[i].split(':')[0].length+1).trimStart().replaceAll('[[','').replaceAll(']]', '')     
+          jianzipuCharacters[jzpForVoice] += shortHandLines[i]
+            .substr(shortHandLines[i].split(':')[0].length+1).trimStart()
+            .replaceAll('[[','').replaceAll(']]', '') 
+            .replaceAll(/ \| | \. | \|\| | \.\| | \.\. | \|\.\| | \|. | \.\|\: | \:\.\.\: | \:\|\.\|\: | \:\.\|\.\: | \[\|\: | \:\|\]\[\|\: | \:\|\] | \:\|\./g, ' ') 
+            + ' '   
         }
       }
       else {
