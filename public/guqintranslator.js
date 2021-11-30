@@ -1018,55 +1018,30 @@ function guqinToLilyPond(guqinJSON) {
 
   // { Lyrics/JianZiPu
     for (var v in guqin.jianzipu) {
-      // var jzp = paragraphToCharacters(guqin.jianzipu[v])
       var words = guqin.jianzipu[v].split(' ') 
       for (var i=0;i<words.length;i++) {
-        // console.log('words', words[i])
-        if (words[i].split('-').length > 1) { // multi character per note
-          var wordParts = words[i].split('-')
-          for (var j=0; j<wordParts.length;j++) {
-            // wordParts[j] = stringToCharacter(wordParts[j])
-            if (wordParts[j][0] == '"' && wordParts[j][wordParts[j].length-1] == '"') { // return untranslated text vertically stacked
-              var ogWord = wordParts[j]
-              var wordLen = wordParts[j].length-2
-              wordParts[j] = "\\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\override #'(baseline-skip . 2.2) \\raise #" + wordLen + " \\column { "
-              for (var k=1;k<ogWord.length-1;k++) {
-                if (ogWord[k] != "")
-                  wordParts[j] += "\\line {\"" + ogWord[k] + "\"} "
-              }
-              wordParts[j] += "} "
+        var wordParts = words[i].split('-')
+        for (var j=0; j<wordParts.length;j++) {
+          if ((wordParts[j][0] == '"' && wordParts[j][wordParts[j].length-1] == '"') || (wordParts[j][0] == '“' && wordParts[j][wordParts[j].length-1] == '”')) { // return untranslated text vertically stacked
+            var ogWord = wordParts[j]
+            var wordLen = wordParts[j].length-2
+            wordParts[j] = "\\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\override #'(baseline-skip . 2.2) \\raise #" + wordLen + " \\column { "
+            for (var k=1;k<ogWord.length-1;k++) {
+              if (ogWord[k] != "")
+                wordParts[j] += "\\line {\"" + ogWord[k] + "\"} "
             }
-            else if (wordParts[j][0] == '\'' && wordParts[j][wordParts[j].length-1] == '\'') { // return untranslated text
-              wordParts[j] = "\\override #'(font-size . 3) \\override #'(font-name . \"sans\") \\raise #1 {\"" + wordParts[j].substr(1, wordParts[j].length-2) + "\"}"
-            }
-            else {
-              wordParts[j] = '"' + stringToCharacter(wordParts[j]) + ' "'
-            }
+            wordParts[j] += "} "
           }
-          words[i] = '\\markup { ' + wordParts.join(' ') + ' }'
-        }
-        else {
-          if (words[i][0] == '"' && words[i][words[i].length-1] == '"') { // return untranslated text vertically stacked
-            var ogWord = words[i]
-            var wordLen = words[i].length-2
-            words[i] = "\\markup \\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\override #'(baseline-skip . 2.2) \\raise #" + wordLen + " \\column { "
-            for (var j=1;j<ogWord.length-1;j++) {
-              if (ogWord[j] != "")
-                words[i] += "\\line {\"" + ogWord[j] + "\"} "
-            }
-            words[i] += "} "
-          }
-          else if (words[i][0] == '\'' && words[i][words[i].length-1] == '\'') { // return untranslated text 
-            words[i] = "\\markup \\override #'(font-size . 3) \\override #'(font-name . \"sans\") \\raise #1 {\"" + words[i].substr(1, words[i].length-2) + "\"}"
+          else if ((wordParts[j][0] == '\'' && wordParts[j][wordParts[j].length-1] == '\'') || (wordParts[j][0] == '‘' && wordParts[j][wordParts[j].length-1] == '’')) { // return untranslated text
+            wordParts[j] = "\\override #'(font-size . 3) \\override #'(font-name . \"sans\") \\raise #1 {\"" + wordParts[j].substr(1, wordParts[j].length-2) + "\"}"
           }
           else {
-            words[i] = '"' + stringToCharacter(words[i]) + ' "'
+            wordParts[j] = '"' + stringToCharacter(wordParts[j]) + ' "'
           }
         }
+        words[i] = '\\markup { ' + wordParts.join(' ') + ' }'
       }
-      // console.log(words)
       jzp = words.join(' " "')
-      // ly += 'lyrics_voice_' + l + ' = \\lyricmode { "' + guqin.lyrics[l].split(' ').join(' " "') + ' " }\n'
       ly += 'jzp_voice_' + v + ' = \\lyricmode { ' + words.join(' ') + '}\n'
     }
     ly += '\n'

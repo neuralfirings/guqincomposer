@@ -27,6 +27,8 @@ CodeMirror.defineSimpleMode("guqinjzp", {
     {regex: /\|$|\.$|\|\|$|\.\|$|\.\.$|\|\.\|$|\|.$|\.\|\:$|\:\.\.\:$|\:\|\.\|\:$|\:\.\|\.\:$|\[\|\:$|\:\|\]\[\|\:$|\:\|\]$|\:\|\./, token: "bars"},
     {regex: /\"/, token: "jzpbrackets", mode: {spec: "text", end: /\"/}},
     {regex: /\'/, token: "jzpbrackets", mode: {spec: "text", end: /\'/}},
+    {regex: /\“/, token: "jzpbrackets", mode: {spec: "text", end: /\”/}},
+    {regex: /\‘/, token: "jzpbrackets", mode: {spec: "text", end: /\’/}},
   ]
 });
 
