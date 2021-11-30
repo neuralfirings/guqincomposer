@@ -1021,29 +1021,33 @@ function guqinToLilyPond(guqinJSON) {
     var singleQuotes = ["'", "‘", "’"]
     for (var v in guqin.jianzipu) {
       var words = guqin.jianzipu[v].split(' ') 
+      console.log(words)
       for (var i=0;i<words.length;i++) {
-        var wordParts = words[i].split('-')
-        for (var j=0; j<wordParts.length;j++) {
-          if (doubleQuotes.some(v => v === wordParts[j][0]) && doubleQuotes.some(v => v === wordParts[j][wordParts[j].length-1])) {
-          // if ((wordParts[j][0] == '"' && wordParts[j][wordParts[j].length-1] == '"') || (wordParts[j][0] == '“' && wordParts[j][wordParts[j].length-1] == '“')) { // return untranslated text vertically stacked
-            var ogWord = wordParts[j]
-            var wordLen = wordParts[j].length-2
-            wordParts[j] = "\\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\override #'(baseline-skip . 2.2) \\raise #" + wordLen + " \\column { "
-            for (var k=1;k<ogWord.length-1;k++) {
-              if (ogWord[k] != "")
-                wordParts[j] += "\\line {\"" + ogWord[k] + "\"} "
+        if (words[i] != '') {
+          if (words[i] == "-") {
+            words[i] = "."
+          }
+          var wordParts = words[i].split('-')
+          for (var j=0; j<wordParts.length;j++) {
+            if (doubleQuotes.some(v => v === wordParts[j][0]) && doubleQuotes.some(v => v === wordParts[j][wordParts[j].length-1])) {
+              var ogWord = wordParts[j]
+              var wordLen = wordParts[j].length-2
+              wordParts[j] = "\\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\override #'(baseline-skip . 2.2) \\raise #" + wordLen + " \\column { "
+              for (var k=1;k<ogWord.length-1;k++) {
+                if (ogWord[k] != "")
+                  wordParts[j] += "\\line {\"" + ogWord[k] + "\"} "
+              }
+              wordParts[j] += "} "
             }
-            wordParts[j] += "} "
+            else if (singleQuotes.some(v => v === wordParts[j][0]) && singleQuotes.some(v => v === wordParts[j][wordParts[j].length-1])) {
+              wordParts[j] = "\\override #'(font-size . 3) \\override #'(font-name . \"sans\") \\raise #1 {\"" + wordParts[j].substr(1, wordParts[j].length-2) + "\"}"
+            }
+            else {
+              wordParts[j] = '"' + stringToCharacter(wordParts[j]) + ' "'
+            }
           }
-          else if (singleQuotes.some(v => v === wordParts[j][0]) && singleQuotes.some(v => v === wordParts[j][wordParts[j].length-1])) {
-          // else if ((wordParts[j][0] == '\'' && wordParts[j][wordParts[j].length-1] == '\'') || (wordParts[j][0] == '‘' && wordParts[j][wordParts[j].length-1] == '’')) { // return untranslated text
-            wordParts[j] = "\\override #'(font-size . 3) \\override #'(font-name . \"sans\") \\raise #1 {\"" + wordParts[j].substr(1, wordParts[j].length-2) + "\"}"
-          }
-          else {
-            wordParts[j] = '"' + stringToCharacter(wordParts[j]) + ' "'
-          }
+          words[i] = '\\markup { ' + wordParts.join(' ') + ' }'
         }
-        words[i] = '\\markup { ' + wordParts.join(' ') + ' }'
       }
       jzp = words.join(' " "')
       ly += 'jzp_voice_' + v + ' = \\lyricmode { ' + words.join(' ') + '}\n'
