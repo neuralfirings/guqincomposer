@@ -1022,7 +1022,7 @@ function guqinToLilyPond(guqinJSON) {
       for (var i=0;i<words.length;i++) {
         var wordParts = words[i].split('-')
         for (var j=0; j<wordParts.length;j++) {
-          if ((wordParts[j][0] == '"' && wordParts[j][wordParts[j].length-1] == '"') || (wordParts[j][0] == '“' && wordParts[j][wordParts[j].length-1] == '”')) { // return untranslated text vertically stacked
+          if ((wordParts[j][0] == '"' && wordParts[j][wordParts[j].length-1] == '"') || (wordParts[j][0] == '“' && wordParts[j][wordParts[j].length-1] == '“')) { // return untranslated text vertically stacked
             var ogWord = wordParts[j]
             var wordLen = wordParts[j].length-2
             wordParts[j] = "\\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\override #'(baseline-skip . 2.2) \\raise #" + wordLen + " \\column { "
