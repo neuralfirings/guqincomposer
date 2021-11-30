@@ -553,122 +553,125 @@ function shortHandToGuqinJSON(shortHand) {
           guqin[i].rhpos = 'show'
         }
       
-      // {split note into chords (n --> noteArr)
-        var noteArr = []
-        var pitchArr = []
-        var beatArr = []
-        var rhythm = ""
-        var noteSplitStr = n 
-        for (var j=0;j<lyPitches.length;j++) {
-          noteSplitStr = noteSplitStr.split(lyPitches[j]).join("+" + lyPitches[j])
-        }
-        for (var j=0;j<lyFanYins.length;j++) {
-          noteSplitStr = noteSplitStr.split(lyFanYins[j]).join("+" + lyFanYins[j])
-        }
-        var idxBeat = -1
-        for (var j=0;j<noteSplitStr.length;j++) {
-          if (lyBeats.indexOf(noteSplitStr[j]) > -1) {
-            if (idxBeat == -1)
-              idxBeat = j 
-            else
-              idxBeat = Math.min(j, idxBeat)
+        // { split note into chords (n --> noteArr)
+          var noteArr = []
+          var pitchArr = []
+          var beatArr = []
+          var rhythm = ""
+          var noteSplitStr = n 
+          for (var j=0;j<lyPitches.length;j++) {
+            noteSplitStr = noteSplitStr.split(lyPitches[j]).join("+" + lyPitches[j])
           }
-        }
-        if (idxBeat > -1)
-          noteSplitStr = noteSplitStr.substr(0,idxBeat) + "+" + noteSplitStr.substr(idxBeat, noteSplitStr.length)
-
-        // combine sharps and flats
-        noteSplitStr = noteSplitStr.split('+es').join('es')
-          .split('+is').join('is')
-          .split('+ES').join('ES')
-          .split('+IS').join('IS')
-        noteArr = noteSplitStr.split('+')
-        for (var j=0;j<noteArr.length;j++) {
-          if (noteArr[j] != '') {
-            if (lyBeats.indexOf(noteArr[j][0]) > -1) {
-              guqin[i].beat.push(noteArr[j].split('*').join(''))
-            }
-            else if (lyPitches.indexOf(noteArr[j][0])> -1) {
-              guqin[i].note.push(noteArr[j].split('*').join(''))
-            }
-            else if (lyFanYins.indexOf(noteArr[j][0])> -1) {
-              guqin[i].note.push(noteArr[j].split('*').join(''))
-            }
+          for (var j=0;j<lyFanYins.length;j++) {
+            noteSplitStr = noteSplitStr.split(lyFanYins[j]).join("+" + lyFanYins[j])
           }
-        }
-      // } end
-
-      // { split guqin part into hands & strings (rh, lh, str array)
-        var gq3 = ''
-        var gq2 = ''
-        var gq1 = ''
-
-        if (typeof gq != 'string')
-          console.log('error gq is not a string', song, note, i, gq, k)
-        else {
-          // { Custom RH/LH Lines
-            var customLH = false
-            var customRH = false
-            if (gq.indexOf('(lh:') > -1) { // custom LH
-              customLH = true
-              customLHStr = gq.split('(lh:')[1].split(')')[0]
-              gq = gq.split('(lh:'+customLHStr+')').join('')
-              guqin[i].lh.push(customLHStr.split('_').join(' '))
-            }
-            if (gq.indexOf('(rh:') > -1) { // custom RH
-              customRH = true
-              customRHStr = gq.split('(rh:')[1].split(')')[0]
-              gq = gq.split('(rh:'+customRHStr+')').join('')
-              guqin[i].rh.push(customRHStr.split('_').join(' '))
-            }
-          // }
-
-          // { FY Hui Pos
-            // if (gq.indexOf('()') > -1) 
-            //   prevFYHui = []
-            guqin[i].fyHuis = gq.getParentheticals()
-            gq = gq.removeParentheses()
-
-          // }
-
-          // { lyMapAndExtract (/, ~, etc.)
-            for (var j=0;j<gq.length;j++) {
-              if (lyMapAndExtract.indexOf(gq[j]) > -1 && gq2 == '')
-                gq1 += gq[j] == '\\' ? '\\\\' : gq[j]
-              else if (lyMapAndExtract.indexOf(gq[j]) > -1 && gq2 != '')
-                gq3 += gq[j] == '\\' ? '\\\\' : gq[j]
+          var idxBeat = -1
+          for (var j=0;j<noteSplitStr.length;j++) {
+            if (lyBeats.indexOf(noteSplitStr[j]) > -1) {
+              if (idxBeat == -1)
+                idxBeat = j 
               else
-                gq2 += gq[j] == '\\' ? '\\\\' : gq[j]
+                idxBeat = Math.min(j, idxBeat)
             }
-            if (gq1 != '' && !customLH)
-              guqin[i].lh.push(gq1)
-            for (var k in lyMap) {
-              if (gq2.has(k)) {
-                if (lyMap[k].type == 'rh' && !customRH) {
-                  guqin[i].rh.push(lyMap[k].value)
-                }
-                else if (lyMap[k].type == 'lh' && ! customLH) {
-                  guqin[i].lh.push(lyMap[k].value)
-                }
-                else if (lyMap[k].type == 'str') {
-                  guqin[i].str.push(lyMap[k].value)
-                }
+          }
+          if (idxBeat > -1)
+            noteSplitStr = noteSplitStr.substr(0,idxBeat) + "+" + noteSplitStr.substr(idxBeat, noteSplitStr.length)
+
+          // combine sharps and flats
+          noteSplitStr = noteSplitStr.split('+es').join('es')
+            .split('+is').join('is')
+            .split('+ES').join('ES')
+            .split('+IS').join('IS')
+          noteArr = noteSplitStr.split('+')
+          for (var j=0;j<noteArr.length;j++) {
+            if (noteArr[j] != '') {
+              if (lyBeats.indexOf(noteArr[j][0]) > -1) {
+                guqin[i].beat.push(noteArr[j].split('*').join(''))
+              }
+              else if (lyPitches.indexOf(noteArr[j][0])> -1) {
+                guqin[i].note.push(noteArr[j].split('*').join(''))
+              }
+              else if (lyFanYins.indexOf(noteArr[j][0])> -1) {
+                guqin[i].note.push(noteArr[j].split('*').join(''))
               }
             }
-            if (gq3 != '' && !customLH)
-              guqin[i].lh.push(gq3)
-          // }
+          }
+        // } end
 
-        }
-        if (guqin[i].str.length == 0) 
-          guqin[i].str = prevStr
-        prevStr = guqin[i].str
-      // } end
+        if (showtabs) {
+          // { split guqin part into hands & strings (rh, lh, str array)
+            var gq3 = ''
+            var gq2 = ''
+            var gq1 = ''
 
-      // get pressed huis
-        for (var j=0;j<guqin[i].note.length; j++) {
-          if (showtabs && guqin[i].note[j].toLowerCase() == guqin[i].note[j]) {
-            guqin[i].pressedHuis[j] = getPressedPosition(guqin[i].note[j], guqin[i].str[j])
+            if (typeof gq != 'string'){
+              console.log('error gq is not a string', song, note, i, gq, k)
+            }
+            else {
+              // { Custom RH/LH Lines
+                var customLH = false
+                var customRH = false
+                if (gq.indexOf('(lh:') > -1) { // custom LH
+                  customLH = true
+                  customLHStr = gq.split('(lh:')[1].split(')')[0]
+                  gq = gq.split('(lh:'+customLHStr+')').join('')
+                  guqin[i].lh.push(customLHStr.split('_').join(' '))
+                }
+                if (gq.indexOf('(rh:') > -1) { // custom RH
+                  customRH = true
+                  customRHStr = gq.split('(rh:')[1].split(')')[0]
+                  gq = gq.split('(rh:'+customRHStr+')').join('')
+                  guqin[i].rh.push(customRHStr.split('_').join(' '))
+                }
+              // }
+
+              // { FY Hui Pos
+                // if (gq.indexOf('()') > -1) 
+                //   prevFYHui = []
+                guqin[i].fyHuis = gq.getParentheticals()
+                gq = gq.removeParentheses()
+
+              // }
+
+              // { lyMapAndExtract (/, ~, etc.)
+                for (var j=0;j<gq.length;j++) {
+                  if (lyMapAndExtract.indexOf(gq[j]) > -1 && gq2 == '')
+                    gq1 += gq[j] == '\\' ? '\\\\' : gq[j]
+                  else if (lyMapAndExtract.indexOf(gq[j]) > -1 && gq2 != '')
+                    gq3 += gq[j] == '\\' ? '\\\\' : gq[j]
+                  else
+                    gq2 += gq[j] == '\\' ? '\\\\' : gq[j]
+                }
+                if (gq1 != '' && !customLH)
+                  guqin[i].lh.push(gq1)
+                for (var k in lyMap) {
+                  if (gq2.has(k)) {
+                    if (lyMap[k].type == 'rh' && !customRH) {
+                      guqin[i].rh.push(lyMap[k].value)
+                    }
+                    else if (lyMap[k].type == 'lh' && ! customLH) {
+                      guqin[i].lh.push(lyMap[k].value)
+                    }
+                    else if (lyMap[k].type == 'str') {
+                      guqin[i].str.push(lyMap[k].value)
+                    }
+                  }
+                }
+                if (gq3 != '' && !customLH)
+                  guqin[i].lh.push(gq3)
+              // }
+
+            }
+            if (guqin[i].str.length == 0) 
+              guqin[i].str = prevStr
+            prevStr = guqin[i].str
+          // } end
+
+          // get pressed huis
+          for (var j=0;j<guqin[i].note.length; j++) {
+            if (showtabs && guqin[i].note[j].toLowerCase() == guqin[i].note[j]) {
+              guqin[i].pressedHuis[j] = getPressedPosition(guqin[i].note[j], guqin[i].str[j])
+            }
           }
         }
       }
@@ -695,8 +698,8 @@ function shortHandToGuqinJSON(shortHand) {
   }
 }
 function guqinToLilyPond(guqinJSON) {
+  console.log('guqinToLilyPond', guqinJSON)
   var guqin = JSON.parse(JSON.stringify(guqinJSON))
-  console.log(guqin)
   var ly = ""
 
   // { Fanyin & Left Mute method def
