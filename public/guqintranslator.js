@@ -208,6 +208,7 @@ function shortHandToGuqinJSON(shortHand) {
   var bars="manual"
   var showtimesig=''
   var showtabs=true
+  var showjianzipu=true
   var guqin = []
   var voices = {}
 
@@ -239,6 +240,9 @@ function shortHandToGuqinJSON(shortHand) {
         }
         else if (shortHandLines[i].beginsWith('showtabs:')) {
           showtabs = shortHandLines[i].split('showtabs:')[1].trim()=="no" ? false : true
+        }
+        else if (shortHandLines[i].beginsWith('showjianzipu:')) {
+          showjianzipu = shortHandLines[i].split('showjianzipu:')[1].trim()=="no" ? false : true
         }
         else if (shortHandLines[i].beginsWith("bars:")) {
           var barsString = shortHandLines[i].split('bars:')[1]
@@ -684,6 +688,7 @@ function shortHandToGuqinJSON(shortHand) {
     endnote: endnote,
     showtimesig: showtimesig,
     showtabs: showtabs,
+    showjianzipu: showjianzipu,
     bars: bars,
     song: guqin,
     jianzipu: jianzipuCharacters
@@ -1006,7 +1011,6 @@ function guqinToLilyPond(guqinJSON) {
   // }
 
   // { Lyrics/JianZiPu
-    console.log('guqin.jianzipu', guqin.jianzipu)
     for (var v in guqin.jianzipu) {
       // var jzp = paragraphToCharacters(guqin.jianzipu[v])
       var words = guqin.jianzipu[v].split(' ') 
@@ -1058,7 +1062,6 @@ function guqinToLilyPond(guqinJSON) {
       jzp = words.join(' " "')
       // ly += 'lyrics_voice_' + l + ' = \\lyricmode { "' + guqin.lyrics[l].split(' ').join(' " "') + ' " }\n'
       ly += 'jzp_voice_' + v + ' = \\lyricmode { ' + words.join(' ') + '}\n'
-   
     }
     ly += '\n'
   // }
@@ -1077,7 +1080,9 @@ function guqinToLilyPond(guqinJSON) {
     ly += '<< '
     for (var v in lySongs) {
       ly += ' \\new Voice = "' + v + '" { \\' + v + ' } '
-      ly += '\\new Lyrics \\lyricsto "' + v + '" { \\set ignoreMelismata = ##t \\set includeGraceNotes = ##t \\jzp_' + v + ' } '
+      if (guqin.showjianzipu) {
+        ly += '\\new Lyrics \\lyricsto "' + v + '" { \\set ignoreMelismata = ##t \\set includeGraceNotes = ##t \\jzp_' + v + ' } '
+      }
     }
     if (guqin.showtabs) {
       ly += '\\new TabStaff  { \\clef "moderntab" << '
