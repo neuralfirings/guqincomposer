@@ -1017,12 +1017,15 @@ function guqinToLilyPond(guqinJSON) {
   // }
 
   // { Lyrics/JianZiPu
+    var doubleQuotes = ['"', '“', '”']
+    var singleQuotes = ["'", "‘", "’"]
     for (var v in guqin.jianzipu) {
       var words = guqin.jianzipu[v].split(' ') 
       for (var i=0;i<words.length;i++) {
         var wordParts = words[i].split('-')
         for (var j=0; j<wordParts.length;j++) {
-          if ((wordParts[j][0] == '"' && wordParts[j][wordParts[j].length-1] == '"') || (wordParts[j][0] == '“' && wordParts[j][wordParts[j].length-1] == '“')) { // return untranslated text vertically stacked
+          if (doubleQuotes.some(v => v === wordParts[j][0]) && doubleQuotes.some(v => v === wordParts[j][wordParts[j].length-1])) {
+          // if ((wordParts[j][0] == '"' && wordParts[j][wordParts[j].length-1] == '"') || (wordParts[j][0] == '“' && wordParts[j][wordParts[j].length-1] == '“')) { // return untranslated text vertically stacked
             var ogWord = wordParts[j]
             var wordLen = wordParts[j].length-2
             wordParts[j] = "\\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\override #'(baseline-skip . 2.2) \\raise #" + wordLen + " \\column { "
@@ -1032,7 +1035,8 @@ function guqinToLilyPond(guqinJSON) {
             }
             wordParts[j] += "} "
           }
-          else if ((wordParts[j][0] == '\'' && wordParts[j][wordParts[j].length-1] == '\'') || (wordParts[j][0] == '‘' && wordParts[j][wordParts[j].length-1] == '’')) { // return untranslated text
+          else if (singleQuotes.some(v => v === wordParts[j][0]) && singleQuotes.some(v => v === wordParts[j][wordParts[j].length-1])) {
+          // else if ((wordParts[j][0] == '\'' && wordParts[j][wordParts[j].length-1] == '\'') || (wordParts[j][0] == '‘' && wordParts[j][wordParts[j].length-1] == '’')) { // return untranslated text
             wordParts[j] = "\\override #'(font-size . 3) \\override #'(font-name . \"sans\") \\raise #1 {\"" + wordParts[j].substr(1, wordParts[j].length-2) + "\"}"
           }
           else {
