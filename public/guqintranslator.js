@@ -782,7 +782,7 @@ function guqinToLilyPond(guqinJSON) {
           voice = guqin.song[i].voice
       }
     }
-    console.log('lySongs', lySongs)
+    // console.log('lySongs', lySongs)
 
     addToAll(' = {\n' +
       '  \\clef "bass"\n' +
@@ -856,9 +856,12 @@ function guqinToLilyPond(guqinJSON) {
           if (lyPitches.indexOf(guqin.song[i].note[0][0]) > -1) {
             if (guqin.song[i].note.length > 1) { // Chord
               addToAll('<', lySongs, voice)
-              if (guqin.showtabs) {
-                for (var j=0;j<guqin.song[i].note.length;j++) {
-                  addToAll(guqin.song[i].note[j] + '\\' + guqin.song[i].str[j], lySongs, voice)
+              for (var j=0;j<guqin.song[i].note.length;j++) {
+                if (guqin.showtabs) {
+                  addToAll(guqin.song[i].note[j] + '\\' + guqin.song[i].str[j] + ' ', lySongs, voice)
+                }
+                else {
+                  addToAll(guqin.song[i].note[j] + ' ', lySongs, voice)
                 }
               }
               addToAll('>', lySongs, voice)
