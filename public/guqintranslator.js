@@ -1023,7 +1023,7 @@ function guqinToLilyPond(guqinJSON) {
             if (wordParts[j][0] == '"' && wordParts[j][wordParts[j].length-1] == '"') { // return untranslated text vertically stacked
               var ogWord = wordParts[j]
               var wordLen = wordParts[j].length-2
-              wordParts[j] = "\\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\raise #" + wordLen + " \\column { "
+              wordParts[j] = "\\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\override #'(baseline-skip . 2.2) \\raise #" + wordLen + " \\column { "
               for (var k=1;k<ogWord.length-1;k++) {
                 if (ogWord[k] != "")
                   wordParts[j] += "\\line {\"" + ogWord[k] + "\"} "
@@ -1043,7 +1043,7 @@ function guqinToLilyPond(guqinJSON) {
           if (words[i][0] == '"' && words[i][words[i].length-1] == '"') { // return untranslated text vertically stacked
             var ogWord = words[i]
             var wordLen = words[i].length-2
-            words[i] = "\\markup \\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\raise #" + wordLen + " \\column { "
+            words[i] = "\\markup \\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\override #'(baseline-skip . 2.2) \\raise #" + wordLen + " \\column { "
             for (var j=1;j<ogWord.length-1;j++) {
               if (ogWord[j] != "")
                 words[i] += "\\line {\"" + ogWord[j] + "\"} "

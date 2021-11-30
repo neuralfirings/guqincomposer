@@ -5,6 +5,7 @@ public/temp/*
 !public/temp/.gitkeep
 errorlogs/*
 !errorlogs/.gitkeep
+notes.md
 
 # System
 **/.DS_Store
