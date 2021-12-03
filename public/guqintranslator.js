@@ -553,7 +553,7 @@ function shortHandToGuqinJSON(shortHand) {
             guqin[i].grace.push('middle')
         }
 
-        if (showtabs && (gq.indexOf('!') > -1 || Object.keys(voices).length > 1)) {
+        if (showtabs && (gq.indexOf('!') > -1 || Object.keys(voices).length > 1 || customRH)) {
           guqin[i].rhpos = 'show'
         }
       
