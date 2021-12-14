@@ -36,7 +36,7 @@
   const lyStr4 = `\\layout { \\context { \\TabStaff stringTunings = \\stringTuning \\tuning fretLabels = ` //\\tuningEqual }`
   // removed the following in lyStr5: \\override RehearsalMark.font-size = #-1 
   const lyStr4b = ``
-  const lyStr5 = `\\context { \\Lyrics \\override LyricText.font-name = "JianZiPu"}\n  ` + 
+  const lyStr5 = `\\context { \\Lyrics \\override LyricText.font-name = "JianZiPu, Ma Shan Zheng"}\n  ` + 
     `\\context { \\Lyrics \\override LyricText.font-size = #7 }\n  ` + 
     `\\context { \\Score \\override RehearsalMark.self-alignment-X = #LEFT } \\context { \\Staff \\hide TextScript \\override TrillSpanner.bound-details.left.text = ##f \\override Glissando.style = #'zigzag }`
   const lyStr6 = `\\context { \\TabStaff \\omit Clef \\omit ClefModifier \\revert TextScript.stencil \\override TextScript.font-size = #-3 \\override Glissando.style = #'zigzag \\override TabNoteHead.font-family = #'typewriter tablatureFormat = #fret-letter-tablature-format } \\textLengthOn \\omit Voice.StringNumber } \\midi {}`
@@ -1035,7 +1035,8 @@ function guqinToLilyPond(guqinJSON) {
           for (var j=0; j<wordParts.length;j++) {
             if ( wordParts[j].includes("/") ) {
               subWordParts = wordParts[j].split("/")
-              wordParts[j] = "\\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\override #'(baseline-skip . 2.2) \\raise #" + subWordParts.length + " \\center-column { "
+              // wordParts[j] = "\\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\override #'(baseline-skip . 2.2) \\raise #" + subWordParts.length + " \\center-column { "
+              wordParts[j] = "\\override #'(font-size . 1) \\override #'(baseline-skip . 2.2) \\raise #" + subWordParts.length + " \\center-column { "
               for (let i=0; i<subWordParts.length; i++) {
                 if (paragraphToCharacters(subWordParts[i]) == subWordParts[i])
                   wordParts[j] += "\\line {\"" + paragraphToCharacters(subWordParts[i]) + "\"} "
@@ -1048,7 +1049,8 @@ function guqinToLilyPond(guqinJSON) {
               var ogWord = wordParts[j]
               var wordLen = wordParts[j].length-2
               let translatedWord = paragraphToCharacters(ogWord)
-              wordParts[j] = "\\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\override #'(baseline-skip . 2.2) \\raise #" + wordLen + " \\column { "
+              // wordParts[j] = "\\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\override #'(baseline-skip . 2.2) \\raise #" + wordLen + " \\column { "
+              wordParts[j] = "\\override #'(font-size . 1) \\override #'(baseline-skip . 2.2) \\raise #" + wordLen + " \\column { "
               for (var k=1;k<ogWord.length-1;k++) {
                 if (ogWord[k] != "")
                   wordParts[j] += "\\line {\"" + ogWord[k] + "\"} "
@@ -1063,7 +1065,8 @@ function guqinToLilyPond(guqinJSON) {
               wordParts[j] = "\\override #'(font-size . 3) \\override #'(font-name . \"sans\") \\raise #1 {\"" + wordParts[j].substr(1, wordParts[j].length-2) + "\"}"
             }
             else {
-              wordParts[j] = '"' + stringToCharacter(wordParts[j]) + ' "'
+              // wordParts[j] = '"' + stringToCharacter(wordParts[j]) + ' "'
+              wordParts[j] = '"' + paragraphToCharacters(wordParts[j]) + '"'
             }
           }
           words[i] = '\\markup { ' + wordParts.join(' ') + ' }'
