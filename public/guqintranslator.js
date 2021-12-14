@@ -1064,6 +1064,9 @@ function guqinToLilyPond(guqinJSON) {
             else if (singleQuotes.some(v => v === wordParts[j][0]) && singleQuotes.some(v => v === wordParts[j][wordParts[j].length-1])) {
               wordParts[j] = "\\override #'(font-size . 3) \\override #'(font-name . \"sans\") \\raise #1 {\"" + wordParts[j].substr(1, wordParts[j].length-2) + "\"}"
             }
+            else if (wordParts[j] == ".") {
+              wordParts[j] = '" "'
+            }
             else {
               // wordParts[j] = '"' + stringToCharacter(wordParts[j]) + ' "'
               wordParts[j] = '"' + paragraphToCharacters(wordParts[j]) + '"'
