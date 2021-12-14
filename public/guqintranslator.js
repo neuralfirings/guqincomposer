@@ -1033,14 +1033,30 @@ function guqinToLilyPond(guqinJSON) {
           }
           var wordParts = words[i].split('-')
           for (var j=0; j<wordParts.length;j++) {
-            if (doubleQuotes.some(v => v === wordParts[j][0]) && doubleQuotes.some(v => v === wordParts[j][wordParts[j].length-1])) {
+            if ( wordParts[j].includes("/") ) {
+              subWordParts = wordParts[j].split("/")
+              wordParts[j] = "\\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\override #'(baseline-skip . 2.2) \\raise #" + subWordParts.length + " \\center-column { "
+              for (let i=0; i<subWordParts.length; i++) {
+                if (paragraphToCharacters(subWordParts[i]) == subWordParts[i])
+                  wordParts[j] += "\\line {\"" + paragraphToCharacters(subWordParts[i]) + "\"} "
+                else
+                  wordParts[j] += "\\line \\override #'(font-size . 5) {\"" + paragraphToCharacters(subWordParts[i]) + "\"} "
+              }
+              wordParts[j] += "} "
+            }
+            else if (doubleQuotes.some(v => v === wordParts[j][0]) && doubleQuotes.some(v => v === wordParts[j][wordParts[j].length-1])) {
               var ogWord = wordParts[j]
               var wordLen = wordParts[j].length-2
+              let translatedWord = paragraphToCharacters(ogWord)
               wordParts[j] = "\\override #'(font-size . 1) \\override #'(font-name . \"JianZiPu, Ma Shan Zheng \") \\override #'(baseline-skip . 2.2) \\raise #" + wordLen + " \\column { "
               for (var k=1;k<ogWord.length-1;k++) {
                 if (ogWord[k] != "")
                   wordParts[j] += "\\line {\"" + ogWord[k] + "\"} "
               }
+              // for (var k=1;k<translatedWord.length-1;k++) {
+              //   if (translatedWord[k] != "")
+              //     wordParts[j] += "\\line {\"" + translatedWord[k] + "\"} "
+              // }
               wordParts[j] += "} "
             }
             else if (singleQuotes.some(v => v === wordParts[j][0]) && singleQuotes.some(v => v === wordParts[j][wordParts[j].length-1])) {
