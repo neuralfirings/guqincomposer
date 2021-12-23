@@ -5,6 +5,7 @@ CodeMirror.defineSimpleMode("guqinshorthand", {
     {regex: /n:/, token: "notes"},
     {regex: /f:/, token: "fingers"},
     {regex: /j:/, token: "keyword"},
+    {regex: /j(.*):/, token: "keyword"},
     {regex: / \| | \. | \|\| | \.\| | \.\. | \|\.\| | \|. | \.\|\: | \:\.\.\: | \:\|\.\|\: | \:\.\|\.\: | \[\|\: | \:\|\]\[\|\: | \:\|\] | \:\|\./, token: "bars"},
     {regex: / \|$| \.| \|\|$| \.\|$| \.\.$| \|\.\|$| \|.$| \.\|\:$| \:\.\.\:$| \:\|\.\|\:$| \:\.\|\.\:$| \[\|\:$| \:\|\]\[\|\:$| \:\|\]$| \:\|\./, token: "bars"},
     {regex: /\\n/, token: "endl"},

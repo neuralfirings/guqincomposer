@@ -2,7 +2,7 @@
   const lyBars = ["|", ".", "||", ".|", "..", "|.|", "|.",
     ".|:", ":..:", ":|.|:", ":|.:", ":.|.:", "[|:", ":|][|:", ":|]", ":|."
   ]
-  const lyMapAndExtract = ['~', "=", "/", "\\", ">", "<"]
+  const lyMapAndExtract = ['~', "=", "/", "\\", ">", "<", "≅", "≈", "▲", "∿"]
   const lyMap = { 
     "0": { "type": "str", "value": 0 }, "1": { "type": "str", "value": 1 }, "2": { "type": "str", "value": 2 }, "3": { "type": "str", "value": 3 }, "4": { "type": "str", "value": 4 }, "5": { "type": "str", "value": 5 }, "6": { "type": "str", "value": 6 }, "7": { "type": "str", "value": 7 }, 
     "n": { "type": "rh", "value": "1v" }, "j": { "type": "rh", "value": "2v" }, "k": { "type": "rh", "value": "3v" }, "l": { "type": "rh", "value": "4v" }, ";": { "type": "rh", "value": "5v" }, 
@@ -39,7 +39,7 @@
   const lyStr5 = `\\context { \\Lyrics \\override LyricText.font-name = "JianZiPu, Ma Shan Zheng"}\n  ` + 
     `\\context { \\Lyrics \\override LyricText.font-size = #7 }\n  ` + 
     `\\context { \\Score \\override RehearsalMark.self-alignment-X = #LEFT } \\context { \\Staff \\hide TextScript \\override TrillSpanner.bound-details.left.text = ##f \\override Glissando.style = #'zigzag }`
-  const lyStr6 = `\\context { \\TabStaff \\omit Clef \\omit ClefModifier \\revert TextScript.stencil \\override TextScript.font-size = #-3 \\override Glissando.style = #'zigzag \\override TabNoteHead.font-family = #'typewriter tablatureFormat = #fret-letter-tablature-format } \\textLengthOn \\omit Voice.StringNumber } \\midi {}`
+  const lyStr6 = `\\context { \\TabStaff \\omit Clef \\omit ClefModifier \\override TabNoteHead.font-size = #-1 \\revert TextScript.stencil \\override TextScript.font-size = #-1 \\override Glissando.style = #'zigzag \\override TabNoteHead.font-family = #'typewriter tablatureFormat = #fret-letter-tablature-format } \\textLengthOn \\omit Voice.StringNumber } \\midi {}`
   // const lyStr7 = `<< \\new Staff  { \\song } \\new TabStaff { \\clef "moderntab" \\song } >>`
 // } end
 
