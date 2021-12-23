@@ -246,6 +246,20 @@ app.get('/nltabs/:id', function(req,res) {
   res.send(index)
 })
 
+app.get('/nltabs/:id/pdf', function(req,res) {
+  console.log('/nltabs/:id/pdf', id)
+  var id = req.params.id
+  var versions = fs.readdirSync('./music/' + id)
+  console.log('versions', versions)
+  var version = 0
+  for (var i=0;i<versions.length;i++) {
+    if (!isNaN(versions[i]))
+      version = Math.max(version, Number(versions[i]))
+  }
+  console.log('render', `./music/${id}/${version}/music.pdf`)
+  res.sendFile(`/music/${id}/${version}/music.pdf`, { root: '.' })
+})
+
 app.get('/nltabs/:id/:version', function(req,res) {
   var id = req.params.id
   var version = req.params.version

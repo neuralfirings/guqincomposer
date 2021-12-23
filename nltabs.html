@@ -46,7 +46,7 @@
       $(document).ready(function() {
         currWidth = 100
         if (session.hasPDF) {
-          $('.download-pdf').attr('href', `/nltabfiles/${session.id}/${session.version}/music.pdf`)
+          $('.download-pdf').attr('href', `/nltabs/${session.id}/pdf`)
           $('.score-container').show()
         }
         if (session.hasMIDI) {
@@ -578,7 +578,7 @@
                 <a class="copy-link" href="javascript:void(0)">Copy Link</a>
                 <span class="copied">Copied!</span>
                 &nbsp;&nbsp;
-                <a href="" class="download-pdf">PDF</a>
+                <a href="" class="download-pdf" target="_blank">PDF</a>
                 &nbsp;&nbsp;
                 <a href="" class="download-midi">MIDI</a>
                 &nbsp;&nbsp;
