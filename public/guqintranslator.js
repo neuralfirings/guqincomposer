@@ -14,7 +14,7 @@
     "c": { "type": "lh", "value": "1v" }, "x": { "type": "lh", "value": "4G" }, "e": { "type": "lh", "value": "3^" }, 
     "V": { "type": "lh", "value": "1X" }, "F": { "type": "lh", "value": "2X" }, "D": { "type": "lh", "value": "3X" }, "S": { "type": "lh", "value": "4X" }, "A": { "type": "lh", "value": "5X" } 
   }
-  const lyPitches = ['r', 'a','b','c','d','e','f','g']
+  const lyPitches = ['R', 'r', 'a','b','c','d','e','f','g']
   const lyFanYins = ['A','B','C','D','E','F','G']
   const lyBeats = ['1','2','3','4','5','6','7','8','9']
   const tuningEqual = [0,13.6,13.1,12.2,10.9,10.0,9.5,9.0,8.4,7.9,7.6,7.3,7.0,6.7,6.5,6.2,6.0,5.6,5.3,5.0,4.8,4.6,4.4,4.2,4.0,3.7,3.5,3.2,3.0,2.6,2.3,2.0,1.8,1.6,1.4,1.2,1.0]
@@ -862,22 +862,27 @@ function guqinToLilyPond(guqinJSON) {
           }
 
           // the meat
+          // if (guqin.song[i].note == 'R') {
+          //   console.log('silent rest1', guqin.song[i].note, i)
+          //   guqin.song[i].note = ['\\skip '] //<-------------- START HERE
+          //   console.log('silent rest2', guqin.song[i].note, i)
+          // }
           if (lyPitches.indexOf(guqin.song[i].note[0][0]) > -1) {
             if (guqin.song[i].note.length > 1) { // Chord
               addToAll('<', lySongs, voice)
               for (var j=0;j<guqin.song[i].note.length;j++) {
                 if (guqin.showtabs) {
-                  addToAll(guqin.song[i].note[j] + '\\' + guqin.song[i].str[j] + ' ', lySongs, voice)
+                  addToAll(guqin.song[i].note[j].replace('R', '\\skip ') + '\\' + guqin.song[i].str[j] + ' ', lySongs, voice)
                 }
                 else {
-                  addToAll(guqin.song[i].note[j] + ' ', lySongs, voice)
+                  addToAll(guqin.song[i].note[j].replace('R', '\\skip ') + ' ', lySongs, voice)
                 }
               }
               addToAll('>', lySongs, voice)
               addToAll(guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "", lySongs, voice)
             }
             else if (guqin.song[i].note.length == 1) { // Single Note
-              addToAll(guqin.song[i].note[0] , lySongs, voice)
+              addToAll(guqin.song[i].note[0].replace('R', '\\skip ') , lySongs, voice)
               addToAll(guqin.song[i].beat.length > 0 ? guqin.song[i].beat[0] : "" , lySongs, voice)
               if (guqin.showtabs)
                 addToAll('\\' + guqin.song[i].str[0], lySongs, voice)
