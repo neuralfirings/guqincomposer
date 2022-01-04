@@ -484,15 +484,30 @@ function shortHandToGuqinJSON(shortHand) {
         pressedHuis: [],
         slur: [],
         grace: [],
-        voice: voice
+        voice: voice,
+        prepend: '',
+        append: ''
       }
       var note = song[i]
       var notePart = song[i].split(';')
       var n = notePart[0]
       var gq = notePart[1]
 
+      // { Tuplets
+        if (n.includes('{')) {
+          guqin[i].prepend = '\\tuplet ' + n.substr(0, n.indexOf('{')) + ' { '
+          n = n.substr(n.indexOf('{')+1)
+        }
+        else if (n.includes('}')) {
+          guqin[i].append  = ' } '
+          n = n.replace('}', '')
+        }
+        console.log(n)
+      // }
+
       // { move slides from n to f level
         var notePart = song[i].split(';')[0]
+        console.log(notePart)
         var fingerPart = song[i].split(';')[1]
 
         if (n.indexOf('/') > -1) {
@@ -501,7 +516,7 @@ function shortHandToGuqinJSON(shortHand) {
           }
           n.split('/').join('')
         }
-        if (notePart.indexOf('\\') > -1) {
+        if (n.indexOf('\\') > -1) {
           if (gq.indexOf('\\') == -1) {
             gq = '\\' + gq
           }
@@ -799,6 +814,8 @@ function guqinToLilyPond(guqinJSON) {
 
     var fyhuirange = [7,4]
     for (var i=0; i<guqin.song.length; i++) {
+      if (guqin.song[i].prepend != undefined)
+        addToAll(guqin.song[i].prepend, lySongs, voice)
       if (guqin.song[i] == 'linebreak') {
         addToAll('\n ', lySongs)
       }
@@ -990,6 +1007,8 @@ function guqinToLilyPond(guqinJSON) {
           addToAll(' ', lySongs, voice)
         }
       }
+      if (guqin.song[i].append != undefined)
+        addToAll(guqin.song[i].append, lySongs, voice)
     }
     addToAll('\n\n}', lySongs)
     for (var v in lySongs) {
