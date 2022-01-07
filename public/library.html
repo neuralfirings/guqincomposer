@@ -40,7 +40,7 @@
 								scoreCard.find('.card-title').html(output.title.split('\\n').join(' '))
 								console.log(output.title.split('\n').join('<br />'))
 								scoreCard.find('.score-link').attr('href', '/nltabs/' + id)
-								scoreCard.find('.pdf-link').attr('href', output.pdf)
+								scoreCard.find('.pdf-link').attr('href', '/nltabs/' + id + '/pdf') //output.pdf)
 								// scoreCard.click(function() {
 								// 	window.location.href = '/nltabs/' + id
 								// })
