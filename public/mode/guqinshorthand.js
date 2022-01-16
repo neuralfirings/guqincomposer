@@ -1,7 +1,7 @@
 CodeMirror.defineSimpleMode("guqinshorthand", {
   start: [
     {regex: /\/\/.*/, token: "comment"},
-    {regex: /jianzipu (.*):|jianzipu:|title:|composer:|endnote:|timesig:|tuninglabel:|voice:|fyhuirange:|tuning:|temperament:|showtimesig:|showtabs:|showjianzipu:|combinevoices:|ly:|bars:|key:|time:|clef:|tempo:|mark:/, token: "keyword"},
+    {regex: /jianzipu (.*):|jianzipu:|title:|composer:|endnote:|timesig:|tuninglabel:|voice:|fyhuirange:|tuning:|temperament:|showtimesig:|showtabs:|showjianzipu:|showstaff:|combinevoices:|ly:|bars:|key:|time:|clef:|tempo:|mark:/, token: "keyword"},
     {regex: /n:/, token: "notes"},
     {regex: /f:/, token: "fingers"},
     {regex: /j:/, token: "keyword"},

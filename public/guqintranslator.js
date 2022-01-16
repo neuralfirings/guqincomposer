@@ -209,6 +209,7 @@ function shortHandToGuqinJSON(shortHand) {
   var showtimesig='no'
   var showtabs=true
   var showjianzipu=true
+  var showstaff=true
   var combinevoices=false
   var guqin = []
   var voices = {}
@@ -244,6 +245,9 @@ function shortHandToGuqinJSON(shortHand) {
         }
         else if (shortHandLines[i].beginsWith('showjianzipu:')) {
           showjianzipu = shortHandLines[i].split('showjianzipu:')[1].trim()=="no" ? false : true
+        }
+        else if (shortHandLines[i].beginsWith('showstaff:')) {
+          showstaff = shortHandLines[i].split('showstaff:')[1].trim()=="no" ? false : true
         }
         else if (shortHandLines[i].beginsWith('combinevoices:')) {
           combinevoices = shortHandLines[i].split('combinevoices:')[1].trim()=="yes" ? true : false
@@ -715,6 +719,7 @@ function shortHandToGuqinJSON(shortHand) {
     showtimesig: showtimesig,
     showtabs: showtabs,
     showjianzipu: showjianzipu,
+    showstaff: showstaff,
     bars: bars,
     song: guqin,
     jianzipu: jianzipuCharacters,
@@ -1122,18 +1127,20 @@ function guqinToLilyPond(guqinJSON) {
     ly +='  ' + lyStr5 + '\n  ' + lyStr6 + '\n  ' 
 
     ly += '<< '
-    if (guqin.combinevoices) {
+    if (guqin.combinevoices && guqin.showstaff) {
       ly+= '\\new Staff << '
     }
 
     for (var v in lySongs) {
-      ly += ' \\new Voice = "' + v + '" { \\' + v + ' } '
+      if (guqin.showstaff) {
+        ly += ' \\new Voice = "' + v + '" { \\' + v + ' } '
+      }
       if (guqin.showjianzipu) {
         ly += '\\new Lyrics \\lyricsto "' + v + '" { \\set ignoreMelismata = ##t \\set includeGraceNotes = ##t \\jzp_' + v + ' } '
       }
     }
 
-    if (guqin.combinevoices) {
+    if (guqin.combinevoices && guqin.showstaff) {
       ly += '>> '
     }
 
