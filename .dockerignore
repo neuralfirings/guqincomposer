@@ -1,0 +1,6 @@
+.git
+node_modules
+music
+errorlogs
+public/temp
+.passwords
