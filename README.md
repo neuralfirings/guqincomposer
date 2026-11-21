@@ -51,3 +51,4 @@ f: by35v~~ 1j $ |  6 6v - - wc | /35bys v3u 1di vu3
 2. `npm install`
 3. Install LilyPond command line (lilypond.org)
 4. `node app.js`
+5. install font (Ubuntu: /usr/share/fonts/opentype)

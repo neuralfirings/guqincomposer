@@ -64,6 +64,7 @@
 					## 1. Getting Started 
 
 					#### Example ([link](/nltabs/8oxs3oT))
+	
 					<div class='gq-snippet' data-id="8oxs3oT" data-img-height="200"></div>
 
 					If you want to read in detail about the snippet above, I encourage you to [check out the Getting Started page](/gettingstarted.html). 
@@ -168,7 +169,9 @@
 					| `-`                    | flats, used after the note (ex: `c-` is c flat)   |
 					| `#`                    | sharps, used after the note (ex: `c#` is c sharp) |
 					| `r`	                   | rest                                              |
+					| `R`	                   | hidden rest                                              |
 					| `1-64`                 | 1 = whole notes, 4 quarter, etc.<br /> NOTE: notes in the chord must be ordered from lowest to highest string <br />(lowest string is furthest away from the player) |
+					| `fraction{...}`        | fraction represents a tuplet, `3/2{c8 c c}` is a triplet spanning one beat, for example |
 					| `.` (period)           | dot indicate half notes, so `2.` equals three beats   |
 					| `,` (comma)            | lower octave, `,,` is double lower octave, etc.   |
 					| `'` (single quote)     | higher octave, `''` is double lower octave, etc.  |
@@ -279,15 +282,23 @@
 
 					One of the interesting things about using NLTabs vs. traditional notation is that you can represent multi-voice scores more clearly. You can visually see which string plucks belong to which voices because, often, the rhythm voice has it's own movement patterns and you can see that visually on the tab. 
 
-					To separate out voices, you simply add a `voice:` line and name your voices appropriately. In the example below, I take the first few lines of the second movement of the Pathetique Sonata (by Beethoven), and write a voice Beethoven's treble/right handed line (named `rh` below) and one for the bass/left handed line (`lh`). 
+					To separate out voices, you simply add a `voice:` line and name your voices appropriately. In the example below, I take the first few notes in Jingle Bells, and write a voice for the melody (named `melody` below) and one for the bass/accompaniment handed line (`accompaniment`). 
 
 					In the Guqin tabs, you can see the strumming pattern representing the left hand on the lower level strings (the ones further away from player on the qin, and higher up on the tabs).
 
 					Attributes such as time signatures, tempo, key signatures, marks, fyhuiranges apply across voices. Other elements, notably clefs, will need to be specified for each voice.  
+					
+					#### Example ([link](/nltabs/cn3XQhk))	
 
-					#### Example ([link](/nltabs/MPdHJdj))	
+					<div class='gq-snippet' data-id="cn3XQhk" data-img-height="350"></div>
+					
+					To combine voices in one staff, include a `combinevoices: yes` tag.
 
-					<div class='gq-snippet' data-id="MPdHJdj" data-img-height="350"></div>
+					To force one voice to have steps that go up, you can add a `ly: \voiceOne` to the beginning of that voice. To force stems down, add `ly: \voiceTwo` at the beginning. (`\voiceThree` and `\voiceFour` works too)
+
+					#### Example ([link](/nltabs/WGxQ3mo))	
+
+					<div class='gq-snippet' data-id="WGxQ3mo" data-img-height="350"></div>
 
 					## 5. Writing Music in JianZiPu
 

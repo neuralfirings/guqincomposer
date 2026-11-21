@@ -22,6 +22,35 @@
 		<meta property="og:image" content="https://guqin.nyl.io/guqintabsexample.jpg" />
 
     <script>
+			$(document).ready(function() {
+				var tempCard = `<span><div style="max-height: 200px; overflow: hidden"><a class="score-link"><img class="card-img-top" src=""></a></div><div class="card-body"><h5 class="card-title"></h5><a href="#" class="score-link btn btn-primary btn-block">Open Score Editor</a><a href="#" class="pdf-link btn btn-link btn-block">Download PDF</a></div></span>`
+				$('.score-card').each(function () {
+					var id = $(this).attr('data-id')
+					var thisDiv = $(this)
+					$.ajax({
+						url: '/latest?id=' + id,
+						success: function(output) {
+							if (output.error) {
+								alert('Error loading score with id: ' + id + '\n\nDetails: \n' + output.error)
+							}
+							else {
+								var latestVersion = output.version
+								var scoreCard = $(tempCard)
+								scoreCard.find('img').attr('src', output.imgurl)
+								scoreCard.find('.card-title').html(output.title.split('\\n').join(' '))
+								console.log(output.title.split('\n').join('<br />'))
+								scoreCard.find('.score-link').attr('href', '/nltabs/' + id)
+								scoreCard.find('.pdf-link').attr('href', '/nltabs/' + id + '/pdf') //output.pdf)
+								// scoreCard.click(function() {
+								// 	window.location.href = '/nltabs/' + id
+								// })
+								thisDiv.append(scoreCard)
+							}
+						}
+					})
+					// console.log(latestVersion)
+				})
+			})
     </script>
     <style>
       img {
@@ -38,10 +67,36 @@
 					<div class="markdown">
 
 						<!-- <a href="/nltabs/2MILMah"><img src="/screenshot.jpg" class="img-fluid" /></a> -->
+						# Guqin Music Web
 
-						# Guqin music using NL Tabs
 
-						## Brief Intro to NL Tabs
+						### Some traditional Guqin Music...
+
+						<div class="library-shelf card-deck">
+							<div class="score-card card" data-id="19wMMuB"></div>
+							<div class="score-card card" data-id="p9Z2uB9"></div>
+							<div class="score-card card" data-id="7iHkSWE"></div>
+						</div>
+
+						<br />
+
+						**[See more in the Guqin Library <i class="fas fa-arrow-circle-right"></i>](/library.html)**
+
+						### Some arrangements...
+
+						<div class="library-shelf card-deck">
+							<div class="score-card card" data-id="MPdHJdj"></div>
+							<div class="score-card card" data-id="9r0s8wI"></div>
+							<div class="score-card card" data-id="oIZPpHM"></div>
+						</div>
+
+						<br />
+						
+						**[See more in the Guqin Library <i class="fas fa-arrow-circle-right"></i>](/library.html)**
+
+
+						## Reading Guqin music using NLTabs
+
 						Create Guqin music with the NLTabs (Numeric Linear Tablature) system. This creates Guqin music with a simple entry method. Guqin Notation traditionally has been a bit tricky to read. It's efficient in that it compresses a bunch of playing instructions into characters. However, it has a rather steep learning curve, and more importantly I could not find a way to write scores in the traditional notation on a computer. I don't really own paper anymore, so..... I created my own system for writing Guqin music! 
 
 						NLTabs basically converts the finger positions into a more visual schema, using lines to represent lines (crazy!) of the Guqin, and numbers to represent which position along the line to press or touch. The text above the 7 line tabs represent what you do with your right hand and which finger to use, and the text below represent what you do with your left. 
