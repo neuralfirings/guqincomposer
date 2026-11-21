@@ -43,10 +43,7 @@
   // const lyStr7 = `<< \\new Staff  { \\song } \\new TabStaff { \\clef "moderntab" \\song } >>`
 // } end
 
-const jianzipu = new JZP()
-function paragraphToCharacters(str) {
-  return jianzipu.convert(str)
-}
+// paragraphToCharacters() comes from /lib/jzp/jianzipu.min.js (JianZiPu v1 compiler)
 
 // String extensions
 String.prototype.has = function(thing) {

@@ -50,5 +50,12 @@ f: by35v~~ 1j $ |  6 6v - - wc | /35bys v3u 1di vu3
 1. Clone repo
 2. `npm install`
 3. Install LilyPond command line (lilypond.org)
-4. `node app.js`
-5. install font (Ubuntu: /usr/share/fonts/opentype)
+4. Install the fonts in `fonts/` (Ubuntu: copy to `/usr/share/fonts/opentype`, then `fc-cache -f`)
+5. `node app.js`, then open http://localhost:5713
+
+# Deploying
+
+The `Dockerfile` installs LilyPond and the fonts, so any host that builds from a Dockerfile works.
+
+* `PORT` sets the port (default 5713).
+* Saved scores (`music/`), score passwords (`.passwords`) and `errorlogs/` are written under `DATA_DIR`. It defaults to the repo folder; on Railway it follows the attached volume's mount path automatically. Put it on a persistent disk, or saved scores are lost on each deploy.
