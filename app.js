@@ -56,7 +56,10 @@ app.post('/renderly', function(req, res) {
   var tempId = makeid(7)
   fs.mkdirSync('./public/temp/' + tempId, { recursive: true });
   fs.writeFileSync('./public/temp/' + tempId + '/music.ly', ly)
-  var bashScript = "lilypond -o ./public/temp/" + tempId + "/music --png --pdf -s ./public/temp/" + tempId + "/music.ly"
+  // Absolute paths: LilyPond changes into the output folder before reading the
+  // input, and some versions (2.24.1) then fail to find a relative input path.
+  var tempDir = path.resolve('./public/temp', tempId)
+  var bashScript = "lilypond -o " + tempDir + "/music --png --pdf -s " + tempDir + "/music.ly"
 
   console.log(bashScript)
   exec(bashScript, (err, stdout, stderr) => {
